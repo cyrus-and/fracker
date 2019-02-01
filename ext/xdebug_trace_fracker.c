@@ -49,7 +49,7 @@ static int connect_to_server(const struct sockaddr_in *address)
 
     /* connect to the server */
     if (connect(socket_fd, (const struct sockaddr *)address, sizeof(*address))) {
-        printf(LOG_PREFIX "cannot connect to %s:%d\n", XG(trace_fracker_host), XG(trace_fracker_port));
+        printf(LOG_PREFIX "cannot connect to %s:%ld\n", XG(trace_fracker_host), XG(trace_fracker_port));
         return -1;
     }
 
