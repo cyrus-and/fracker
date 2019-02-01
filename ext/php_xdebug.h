@@ -165,6 +165,10 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 	zend_long     force_error_reporting;
 	zend_long     halt_level;
 
+    /* fracker */
+	char         *trace_fracker_host;
+	zend_long     trace_fracker_port;
+
 	zend_long     overload_var_dump;
 
 	zif_handler   orig_var_dump_func;
