@@ -184,7 +184,6 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
 
         /* fill and add argument info */
         argument = json_object_new_object();
-        json_object_object_add(argument, "name", NULL);
         json_object_object_add(argument, "value", json_object_new_string(fse->include_filename));
         json_object_array_add(arguments, argument);
     } else {
@@ -197,7 +196,9 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
             /* fill and add argument info */
             name = fse->var[i].name;
             argument = json_object_new_object();
-            json_object_object_add(argument, "name", name ? json_object_new_string(name) : NULL);
+            if (name) {
+                json_object_object_add(argument, "name", json_object_new_string(name));
+            }
             set_json_zval(ctxt, argument, "value", &fse->var[i].data);
             json_object_array_add(arguments, argument);
         }
