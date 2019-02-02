@@ -67,17 +67,46 @@ static void write_json_object(int fd, struct json_object *object)
     json_object_put(object);
 }
 
-static struct json_object *zval_to_json(zval *value)
+static int zval_to_json(zval *value, struct json_object **object)
 {
-    struct json_object *object;
     smart_str buf = { 0 };
 
     /* XXX zval -> JSON using PHP api, then parse it back */
+
+    /* XXX JSON_G(error_code) may cause undefined symbol at runtime so we rely
+       on the fact that the string is not NULL */
+
     php_json_encode(&buf, value, PHP_JSON_PARTIAL_OUTPUT_ON_ERROR);
-    smart_str_0(&buf);
-    object = json_tokener_parse(buf.s->val);
-    smart_str_free(&buf);
-    return object;
+    if (buf.s) {
+        smart_str_0(&buf);
+        *object = json_tokener_parse(buf.s->val);
+        smart_str_free(&buf);
+        return 1;
+    } else {
+        /* fall back to null */
+        *object = NULL;
+        return 0;
+    }
+}
+
+static void set_json_zval(void *ctxt, struct json_object *parent, const char *key, zval *value)
+{
+    struct json_object *object;
+
+    /* convert the zvalue and notify the server on errors (a null object is used) */
+    if (!zval_to_json(value, &object)) {
+        struct json_object *info;
+
+        /* send error info */
+        info = json_object_new_object();
+        json_object_object_add(info, "type", json_object_new_string("error"));
+        json_object_object_add(info, "message", json_object_new_string("Invalid JSON conversion"));
+        write_json_object(CTXT(socket_fd), info);
+        fprintf(stderr, LOG_PREFIX "invalid json conversion\n");
+    }
+
+    /* updatethe json object */
+    json_object_object_add(parent, key, object);
 }
 
 void *xdebug_trace_fracker_init(char *fname, char *script_filename, long options TSRMLS_DC)
@@ -114,14 +143,12 @@ void xdebug_trace_fracker_write_header(void *ctxt TSRMLS_DC)
 {
     struct json_object *info;
 
-    /* fill request info */
+    /* send request info */
     info = json_object_new_object();
     json_object_object_add(info, "type", json_object_new_string("request"));
-    json_object_object_add(info, "server", zval_to_json(&PG(http_globals)[TRACK_VARS_SERVER]));
-    json_object_object_add(info, "get", zval_to_json(&PG(http_globals)[TRACK_VARS_GET]));
-    json_object_object_add(info, "post", zval_to_json(&PG(http_globals)[TRACK_VARS_POST]));
-
-    /* serialize and send */
+    set_json_zval(ctxt, info, "server", &PG(http_globals)[TRACK_VARS_SERVER]);
+    set_json_zval(ctxt, info, "get", &PG(http_globals)[TRACK_VARS_GET]);
+    set_json_zval(ctxt, info, "post", &PG(http_globals)[TRACK_VARS_POST]);
     write_json_object(CTXT(socket_fd), info);
 }
 
@@ -171,7 +198,7 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
             name = fse->var[i].name;
             argument = json_object_new_object();
             json_object_object_add(argument, "name", name ? json_object_new_string(name) : NULL);
-            json_object_object_add(argument, "value", zval_to_json(&fse->var[i].data));
+            set_json_zval(ctxt, argument, "value", &fse->var[i].data);
             json_object_array_add(arguments, argument);
         }
     }
