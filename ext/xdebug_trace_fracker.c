@@ -79,7 +79,7 @@ static int zval_to_json(zval *value, struct json_object **object)
     php_json_encode(&buf, value, PHP_JSON_PARTIAL_OUTPUT_ON_ERROR);
     if (buf.s) {
         smart_str_0(&buf);
-        *object = json_tokener_parse(buf.s->val);
+        *object = json_tokener_parse(ZSTR_VAL(buf.s));
         smart_str_free(&buf);
         return 1;
     } else {
