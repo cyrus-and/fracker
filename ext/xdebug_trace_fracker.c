@@ -73,7 +73,7 @@ static struct json_object *zval_to_json(zval *value)
     smart_str buf = { 0 };
 
     /* XXX zval -> JSON using PHP api, then parse it back */
-    php_json_encode(&buf, value, 0);
+    php_json_encode(&buf, value, PHP_JSON_PARTIAL_OUTPUT_ON_ERROR);
     smart_str_0(&buf);
     object = json_tokener_parse(buf.s->val);
     smart_str_free(&buf);
