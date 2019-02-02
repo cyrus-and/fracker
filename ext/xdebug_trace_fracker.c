@@ -116,6 +116,7 @@ void xdebug_trace_fracker_write_header(void *ctxt TSRMLS_DC)
 
     /* fill request info */
     info = json_object_new_object();
+    json_object_object_add(info, "type", json_object_new_string("request"));
     json_object_object_add(info, "server", zval_to_json(&PG(http_globals)[TRACK_VARS_SERVER]));
     json_object_object_add(info, "get", zval_to_json(&PG(http_globals)[TRACK_VARS_GET]));
     json_object_object_add(info, "post", zval_to_json(&PG(http_globals)[TRACK_VARS_POST]));
@@ -139,6 +140,7 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
     /* fill call info */
     function = xdebug_show_fname(fse->function, 0, 0 TSRMLS_CC);
     info = json_object_new_object();
+    json_object_object_add(info, "type", json_object_new_string("call"));
     json_object_object_add(info, "function", json_object_new_string(function));
     json_object_object_add(info, "file", json_object_new_string(fse->filename));
     json_object_object_add(info, "line", json_object_new_int(fse->lineno));
