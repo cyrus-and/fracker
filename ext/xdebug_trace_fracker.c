@@ -192,6 +192,7 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
         for (i = 0; i < fse->varc; i++) {
             const char *name;
             struct json_object *argument;
+            xdebug_str *type;
 
             /* fill and add argument info */
             name = fse->var[i].name;
@@ -200,6 +201,9 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
                 json_object_object_add(argument, "name", json_object_new_string(name));
             }
             set_json_zval(ctxt, argument, "value", &fse->var[i].data);
+            type = xdebug_get_zval_synopsis(&fse->var[i].data, 0, NULL);
+            json_object_object_add(argument, "type", json_object_new_string(type->d));
+            xdebug_str_free(type);
             json_object_array_add(arguments, argument);
         }
     }
