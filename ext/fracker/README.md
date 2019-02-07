@@ -1,6 +1,6 @@
 # fracker
 
-## Setup a Docker container running Debian
+## Set up a Docker container running Debian
 
 Run the script `setup-docker-debian.sh`.
 
