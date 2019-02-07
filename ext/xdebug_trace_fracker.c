@@ -19,9 +19,6 @@
 
 extern ZEND_DECLARE_MODULE_GLOBALS(xdebug);
 
-/* TODO add return values? in that case the order changes and we need to export
-   an additional value (function_nr from function_stack_entry) */
-
 static int get_server_address(struct sockaddr_in *address)
 {
     /* prepare the address structure */
@@ -168,10 +165,11 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
     function = xdebug_show_fname(fse->function, 0, 0 TSRMLS_CC);
     info = json_object_new_object();
     json_object_object_add(info, "type", json_object_new_string("call"));
+    json_object_object_add(info, "id", json_object_new_int(fse->function_nr));
+    json_object_object_add(info, "level", json_object_new_int(fse->level));
     json_object_object_add(info, "function", json_object_new_string(function));
     json_object_object_add(info, "file", json_object_new_string(fse->filename));
     json_object_object_add(info, "line", json_object_new_int(fse->lineno));
-    json_object_object_add(info, "level", json_object_new_int(fse->level));
     xdfree(function);
 
     /* process arguments */
@@ -215,7 +213,28 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
 
 void xdebug_trace_fracker_function_exit(void *ctxt, function_stack_entry *fse, int function_nr TSRMLS_DC) {}
 
-void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry *fse, int function_nr, zval *return_value TSRMLS_DC) {}
+void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry *fse, int function_nr, zval *return_value TSRMLS_DC)
+{
+    struct json_object *info, *return_;
+    xdebug_str *type;
+
+    /* fill call info */
+    info = json_object_new_object();
+    json_object_object_add(info, "type", json_object_new_string("return"));
+    json_object_object_add(info, "id", json_object_new_int(fse->function_nr));
+    json_object_object_add(info, "level", json_object_new_int(fse->level));
+
+    /* process return value */
+    return_ = json_object_new_object();
+    set_json_zval(ctxt, return_, "value", return_value);
+    type = xdebug_get_zval_synopsis(return_value, 0, NULL);
+    json_object_object_add(return_, "type", json_object_new_string(type->d));
+    xdebug_str_free(type);
+    json_object_object_add(info, "return", return_);
+
+    /* serialize and send */
+    write_json_object(CTXT(socket_fd), info);
+}
 
 void xdebug_trace_fracker_generator_return_value(void *ctxt, function_stack_entry *fse, int function_nr, zend_generator *generator TSRMLS_DC) {}
 
