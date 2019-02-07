@@ -158,7 +158,7 @@ char *xdebug_trace_fracker_get_filename(void *ctxt TSRMLS_DC)
 
 void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, int function_nr TSRMLS_DC)
 {
-    struct json_object *info, *arguments;
+    struct json_object *info, *arguments, *argument;
     char *function;
 
     /* fill call info */
@@ -175,8 +175,6 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
     /* process arguments */
     arguments = json_object_new_array();
     if (fse->include_filename) {
-        struct json_object *argument;
-
         /* XXX require and include are handled differently (unfortunately this
            is not the actual variable value but a computed one) */
 
@@ -189,7 +187,6 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
 
         for (i = 0; i < fse->varc; i++) {
             const char *name;
-            struct json_object *argument;
             xdebug_str *type;
 
             /* fill and add argument info */
