@@ -86,7 +86,7 @@ static int zval_to_json(zval *value, struct json_object **object)
     }
 }
 
-static void set_json_zval(void *ctxt, struct json_object *parent, const char *key, zval *value)
+static void add_json_zval(void *ctxt, struct json_object *parent, const char *key, zval *value)
 {
     struct json_object *object;
 
@@ -143,9 +143,9 @@ void xdebug_trace_fracker_write_header(void *ctxt TSRMLS_DC)
     /* send request info */
     info = json_object_new_object();
     json_object_object_add(info, "type", json_object_new_string("request"));
-    set_json_zval(ctxt, info, "server", &PG(http_globals)[TRACK_VARS_SERVER]);
-    set_json_zval(ctxt, info, "get", &PG(http_globals)[TRACK_VARS_GET]);
-    set_json_zval(ctxt, info, "post", &PG(http_globals)[TRACK_VARS_POST]);
+    add_json_zval(ctxt, info, "server", &PG(http_globals)[TRACK_VARS_SERVER]);
+    add_json_zval(ctxt, info, "get", &PG(http_globals)[TRACK_VARS_GET]);
+    add_json_zval(ctxt, info, "post", &PG(http_globals)[TRACK_VARS_POST]);
     write_json_object(CTXT(socket_fd), info);
 }
 
@@ -195,7 +195,7 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
             if (name) {
                 json_object_object_add(argument, "name", json_object_new_string(name));
             }
-            set_json_zval(ctxt, argument, "value", &fse->var[i].data);
+            add_json_zval(ctxt, argument, "value", &fse->var[i].data);
             type = xdebug_get_zval_synopsis(&fse->var[i].data, 0, NULL);
             json_object_object_add(argument, "type", json_object_new_string(type->d));
             xdebug_str_free(type);
@@ -223,7 +223,7 @@ void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry
 
     /* process return value */
     return_ = json_object_new_object();
-    set_json_zval(ctxt, return_, "value", return_value);
+    add_json_zval(ctxt, return_, "value", return_value);
     type = xdebug_get_zval_synopsis(return_value, 0, NULL);
     json_object_object_add(return_, "type", json_object_new_string(type->d));
     xdebug_str_free(type);
