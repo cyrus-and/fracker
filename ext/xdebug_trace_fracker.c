@@ -106,6 +106,19 @@ static void add_json_zval(void *ctxt, struct json_object *parent, const char *ke
     json_object_object_add(parent, key, object);
 }
 
+static void add_json_typed_zval(void *ctxt, struct json_object *parent, zval *value)
+{
+    xdebug_str *type;
+
+    /* add type */
+    add_json_zval(ctxt, parent, "value", value);
+
+    /* add value */
+    type = xdebug_get_zval_synopsis(value, 0, NULL);
+    json_object_object_add(parent, "type", json_object_new_string(type->d));
+    xdebug_str_free(type);
+}
+
 void *xdebug_trace_fracker_init(char *fname, char *script_filename, long options TSRMLS_DC)
 {
     xdebug_trace_fracker_context *ctxt;
@@ -187,7 +200,6 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
 
         for (i = 0; i < fse->varc; i++) {
             const char *name;
-            xdebug_str *type;
 
             /* fill and add argument info */
             name = fse->var[i].name;
@@ -195,10 +207,7 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
             if (name) {
                 json_object_object_add(argument, "name", json_object_new_string(name));
             }
-            add_json_zval(ctxt, argument, "value", &fse->var[i].data);
-            type = xdebug_get_zval_synopsis(&fse->var[i].data, 0, NULL);
-            json_object_object_add(argument, "type", json_object_new_string(type->d));
-            xdebug_str_free(type);
+            add_json_typed_zval(ctxt, argument, &fse->var[i].data);
             json_object_array_add(arguments, argument);
         }
     }
@@ -213,7 +222,6 @@ void xdebug_trace_fracker_function_exit(void *ctxt, function_stack_entry *fse, i
 void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry *fse, int function_nr, zval *return_value TSRMLS_DC)
 {
     struct json_object *info, *return_;
-    xdebug_str *type;
 
     /* fill call info */
     info = json_object_new_object();
@@ -223,10 +231,7 @@ void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry
 
     /* process return value */
     return_ = json_object_new_object();
-    add_json_zval(ctxt, return_, "value", return_value);
-    type = xdebug_get_zval_synopsis(return_value, 0, NULL);
-    json_object_object_add(return_, "type", json_object_new_string(type->d));
-    xdebug_str_free(type);
+    add_json_typed_zval(ctxt, return_, return_value);
     json_object_object_add(info, "return", return_);
 
     /* serialize and send */
