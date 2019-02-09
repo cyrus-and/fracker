@@ -8,6 +8,7 @@ fi
 container="$1"
 
 # copy the extension source in the container
+docker exec -u root -i "$container" rm -fr /tmp/xdebug-fracker
 docker cp "$(dirname "$0")/.." "$container:/tmp/xdebug-fracker"
 
 # run the setup script
