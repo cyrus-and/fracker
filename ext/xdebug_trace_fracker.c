@@ -56,12 +56,21 @@ static int connect_to_server(const struct sockaddr_in *address)
 static void write_json_object(int fd, struct json_object *object)
 {
     const char *string;
+    int cork;
+
+    /* start buffering to avoid sending a single packet for the newline */
+    cork = 1;
+    setsockopt(fd, SOL_TCP, TCP_CORK, &cork, sizeof(cork));
 
     /* write the object followed by a newline then cleanup */
     string = json_object_to_json_string(object);
     write(fd, string, strlen(string));
     write(fd, "\n", 1);
     json_object_put(object);
+
+    /* release the cork and make sure to send out data */
+    cork = 0;
+    setsockopt(fd, SOL_TCP, TCP_CORK, &cork, sizeof(cork));
 }
 
 static int zval_to_json(zval *value, struct json_object **object)
