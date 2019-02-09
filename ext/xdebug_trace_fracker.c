@@ -58,6 +58,8 @@ static void write_json_object(int fd, struct json_object *object)
     const char *string;
     int cork;
 
+    /* TODO properly check the write syscalls */
+
     /* start buffering to avoid sending a single packet for the newline */
     cork = 1;
     setsockopt(fd, SOL_TCP, TCP_CORK, &cork, sizeof(cork));
