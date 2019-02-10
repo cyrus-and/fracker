@@ -170,6 +170,7 @@ void xdebug_trace_fracker_write_header(void *ctxt TSRMLS_DC)
     add_json_zval(ctxt, info, "server", &PG(http_globals)[TRACK_VARS_SERVER]);
     add_json_zval(ctxt, info, "get", &PG(http_globals)[TRACK_VARS_GET]);
     add_json_zval(ctxt, info, "post", &PG(http_globals)[TRACK_VARS_POST]);
+    add_json_zval(ctxt, info, "cookie", &PG(http_globals)[TRACK_VARS_COOKIE]);
     write_json_object(CTXT(socket_fd), info);
 }
 
