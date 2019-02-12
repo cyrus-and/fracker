@@ -17,7 +17,6 @@ docker exec -u root -i "$container" sh <<EOF
 apt-get update
 apt-get install --yes autoconf gcc make pkg-config git libjson-c-dev net-tools
 apt-get install --yes php-dev
-apt-get install --yes php5-dev
 apt-get install --yes php7.0-dev
 
 # compile and install
