@@ -105,9 +105,9 @@ static void add_json_zval(void *ctxt, struct json_object *parent, const char *ke
     if (!zval_to_json(value, &object)) {
         struct json_object *info;
 
-        /* send error info */
+        /* send warning info */
         info = json_object_new_object();
-        json_object_object_add(info, "type", json_object_new_string("error"));
+        json_object_object_add(info, "type", json_object_new_string("warning"));
         json_object_object_add(info, "message", json_object_new_string("Invalid JSON conversion"));
         write_json_object(CTXT(socket_fd), info);
         fprintf(stderr, LOG_PREFIX "invalid json conversion\n");
