@@ -113,7 +113,7 @@ static void add_json_zval(void *ctxt, struct json_object *parent, const char *ke
         fprintf(stderr, LOG_PREFIX "invalid json conversion\n");
     }
 
-    /* updatethe json object */
+    /* update the json object */
     json_object_object_add(parent, key, object);
 }
 
