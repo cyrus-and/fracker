@@ -6,9 +6,9 @@ This is a fork of [Xdebug][], only some default values have been changed and som
 
 [Xdebug]: https://github.com/xdebug/xdebug
 
-## Set up a Docker container running Debian
+## Deploy to a Docker container
 
-Run the script `setup-docker-debian.sh`.
+Run the script [`deploy-docker.sh`](deploy-docker.sh) and specify a Docker container running a Debian-like distro.
 
 ## Build
 
