@@ -32,7 +32,7 @@ phpize --clean
 Start a TCP server to receive the JSON stream, for example:
 
 ```
-socat tcp-listen:6666,fork,reuseaddr - | jq .
+socat tcp-listen:6666,fork,reuseaddr exec:jq\ .,fdout=0
 ```
 
 Remember that each PHP request triggers a request to the TCP server.
