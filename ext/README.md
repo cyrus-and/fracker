@@ -1,6 +1,6 @@
 # fracker
 
-This is a fork of [Xdebug][], only some default values have been changed and some new features introduced. The original README can be found [here](README.rst).
+This is a fork of [Xdebug][], only some default values have been changed and some new features introduced. The original README can be found [here](README.rst) if really needed.
 
 <!-- TODO add project brief -->
 
@@ -37,8 +37,12 @@ socat tcp-listen:6666,fork,reuseaddr exec:jq\ .,fdout=0
 
 Remember that each PHP request triggers a request to the TCP server.
 
-Then run PHP like this:
+Then run PHP from the root like this:
 
 ```
-php -c fracker/fracker.ini -d "zend_extension=$PWD/.libs/xdebug.so" # ...
+php -d "zend_extension=$PWD/.libs/xdebug.so" # ...
 ```
+
+## Configuration
+
+The [`fracker.ini`](fracker.ini) file serves as a template for the most common settings to be used with fracker.
