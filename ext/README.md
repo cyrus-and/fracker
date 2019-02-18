@@ -1,5 +1,11 @@
 # fracker
 
+This is a fork of [Xdebug][], only some default values have been changed and some new features introduced. The original README can be found [here](README.rst).
+
+<!-- TODO add project brief -->
+
+[Xdebug]: https://github.com/xdebug/xdebug
+
 ## Set up a Docker container running Debian
 
 Run the script `setup-docker-debian.sh`.
