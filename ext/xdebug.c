@@ -361,7 +361,7 @@ PHP_INI_BEGIN()
 
     /* fracker */
 	STD_PHP_INI_ENTRY("xdebug.trace_fracker_host", "127.0.0.1",         PHP_INI_ALL,    OnUpdateString, trace_fracker_host, zend_xdebug_globals, xdebug_globals)
-	STD_PHP_INI_ENTRY("xdebug.trace_fracker_port", "6666",              PHP_INI_ALL,    OnUpdateLong,   trace_fracker_port, zend_xdebug_globals, xdebug_globals)
+	STD_PHP_INI_ENTRY("xdebug.trace_fracker_port", "6666",              PHP_INI_ALL,    OnUpdateString, trace_fracker_port, zend_xdebug_globals, xdebug_globals)
 
 	/* Dump superglobals settings */
 	PHP_INI_ENTRY("xdebug.dump.COOKIE",           NULL,                 PHP_INI_ALL,    OnUpdateCookie)

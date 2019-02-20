@@ -5,6 +5,7 @@
 #include "zend_smart_str.h"
 
 #include <arpa/inet.h>
+#include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <sys/socket.h>
@@ -19,34 +20,43 @@
 
 extern ZEND_DECLARE_MODULE_GLOBALS(xdebug);
 
-static int get_server_address(struct sockaddr_in *address)
+static int connect_to_server()
 {
-    /* prepare the address structure */
-    memset(address, 0, sizeof(*address));
-    address->sin_family = AF_INET;
-    address->sin_port = htons(XG(trace_fracker_port));
-    if (inet_aton(XG(trace_fracker_host), &address->sin_addr)) {
-        return 1;
-    } else {
-        printf(LOG_PREFIX "invalid server address %s\n", XG(trace_fracker_host));
-        return 0;
-    }
-}
+    struct addrinfo *addresses, *ptr, hints = {0};
+    int errorcode, socket_fd;
 
-static int connect_to_server(const struct sockaddr_in *address)
-{
-    int socket_fd;
-
-    /* allocate a socket file descriptor */
-    socket_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (socket_fd == -1) {
-        printf(LOG_PREFIX "cannot create the TCP socket\n");
+    /* resolve the given address */
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_NUMERICSERV;
+    errorcode = getaddrinfo(XG(trace_fracker_host), XG(trace_fracker_port), &hints, &addresses);
+    if (errorcode) {
         return -1;
     }
 
-    /* connect to the server */
-    if (connect(socket_fd, (const struct sockaddr *)address, sizeof(*address))) {
-        printf(LOG_PREFIX "cannot connect to %s:%ld\n", XG(trace_fracker_host), XG(trace_fracker_port));
+    /* try all the available addresses */
+    for (ptr = addresses; ptr; ptr = ptr->ai_next) {
+        /* allocate a socket file descriptor */
+        socket_fd = socket(ptr->ai_family, ptr->ai_socktype, 0);
+        if (socket_fd == -1) {
+            return -1;
+        }
+
+        /* connect to the server */
+        if (connect(socket_fd, ptr->ai_addr, ptr->ai_addrlen)) {
+            close(socket_fd);
+            continue;
+        }
+
+        /* connection successful */
+        break;
+    }
+
+    /* cleanup address resolution data */
+    freeaddrinfo(addresses);
+
+    /* connection not performed */
+    if (!ptr) {
+        close(socket_fd);
         return -1;
     }
 
@@ -133,17 +143,12 @@ static void add_json_typed_zval(void *ctxt, struct json_object *parent, zval *va
 void *xdebug_trace_fracker_init(char *fname, char *script_filename, long options TSRMLS_DC)
 {
     xdebug_trace_fracker_context *ctxt;
-    struct sockaddr_in server_addr;
     int socket_fd;
 
-    /* fetch server information from ini file */
-    if (!get_server_address(&server_addr)) {
-        return NULL;
-    }
-
     /* establish a connection to the server */
-    socket_fd = connect_to_server(&server_addr);
+    socket_fd = connect_to_server();
     if (socket_fd == -1) {
+        printf(LOG_PREFIX "cannot connect to %s:%s\n", XG(trace_fracker_host), XG(trace_fracker_port));
         return NULL;
     }
 

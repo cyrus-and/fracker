@@ -167,7 +167,7 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 
     /* fracker */
 	char         *trace_fracker_host;
-	zend_long     trace_fracker_port;
+	char         *trace_fracker_port;
 
 	zend_long     overload_var_dump;
 
