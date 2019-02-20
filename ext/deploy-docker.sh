@@ -28,10 +28,17 @@ phpize
 make -j "$(nproc)" all
 make install
 
+# gather host address
+if [ "$(uname)" = Linux ]; then
+   host="\$(route -n | awk '/UG/ { print \$2 }')"
+else
+   host='host.docker.internal'
+fi
+
 # set up the extension
 echo "
 zend_extension=xdebug.so
-xdebug.trace_fracker_host=\$(route -n | awk '/UG/ { print \$2 }')
+xdebug.trace_fracker_host=\$host
 xdebug.trace_fracker_port=${PORT:-6666}
 " >/tmp/fracker.ini
 find / -path */php*/conf.d -exec cp /tmp/fracker.ini {} \; 2>/dev/null
