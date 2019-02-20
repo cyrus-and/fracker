@@ -25,7 +25,7 @@ make distclean
 phpize --clean
 phpize
 ./configure
-make -j 4 all
+make -j "$(nproc)" all
 make install
 
 # set up the extension
@@ -39,4 +39,7 @@ find / -path */php*/conf.d -exec cp /tmp/fracker.ini {} \; 2>/dev/null
 # make the web server reload the configuration
 pkill -x -HUP apache2
 pkill -x -HUP httpd
+
+# exit nicely
+true
 EOF
