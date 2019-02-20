@@ -87,7 +87,7 @@ static void write_json_object(int fd, struct json_object *object)
 
 static int zval_to_json(zval *value, struct json_object **object)
 {
-    smart_str buf = { 0 };
+    smart_str buf = {0};
 
     /* XXX zval -> JSON using PHP api, then parse it back */
 
@@ -120,7 +120,7 @@ static void add_json_zval(void *ctxt, struct json_object *parent, const char *ke
         json_object_object_add(info, "type", json_object_new_string("warning"));
         json_object_object_add(info, "message", json_object_new_string("Invalid JSON conversion"));
         write_json_object(CTXT(socket_fd), info);
-        fprintf(stderr, LOG_PREFIX "invalid json conversion\n");
+        fprintf(stderr, LOG_PREFIX "invalid JSON conversion\n");
     }
 
     /* update the json object */
