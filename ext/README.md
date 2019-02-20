@@ -1,4 +1,4 @@
-# fracker
+# Fracker
 
 This is a fork of [Xdebug][], only some default values have been changed and some new features introduced. The original README can be found [here](README.rst) if really needed.
 
@@ -45,4 +45,4 @@ php -d "zend_extension=$PWD/.libs/xdebug.so" # ...
 
 ## Configuration
 
-The [`fracker.ini`](fracker.ini) file serves as a template for the most common settings to be used with fracker.
+The [`fracker.ini`](fracker.ini) file serves as a template for the most common settings to be used with Fracker.

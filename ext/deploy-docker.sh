@@ -8,8 +8,8 @@ fi
 container="$1"
 
 # copy the extension source in the container
-docker exec -u root -i "$container" rm -fr /tmp/xdebug-fracker
-docker cp "$(dirname "$0")" "$container:/tmp/xdebug-fracker"
+docker exec -u root -i "$container" rm -fr /tmp/fracker
+docker cp "$(dirname "$0")" "$container:/tmp/fracker"
 
 # run the setup script
 docker exec -u root -i "$container" sh <<EOF
@@ -20,7 +20,7 @@ apt-get install --yes php-dev
 apt-get install --yes php7.0-dev
 
 # compile and install
-cd /tmp/xdebug-fracker
+cd /tmp/fracker
 make distclean
 phpize --clean
 phpize
@@ -33,8 +33,8 @@ echo "
 zend_extension=xdebug.so
 xdebug.trace_fracker_host=\$(route -n | awk '/UG/ { print \$2 }')
 xdebug.trace_fracker_port=${PORT:-6666}
-" >/tmp/xdebug-fracker/fracker.ini
-find / -path */php*/conf.d -exec cp /tmp/xdebug-fracker/fracker.ini {} \; 2>/dev/null
+" >/tmp/fracker.ini
+find / -path */php*/conf.d -exec cp /tmp/fracker.ini {} \; 2>/dev/null
 
 # make the web server reload the configuration
 pkill -x -HUP apache2
