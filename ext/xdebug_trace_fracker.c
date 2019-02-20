@@ -109,7 +109,7 @@ static int zval_to_json(zval *value, struct json_object **object)
 
 static void add_json_zval(void *ctxt, struct json_object *parent, const char *key, zval *value)
 {
-    struct json_object *object;
+    struct json_object *object = NULL;
 
     /* convert the zvalue and notify the server on errors (a null object is used) */
     if (!zval_to_json(value, &object)) {
