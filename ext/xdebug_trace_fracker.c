@@ -1,3 +1,5 @@
+/* Copyright (c) 2019 Andrea Cardaci <cyrus.and@gmail.com> */
+
 #include "xdebug_trace_fracker.h"
 #include "xdebug_var.h"
 
