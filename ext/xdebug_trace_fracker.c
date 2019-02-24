@@ -16,7 +16,7 @@
 
 #include <json.h>
 
-#define LOG_PREFIX "[!] fracker: "
+#define LOG_PREFIX "[!] Fracker: "
 
 #define CTXT(x) (((xdebug_trace_fracker_context*) ctxt)->x)
 
