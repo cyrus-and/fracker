@@ -10,14 +10,14 @@ class ObjectWalker {
 
     *walk(object) {
         if (typeof(object) === 'object') {
-            for (const i in object) {
+            for (const key in object) {
                 // add key if proper object and requested
                 if (!Array.isArray(object) && !this._valuesOnly) {
-                    yield* this.walk(i);
+                    yield* this.walk(key);
                 }
 
                 // add value
-                yield* this.walk(object[i]);
+                yield* this.walk(object[key]);
             }
         } else {
             // skip or convert non-string arguments
