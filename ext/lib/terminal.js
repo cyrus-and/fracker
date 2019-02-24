@@ -4,10 +4,9 @@ const RegExpSet = require('./reg-exp-set.js');
 const chalk = require('chalk');
 
 function run(server, options = {}) {
-    // create regexp sets from options
+    // create regexp sets from options (argumentsRegexp must be per-request dut to taint)
     const functionsRegexp = new RegExpSet(options.functions, options.ignoreCase);
     const excludeFunctionsRegexp = new RegExpSet(options.excludeFunctions, options.ignoreCase);
-    const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase);
     const excludeArgumentsRegexp = new RegExpSet(options.excludeArguments, options.ignoreCase);
     const pathsRegexp = new RegExpSet(options.paths, options.ignoreCase);
     const excludePathsRegexp = new RegExpSet(options.excludePaths, options.ignoreCase);
@@ -60,6 +59,7 @@ function run(server, options = {}) {
 
         const isWebRequest = !!request.server.REQUEST_METHOD;
         const matchedCalls = new Set();
+        const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase); // per-request
 
         // print the request line
         const prefix = chalk.gray(`\n${request.id} ┌`);
