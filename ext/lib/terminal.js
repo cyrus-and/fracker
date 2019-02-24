@@ -97,6 +97,11 @@ function run(server, options = {}) {
         }
 
         events.on('call', (call, stackTrace) => {
+            // skip when taint mode and there are no arguments to match
+            if (options.taint && argumentsRegexp.isEmpty()) {
+                return;
+            }
+
             // skip if the script file path doesn't match
             if (!RegExpSet.match(call.file, pathsRegexp, excludePathsRegexp)) {
                 return;
