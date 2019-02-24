@@ -116,13 +116,23 @@ static void add_json_zval(void *ctxt, struct json_object *parent, const char *ke
     /* convert the zvalue and notify the server on errors (a null object is used) */
     if (!zval_to_json(value, &object)) {
         struct json_object *info;
+        xdebug_str *tmp_value, message = XDEBUG_STR_INITIALIZER;
+
+        /* prepare message */
+        xdebug_str_add(&message, "invalid JSON conversion for ", 0);
+        tmp_value = xdebug_get_zval_value(value, 0, NULL);
+        xdebug_str_add_str(&message, tmp_value);
 
         /* send warning info */
         info = json_object_new_object();
         json_object_object_add(info, "type", json_object_new_string("warning"));
-        json_object_object_add(info, "message", json_object_new_string("Invalid JSON conversion"));
+        json_object_object_add(info, "message", json_object_new_string(message.d));
         write_json_object(CTXT(socket_fd), info);
-        fprintf(stderr, LOG_PREFIX "invalid JSON conversion\n");
+        fprintf(stderr, LOG_PREFIX "%s\n", message.d);
+
+        /* cleanup */
+        xdebug_str_free(tmp_value);
+        xdebug_str_destroy(&message);
     }
 
     /* update the json object */
