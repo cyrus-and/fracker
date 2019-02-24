@@ -119,7 +119,7 @@ static void add_json_zval(void *ctxt, struct json_object *parent, const char *ke
         xdebug_str *tmp_value, message = XDEBUG_STR_INITIALIZER;
 
         /* prepare message */
-        xdebug_str_add(&message, "invalid JSON conversion for ", 0);
+        xdebug_str_add(&message, "Invalid JSON conversion for ", 0);
         tmp_value = xdebug_get_zval_value(value, 0, NULL);
         xdebug_str_add_str(&message, tmp_value);
 
@@ -160,7 +160,7 @@ void *xdebug_trace_fracker_init(char *fname, char *script_filename, long options
     /* establish a connection to the server */
     socket_fd = connect_to_server();
     if (socket_fd == -1) {
-        printf(LOG_PREFIX "cannot connect to %s:%s\n", XG(trace_fracker_host), XG(trace_fracker_port));
+        printf(LOG_PREFIX "Cannot connect to %s:%s\n", XG(trace_fracker_host), XG(trace_fracker_port));
         return NULL;
     }
 
