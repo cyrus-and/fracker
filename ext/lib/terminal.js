@@ -19,7 +19,7 @@ function run(server, options = {}) {
     const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly);
 
     server.on('listening', (host, port) => {
-        console.log(chalk.gray(`[+] Listening on ${host}:${port}`));
+        console.error(chalk.gray(`[+] Listening on ${host}:${port}`));
     });
 
     server.on('error', (err) => {
