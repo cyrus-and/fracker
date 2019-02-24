@@ -2,7 +2,7 @@ const RegExpSet = require('./reg-exp-set.js');
 
 class ObjectWalker {
     constructor(include, exclude, valuesOnly) {
-        this._inlcude = include;
+        this._include = include;
         this._exclude = exclude;
         this._valuesOnly = valuesOnly;
     }
