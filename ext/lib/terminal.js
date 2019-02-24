@@ -16,7 +16,7 @@ function run(server, options = {}) {
     const excludeUserInputsRegexp = new RegExpSet(options.excludeUserInputs, options.ignoreCase);
 
     // facility used to extract single values from composite objects
-    const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly);
+    const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly, options.excludeNonString);
 
     server.on('listening', (host, port) => {
         console.error(chalk.gray(`[+] Listening on ${host}:${port}`));
