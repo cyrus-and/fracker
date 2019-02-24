@@ -26,7 +26,6 @@ program
     .option('-r, --recursive', 'propagate user-controlled arguments through return values')
     .option('-u, --user-inputs <regexp>', 'use only user-controlled arguments matching <regexp>', append, [])
     .option('-U, --exclude-user-inputs <regexp>', 'ignore user-controlled arguments matching <regexp>', append, [])
-    .option('-x, --exclude-common-arguments', 'automatically exclude user-controlled arguments like boolean, numbers, etc.')
     .option('-o, --values-only', 'do not consider array names as user-controlled input initially')
     .option('-s, --shallow', 'use no indentation to show the call depth')
     .option('-v, --return-values', 'show return values')

@@ -19,13 +19,6 @@ function run(server, options = {}) {
     // facility used to extract single values from composite objects
     const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly);
 
-    // add common arguments to the exclusion list
-    if (options.excludeCommonArguments) {
-        excludeArgumentsRegexp.add('^\\d+$');
-        excludeArgumentsRegexp.add('^(true|false)$');
-        excludeArgumentsRegexp.add('^null$');
-    }
-
     server.on('listening', (host, port) => {
         console.log(chalk.gray(`[+] Listening on ${host}:${port}`));
     });
