@@ -1,0 +1,19 @@
+{
+    "name": "fracker",
+    "version": "0.1.0",
+    "author": "Andrea Cardaci <cyrus.and@gmail.com>",
+    "description": "PHP function tracker (listener application)",
+    "license": "MIT",
+    "homepage": "https://github.com/cyrus-and/fracker",
+    "repository": "github:cyrus-and/fracker",
+    "bin": "./bin/fracker.js",
+    "files": [
+        "bin",
+        "lib",
+        "index.js"
+    ],
+    "dependencies": {
+        "chalk": "^2.4.2",
+        "commander": "^2.19.0"
+    }
+}
