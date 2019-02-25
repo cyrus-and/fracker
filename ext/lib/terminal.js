@@ -57,6 +57,102 @@ function run(server, options = {}) {
             console.log(`${prefix} ${indentation}${callId}${functionName}${argumentList}${fileInfo}`);
         }
 
+        function stringifyObject(object) {
+            let matched = false;
+            let string = '';
+            if (typeof(object) === 'object' && object !== null) {
+                if (Array.isArray(object)) {
+                    string += '[';
+                    object.forEach((element, i) => {
+                        // separator
+                        if (i !== 0) {
+                            string += ', ';
+                        }
+
+                        // stringify the element
+                        const result = stringifyObject(element);
+                        if (!result) {
+                            return;
+                        }
+                        string += result.string;
+                        matched = matched || result.matched;
+                    });
+                    string += ']';
+                } else {
+                    string += '{';
+                    Object.keys(object).forEach((key, i) => {
+                        let result;
+
+                        // separator
+                        if (i !== 0) {
+                            string += ', ';
+                        }
+
+                        // stringify the key
+                        result = stringifyObject(key);
+                        if (!result) {
+                            return;
+                        }
+                        string += result.string;
+                        matched = matched || result.matched;
+
+                        // separator
+                        string += ': ';
+
+                        // stringify the value
+                        result = stringifyObject(object[key]);
+                        if (!result) {
+                            return;
+                        }
+                        string += result.string;
+                        matched = matched || result.matched;
+                    });
+                    string += '}';
+                }
+            } else {
+                // non-string objects are just converted, strings are matched and highlighted
+                if (typeof(object) !== 'string') {
+                    string += String(object);
+                } else {
+                    // match against exclusions
+                    if (RegExpSet.exclude(object, excludeArgumentsRegexp)) {
+                        return null;
+                    } else {
+                        const components = [];
+                        let index = 0;
+                        let match;
+
+                        // loop over the matches
+                        const regexp = argumentsRegexp.get();
+                        regexp.lastIndex = 0;
+                        while (!argumentsRegexp.isEmpty() && (match = regexp.exec(object)) !== null) {
+                            // add the span before the match
+                            components.push(JSON.stringify(object.slice(index, match.index)).slice(1, -1));
+
+                            // move the index after the match
+                            index = regexp.lastIndex;
+
+                            // add the match itself
+                            components.push(chalk.red(JSON.stringify(object.slice(match.index, index)).slice(1, -1)));
+
+                            // avoid an infinite loop for zero-sized matches
+                            if (regexp.lastIndex === match.index) {
+                                regexp.lastIndex++;
+                            }
+                        }
+
+                        // add the remaining part
+                        components.push(JSON.stringify(object.slice(index, object.length)).slice(1, -1));
+
+                        // update status
+                        matched = (components.length > 1);
+                        string += `"${components.join('')}"`;
+                    }
+                }
+            }
+            return {matched, string};
+        }
+
         const isWebRequest = !!request.server.REQUEST_METHOD;
         const matchedCalls = new Set();
         const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase); // per-request
@@ -115,19 +211,20 @@ function run(server, options = {}) {
             // process arguments
             let atLeastOneMatched = false;
             for (const argument of call.arguments) {
-                // XXX it is done all here to avoid matching the regexps twice
+                // stringify the argument
+                const result = stringifyObject(argument.value);
 
-                // stringify, match and highlight arguments
-                const json_value = JSON.stringify(argument.value);
-                argument.stringValue = json_value.replace(argumentsRegexp.get(), (match) => {
-                    atLeastOneMatched = true;
-                    return chalk.red(match);
-                });
-
-                // match against exclusions
-                if (RegExpSet.exclude(json_value, excludeArgumentsRegexp)) {
+                // abort the call if this argument is excluded by the regexp
+                if (!result) {
                     return;
                 }
+
+                // keep track of matching arguments
+                if (result.matched) {
+                    atLeastOneMatched = true;
+                }
+
+                argument.stringValue = result.string;
             }
 
             // skip if no argument matches
