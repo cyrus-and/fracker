@@ -119,7 +119,7 @@ function run(server, options = {}) {
 
                 // stringify, match and highlight arguments
                 const json_value = JSON.stringify(argument.value);
-                argument.stringValue = json_value.replace(argumentsRegexp, (match) => {
+                argument.stringValue = json_value.replace(argumentsRegexp.get(), (match) => {
                     atLeastOneMatched = true;
                     return chalk.red(match);
                 });

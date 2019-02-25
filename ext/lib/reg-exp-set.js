@@ -30,24 +30,13 @@ class RegExpSet {
         return !this._regexps.size;
     }
 
-    [Symbol.match](string) {
+    get() {
         // update cache if changed
         if (!this._cache) {
             this._cache = this._merge();
         }
 
-        // perform the actual match
-        return RegExp.prototype[Symbol.match].call(this._cache, string);
-    }
-
-    [Symbol.replace](string, replacement) {
-        // update cache if changed
-        if (!this._cache) {
-            this._cache = this._merge();
-        }
-
-        // perform the actual replace
-        return RegExp.prototype[Symbol.replace].call(this._cache, string, replacement);
+        return this._cache;
     }
 
     _merge() {
@@ -65,12 +54,12 @@ class RegExpSet {
 
     // true if match include but not exclude (where empty include always match)
     static match(string, include, exclude) {
-        return string.match(include) && !RegExpSet.exclude(string, exclude);
+        return string.match(include.get()) && !RegExpSet.exclude(string, exclude);
     }
 
     // true if do not match exclude (where empty exclude never matches)
     static exclude(string, exclude) {
-        return !exclude.isEmpty() && string.match(exclude);
+        return !exclude.isEmpty() && string.match(exclude.get());
     }
 }
 
