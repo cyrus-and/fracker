@@ -51,7 +51,7 @@ function run(server, options = {}) {
             // format call and print
             const prefix = chalk.gray(`${request.id} │`);
             const indentation = indent(call.level, options.shallow);
-            const functionName = (isStack ? chalk.reset : chalk.green)(call.function);
+            const functionName = (isStack ? chalk.blue : chalk.green)(call.function);
             const fileInfo = options.functionLocations ? ` ${chalk.gray(`${call.file} +${call.line}`)}` : '';
             const callId = options.shallow && !isStack ? `${chalk.gray(call.id)} ` : '';
             console.log(`${prefix} ${indentation}${callId}${functionName}${argumentList}${fileInfo}`);
