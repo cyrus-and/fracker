@@ -2,7 +2,7 @@
     "name": "fracker",
     "version": "0.1.0",
     "author": "Andrea Cardaci <cyrus.and@gmail.com>",
-    "description": "PHP function tracker (listener application)",
+    "description": "PHP function tracker",
     "license": "MIT",
     "homepage": "https://github.com/cyrus-and/fracker",
     "repository": "github:cyrus-and/fracker",
