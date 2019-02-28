@@ -52,7 +52,7 @@ function run(server, options = {}) {
             const prefix = chalk.gray(`${request.id} │`);
             const indentation = indent(call.level, options.shallow);
             const functionName = (isMatched ? chalk.green : chalk.blue)(call.function);
-            const fileInfo = options.functionLocations ? ` ${chalk.gray(`${call.file} +${call.line}`)}` : '';
+            const fileInfo = options.callLocations ? ` ${chalk.gray(`${call.file} +${call.line}`)}` : '';
             const callId = options.shallow && isMatched ? `${chalk.gray(call.id)} ` : '';
             console.log(`${prefix} ${indentation}${callId}${functionName}${argumentList}${fileInfo}`);
         }

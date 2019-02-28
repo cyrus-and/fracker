@@ -33,7 +33,7 @@ program
     .option('-v, --return-values', 'show return values')
     .option('-k, --stack-traces', 'show stack traces for each matched function')
     .option('-c, --children', 'show children calls for the first matched functions')
-    .option('-l, --function-locations', 'show file and line where the function is called');
+    .option('-l, --call-locations', 'show file and line where the function is called');
 
 // used by chalk to manage ANSI output
 program
