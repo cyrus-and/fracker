@@ -44,7 +44,7 @@ $ curl 'http://localhost/?x=hello+fracker!'
 Deploy Fracker to the container:
 
 ```console
-$ ./deploy-docker.sh fracker-test
+$ ./deploy.sh fracker-test
 ```
 
 Install the dependencies locally:
@@ -89,12 +89,12 @@ The PHP module is forked from [Xdebug][], the untouched README can be found [her
 
 #### Deploy to a Docker container
 
-The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides. The [`deploy-docker.sh`](deploy-docker.sh) script tries to do exactly that so that it works out-of-the-box with Debian-like distros.
+The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides. The [`deploy.sh`](deploy.sh) script tries to do exactly that so that it works out-of-the-box with Debian-like distros.
 
 Run it like:
 
 ```console
-$ ./deploy-docker.sh <container_name>
+$ ./deploy.sh <container_name>
 ```
 
 This script assumes that a [listener](#listener) application will be bound to the port 6666 of the host running Docker.
