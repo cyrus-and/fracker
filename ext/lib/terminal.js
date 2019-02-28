@@ -216,6 +216,9 @@ function run(server, options = {}) {
             }
             // matched calls
             else {
+                // reset the index used to remember the children calls
+                lastLevel = undefined;
+
                 // skip if the function name doesn't match
                 if (!RegExpSet.match(call.function, functionsRegexp, excludeFunctionsRegexp)) {
                     return;
