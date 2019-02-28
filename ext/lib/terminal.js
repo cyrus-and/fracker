@@ -27,7 +27,7 @@ function run(server, options = {}) {
     });
 
     server.on('request', (request, events) => {
-        function renderCall(call, isStack = false) {
+        function renderCall(call, isMatched) {
             // format arguments
             let argumentList;
             if (RegExpSet.exclude(call.function, muteFunctionsRegexp)) {
@@ -38,8 +38,8 @@ function run(server, options = {}) {
                     if (name && RegExpSet.exclude(name, muteArgumentsRegexp)) {
                         value = chalk.gray('...');
                     } else {
-                        // stringify values if requested (ie, only for stack entries)
-                        value = isStack ? JSON.stringify(value) : stringValue;
+                        // stringify values for not already matched calls (i.e., stack and children)
+                        value = isMatched ? stringValue : JSON.stringify(value);
                     }
 
                     // format argument
@@ -51,9 +51,9 @@ function run(server, options = {}) {
             // format call and print
             const prefix = chalk.gray(`${request.id} │`);
             const indentation = indent(call.level, options.shallow);
-            const functionName = (isStack ? chalk.blue : chalk.green)(call.function);
+            const functionName = (isMatched ? chalk.green : chalk.blue)(call.function);
             const fileInfo = options.functionLocations ? ` ${chalk.gray(`${call.file} +${call.line}`)}` : '';
-            const callId = options.shallow && !isStack ? `${chalk.gray(call.id)} ` : '';
+            const callId = options.shallow && isMatched ? `${chalk.gray(call.id)} ` : '';
             console.log(`${prefix} ${indentation}${callId}${functionName}${argumentList}${fileInfo}`);
         }
 
@@ -156,6 +156,7 @@ function run(server, options = {}) {
         const isWebRequest = !!request.server.REQUEST_METHOD;
         const matchedCalls = new Set();
         const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase); // per-request
+        let lastLevel;
 
         // print the request line
         const prefix = chalk.gray(`\n${request.id} ┌`);
@@ -203,47 +204,68 @@ function run(server, options = {}) {
                 return;
             }
 
-            // skip if the function name doesn't match
-            if (!RegExpSet.match(call.function, functionsRegexp, excludeFunctionsRegexp)) {
-                return;
-            }
-
-            // process arguments
-            let atLeastOneMatched = false;
-            for (const argument of call.arguments) {
-                // stringify the argument
-                const result = stringifyObject(argument.value);
-
-                // abort the call if this argument is excluded by the regexp
-                if (!result) {
+            // children of matched calls
+            if (options.children && lastLevel < call.level) {
+                // skip excluded functions anyway
+                if (RegExpSet.exclude(call.function, excludeFunctionsRegexp)) {
                     return;
                 }
 
-                // keep track of matching arguments
-                if (result.matched) {
-                    atLeastOneMatched = true;
+                // print the child call
+                renderCall(call, false);
+            }
+            // matched calls
+            else {
+                // skip if the function name doesn't match
+                if (!RegExpSet.match(call.function, functionsRegexp, excludeFunctionsRegexp)) {
+                    return;
                 }
 
-                argument.stringValue = result.string;
+                // process arguments
+                let atLeastOneMatched = false;
+                for (const argument of call.arguments) {
+                    // stringify the argument
+                    const result = stringifyObject(argument.value);
+
+                    // abort the call if this argument is excluded by the regexp
+                    if (!result) {
+                        return;
+                    }
+
+                    // keep track of matching arguments
+                    if (result.matched) {
+                        atLeastOneMatched = true;
+                    }
+
+                    argument.stringValue = result.string;
+                }
+
+                // skip if no argument matches
+                if (!argumentsRegexp.isEmpty() && !atLeastOneMatched) {
+                    return;
+                }
+
+                // save the level of this matched call
+                lastLevel = call.level;
+
+                // at this point the function call is selected to be printed
+                matchedCalls.add(call.id);
+
+                // print the whole stack trace if requested
+                if (options.stackTraces) {
+                    // skip excluded functions anyway
+                    if (RegExpSet.exclude(call.function, excludeFunctionsRegexp)) {
+                        return;
+                    }
+
+                    stackTrace.forEach((call) => {
+                        renderCall(call, false);
+                    });
+                }
+
+                // print the actual call
+                renderCall(call, true);
             }
-
-            // skip if no argument matches
-            if (!argumentsRegexp.isEmpty() && !atLeastOneMatched) {
-                return;
-            }
-
-            // at this point the function call is selected to be printed
-            matchedCalls.add(call.id);
-
-            // print the whole stack trace if requested
-            if (options.stackTraces) {
-                stackTrace.forEach((call) => {
-                    renderCall(call, true);
-                });
-            }
-
-            // print the actual call
-            renderCall(call);
         });
 
         events.on('return', (return_) => {
