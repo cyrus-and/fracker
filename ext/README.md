@@ -94,7 +94,7 @@ The most convenient way to use Fracker is probably to deploy it to the Docker co
 Run it like:
 
 ```console
-$ ./deploy.sh <container_name>
+$ ./deploy.sh <container> [<port>]
 ```
 
 This script assumes that a [listener](#listener) application will be bound to the port 6666 of the host running Docker.
