@@ -46,14 +46,14 @@ xdebug.trace_fracker_port=$port
 " >/tmp/fracker.ini
 find / -path */php*/conf.d -exec cp /tmp/fracker.ini {} \; 2>/dev/null || true
 
-# make the web server reload the configuration
-pkill -x -HUP apache2 || true
-pkill -x -HUP httpd || true
-EOF
+# notify the user
+echo '---'
+echo
+echo "Start Fracker on port $port"
+echo
 
-if [ $? -eq 0 ]; then
-    echo '---'
-    echo
-    echo "Start Fracker on port $port"
-    echo
-fi
+# make the web server reload the configuration
+sleep 1
+pkill -x -HUP apache2 &
+pkill -x -HUP httpd &
+EOF
