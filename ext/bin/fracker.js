@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const packageInfo = require('../package.json');
 const Server = require('../lib/server.js');
 const terminal = require('../lib/terminal.js');
 
@@ -34,10 +35,14 @@ program
     .option('-c, --children', 'show children calls for the first matched functions')
     .option('-l, --function-locations', 'show file and line where the function is called');
 
-// these are used by chalk to manage ANSI output
+// used by chalk to manage ANSI output
 program
     .option('--color', 'enable ANSI-colored output even if not TTY')
     .option('--no-color', 'disable ANSI-colored output even if TTY');
+
+// common options (help and version are automatically added)
+program
+    .version(packageInfo.version, '--version');
 
 program.on('--help', function () {
     console.log(`
