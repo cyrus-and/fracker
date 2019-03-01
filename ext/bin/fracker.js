@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
+const analyzer = require('../lib/analyzer.js');
 const packageInfo = require('../package.json');
 const Server = require('../lib/server.js');
-const terminal = require('../lib/terminal.js');
 
 const program = require('commander');
 
@@ -54,4 +54,4 @@ The regexps about arguments match the JSON representation of the value.
 
 program.parse(process.argv);
 const server = new Server(program);
-terminal.run(server, program);
+analyzer.run(server, program);
