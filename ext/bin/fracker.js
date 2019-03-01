@@ -52,6 +52,13 @@ The regexps about arguments match the JSON representation of the value.
 `);
 });
 
+// parse and validate arguments
 program.parse(process.argv);
+if (program.args.length) {
+    program.outputHelp();
+    process.exit(1);
+}
+
+// start!
 const server = new Server(program);
 analyzer.run(server, program);
