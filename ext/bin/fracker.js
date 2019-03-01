@@ -47,8 +47,6 @@ program
 program.on('--help', function () {
     console.log(`
 <regexp> can be in the form "@<path>", in that case regexps are read from file, one per line. "@@" resolves to a literal "@".
-
-The regexps about arguments match the JSON representation of the value.
 `);
 });
 
