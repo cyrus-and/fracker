@@ -73,7 +73,7 @@ function* regexpOrFile(value) {
     if (value.startsWith('@@')) {
         yield value.slice(1);
     } else if (value.startsWith('@')) {
-        yield* fs.readFileSync(value.slice(1)).toString().split('\n').filter((x) => !!x);
+        yield* fs.readFileSync(value.slice(1), 'utf-8').split('\n').filter((x) => !!x);
     } else {
         yield value;
     }
