@@ -50,7 +50,7 @@ program
 
 program.on('--help', function () {
     console.log(`
-<config.yml> is a YAML file containing command line long options in camel case, for example:
+<config.yml> is a YAML file containing long command line options in camel case, for example:
 
   callLocations: true
   shallow: true
@@ -59,7 +59,8 @@ program.on('--help', function () {
     - bar
   arguments:
     - "x y"
-`);
+
+In this case, command line options are ignored with the exception of those controlling ANSI output.`);
 });
 
 // parse and validate arguments
