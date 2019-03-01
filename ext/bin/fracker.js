@@ -14,8 +14,22 @@ function append(value, array) {
     return array;
 }
 
+// merge into base others with decreasing priority
+function mergeConfig(base, others) {
+    others.forEach((object) => {
+        Object.entries(object).forEach(([key, value]) => {
+            // append elements to arrays and set only if not already set
+            if (base[key] === undefined) {
+                base[key] = value;
+            } else if (Array.isArray(base[key])) {
+                base[key].push(...value);
+            }
+        });
+    });
+}
+
 program
-    .usage('[options] | <config.yml>')
+    .usage('[options] <config.yml>...')
     .option('--host <host>', 'bind the server to address <host>')
     .option('--port <port>', 'bind the server to port <port>')
     .option('-f, --functions <regexp>', 'show functions whose name matches <regexp>', append, [])
@@ -50,7 +64,8 @@ program
 
 program.on('--help', function () {
     console.log(`
-<config.yml> is a YAML file containing long command line options in camel case, for example:
+<config.yml> is a YAML file containing long command line options in camel case,
+for example:
 
   callLocations: true
   shallow: true
@@ -60,17 +75,18 @@ program.on('--help', function () {
   arguments:
     - "x y"
 
-In this case, command line options are ignored with the exception of those controlling ANSI output.`);
+Multiple files with increasing priority can be specified, but command line
+options will have the highest priority.
+
+Options that control the ANSI output cannot appear in YAML files.`);
 });
 
-// parse and validate arguments
-let options = program.parse(process.argv);
-if (program.args.length > 1) {
-    program.outputHelp();
-    process.exit(1);
-} else if (program.args.length === 1) {
-    options = yaml.safeLoad(fs.readFileSync(program.args[0], 'utf-8'));
-}
+// parse arguments and build the configuration
+const options = program.parse(process.argv);
+const configs = program.args.map((path) => {
+    return yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
+}).reverse();
+mergeConfig(options, configs);
 
 // start!
 const server = new Server(options);
