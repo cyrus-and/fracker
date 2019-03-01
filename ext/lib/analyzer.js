@@ -3,6 +3,17 @@ const RegExpSet = require('./reg-exp-set.js');
 
 const chalk = require('chalk');
 
+const color = {
+    shadow: chalk.gray,
+    function: chalk.green,
+    argument: chalk.cyan,
+    highlight: chalk.red,
+    context: chalk.blue,
+    error: chalk.red,
+    method: chalk.white.bold,
+    invocation: chalk.yellow
+};
+
 function run(server, options = {}) {
     // create regexp sets from options (argumentsRegexp must be per-request dut to taint)
     const functionsRegexp = new RegExpSet(options.functions, options.ignoreCase);
@@ -19,11 +30,11 @@ function run(server, options = {}) {
     const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly, options.excludeNonString);
 
     server.on('listening', (host, port) => {
-        console.error(chalk.gray(`[+] Listening on ${host}:${port}`));
+        console.error(color.shadow(`[+] Listening on ${host}:${port}`));
     });
 
     server.on('error', (err) => {
-        console.error(chalk.red(`[!] ${err.stack}`));
+        console.error(color.error(`[!] ${err.stack}`));
     });
 
     server.on('request', (request, events) => {
@@ -31,29 +42,29 @@ function run(server, options = {}) {
             // format arguments
             let argumentList;
             if (RegExpSet.exclude(call.function, muteFunctionsRegexp)) {
-                argumentList = chalk.gray('...');
+                argumentList = color.shadow('...');
             } else {
                 argumentList = call.arguments.map(({name, value, stringValue}) => {
                     // omit muted arguments
                     if (name && RegExpSet.exclude(name, muteArgumentsRegexp)) {
-                        value = chalk.gray('...');
+                        value = color.shadow('...');
                     } else {
                         // stringify values for not already matched calls (i.e., stack and children)
                         value = isMatched ? stringValue : JSON.stringify(value);
                     }
 
                     // format argument
-                    return name ? `${chalk.cyan(`${name}=`)}${value}` : value;
-                }).join(chalk.gray(', '));
+                    return name ? `${color.argument(`${name}=`)}${value}` : value;
+                }).join(color.shadow(', '));
             }
-            argumentList = `${chalk.gray('(')}${argumentList}${chalk.gray(')')}`;
+            argumentList = `${color.shadow('(')}${argumentList}${color.shadow(')')}`;
 
             // format call and print
-            const prefix = chalk.gray(`${request.id} │`);
+            const prefix = color.shadow(`${request.id} │`);
             const indentation = indent(call.level, options.shallow);
-            const functionName = (isMatched ? chalk.green : chalk.blue)(call.function);
-            const fileInfo = options.callLocations ? ` ${chalk.gray(`${call.file} +${call.line}`)}` : '';
-            const callId = isMatched && options.shallow && options.returnValues ? `${chalk.gray(call.id)} ` : '';
+            const functionName = (isMatched ? color.function : color.context)(call.function);
+            const fileInfo = options.callLocations ? ` ${color.shadow(`${call.file} +${call.line}`)}` : '';
+            const callId = isMatched && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
             const marker = !chalk.enabled && isMatched && (options.stackTraces || options.children) ? '*' : '';
             console.log(`${prefix} ${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`);
         }
@@ -133,7 +144,7 @@ function run(server, options = {}) {
                             index = regexp.lastIndex;
 
                             // add the match itself
-                            components.push(chalk.red(JSON.stringify(object.slice(match.index, index)).slice(1, -1)));
+                            components.push(color.highlight(JSON.stringify(object.slice(match.index, index)).slice(1, -1)));
 
                             // avoid an infinite loop for zero-sized matches
                             if (regexp.lastIndex === match.index) {
@@ -159,14 +170,14 @@ function run(server, options = {}) {
         let lastLevel;
 
         // print the request line
-        const prefix = chalk.gray(`\n${request.id} ┌`);
+        const prefix = color.shadow(`\n${request.id} ┌`);
         if (isWebRequest) {
-            const method = chalk.white.bold(request.server.REQUEST_METHOD);
-            const url = chalk.yellow(`${request.server.HTTP_HOST}${request.server.REQUEST_URI}`);
+            const method = color.method(request.server.REQUEST_METHOD);
+            const url = color.invocation(`${request.server.HTTP_HOST}${request.server.REQUEST_URI}`);
             console.log(`${prefix} ${method} ${url}`);
         } else {
             const argv = JSON.stringify(request.server.argv);
-            const invocation = `${chalk.white.bold('$ php')} ${chalk.yellow(argv)}`;
+            const invocation = `${color.method('$ php')} ${color.invocation(argv)}`;
             console.log(`${prefix} ${invocation}`);
         }
 
@@ -282,23 +293,23 @@ function run(server, options = {}) {
 
             // also print the return value
             if (options.returnValues && isFunctionTracked) {
-                const prefix = chalk.gray(`${request.id} │`);
+                const prefix = color.shadow(`${request.id} │`);
                 const indentation = indent(return_.level, options.shallow);
                 const json_value = JSON.stringify(return_.return.value);
-                const callId = options.shallow ? `${chalk.gray(return_.id)} ` : '';
-                console.log(`${prefix} ${indentation}${callId}${chalk.green('=')} ${json_value}`);
+                const callId = options.shallow ? `${color.shadow(return_.id)} ` : '';
+                console.log(`${prefix} ${indentation}${callId}${color.function('=')} ${json_value}`);
             }
         });
 
         events.on('warning', (message) => {
-            const prefix = chalk.gray(`${request.id} │`);
-            console.error(`${prefix} ${chalk.red(message)}`);
+            const prefix = color.shadow(`${request.id} │`);
+            console.error(`${prefix} ${color.error(message)}`);
         });
     });
 }
 
 function indent(level, shallow) {
-    return chalk.gray(shallow ? '' : '»  '.repeat(level - 1));
+    return color.shadow(shallow ? '' : '»  '.repeat(level - 1));
 }
 
 module.exports = {run};
