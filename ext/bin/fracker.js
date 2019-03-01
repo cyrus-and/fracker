@@ -59,8 +59,6 @@ program.on('--help', function () {
     - bar
   arguments:
     - "x y"
-
-<regexp> can be in the form "@<path>", in that case regexps are read from file, one per line. "@@" resolves to a literal "@".
 `);
 });
 

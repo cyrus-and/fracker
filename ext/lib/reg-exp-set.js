@@ -14,15 +14,7 @@ class RegExpSet {
         const regexpArray = Array.isArray(regexp) ? regexp : [regexp];
         regexpArray.filter((x) => !!x).forEach((regexp) => {
             this._cache = undefined;
-            if (literally) {
-                // escape to to match literally
-                this._regexps.add(escapeRegExp(regexp));
-            } else {
-                // read from file if needed
-                for (const entry of regexpOrFile(regexp)) {
-                    this._regexps.add(entry);
-                }
-            }
+            this._regexps.add(literally ? escapeRegExp(regexp) : regexp);
         });
     }
 
@@ -67,16 +59,6 @@ class RegExpSet {
 // XXX https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
-function* regexpOrFile(value) {
-    if (value.startsWith('@@')) {
-        yield value.slice(1);
-    } else if (value.startsWith('@')) {
-        yield* fs.readFileSync(value.slice(1), 'utf-8').split('\n').filter((x) => !!x);
-    } else {
-        yield value;
-    }
 }
 
 module.exports = RegExpSet;
