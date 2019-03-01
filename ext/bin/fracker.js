@@ -5,6 +5,9 @@ const packageInfo = require('../package.json');
 const Server = require('../lib/server.js');
 
 const program = require('commander');
+const yaml = require('js-yaml');
+
+const fs = require('fs');
 
 function append(value, array) {
     array.push(value);
@@ -12,6 +15,7 @@ function append(value, array) {
 }
 
 program
+    .usage('[options] | <config.yml>')
     .option('--host <host>', 'bind the server to address <host>')
     .option('--port <port>', 'bind the server to port <port>')
     .option('-f, --functions <regexp>', 'show functions whose name matches <regexp>', append, [])
@@ -46,17 +50,29 @@ program
 
 program.on('--help', function () {
     console.log(`
+<config.yml> is a YAML file containing command line long options in camel case, for example:
+
+  callLocations: true
+  shallow: true
+  functions:
+    - foo
+    - bar
+  arguments:
+    - "x y"
+
 <regexp> can be in the form "@<path>", in that case regexps are read from file, one per line. "@@" resolves to a literal "@".
 `);
 });
 
 // parse and validate arguments
-program.parse(process.argv);
-if (program.args.length) {
+let options = program.parse(process.argv);
+if (program.args.length > 1) {
     program.outputHelp();
     process.exit(1);
+} else if (program.args.length === 1) {
+    options = yaml.safeLoad(fs.readFileSync(program.args[0], 'utf-8'));
 }
 
 // start!
-const server = new Server(program);
-analyzer.run(server, program);
+const server = new Server(options);
+analyzer.run(server, options);
