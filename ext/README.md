@@ -15,16 +15,16 @@ The goal is to assist the researcher during manual security assessments of PHP a
 Spin a new Docker container running Apache with PHP support:
 
 ```console
-$ docker run --rm -d -p 80:80 --name fracker-test php:apache
+$ docker run --rm -d -p 80:80 --name hello-fracker php:apache
 ```
 
 Create some dummy PHP script:
 
 ```console
-$ docker exec -i fracker-test tee /var/www/html/index.php <<\EOF
+$ docker exec -i hello-fracker tee /var/www/html/index.php <<\EOF
 <?php
     function foo($cmd) {
-        system('echo ' . preg_replace('/[^a-z]/', '', $cmd));
+        system('echo ' . preg_replace('/[^a-z]/i', '', $cmd));
     }
 
     $a = explode(' ', $_GET['x']);
@@ -38,13 +38,13 @@ EOF
 Test that the PHP file is properly served:
 
 ```console
-$ curl 'http://localhost/?x=hello+fracker!'
+$ curl 'http://localhost/?x=Hello+Fracker!'
 ```
 
 Deploy Fracker to the container:
 
 ```console
-$ ./deploy.sh fracker-test
+$ ./deploy.sh hello-fracker
 ```
 
 Install the dependencies locally:
@@ -56,19 +56,19 @@ $ npm install
 Start Fracker then run the above `curl` command again:
 
 ```console
-$ node bin/fracker.js
+$ fracker
 [+] Listening on 0.0.0.0:6666
 
-1 ┌ GET localhost/?x=hello+fracker!
+1 ┌ GET localhost/?x=Hello+Fracker!
 1 │ {main}()
-1 │ »  explode(" ", "hello fracker!")
-1 │ »  var_dump(["hello","fracker!"])
-1 │ »  foo(cmd="hello")
-1 │ »  »  preg_replace("/[^a-z]/", "", "hello")
-1 │ »  »  system("echo hello")
-1 │ »  foo(cmd="fracker!")
-1 │ »  »  preg_replace("/[^a-z]/", "", "fracker!")
-1 │ »  »  system("echo fracker")
+1 │ »  explode(" ", "Hello Fracker!")
+1 │ »  var_dump(["Hello", "Fracker!"])
+1 │ »  foo(cmd="Hello")
+1 │ »  »  preg_replace("/[^a-z]/i", "", "Hello")
+1 │ »  »  system("echo Hello")
+1 │ »  foo(cmd="Fracker!")
+1 │ »  »  preg_replace("/[^a-z]/i", "", "Fracker!")
+1 │ »  »  system("echo Fracker")
 ```
 
 Run again with `-h` and experiment with other options too.
@@ -113,23 +113,23 @@ $ make
 
 (To rebuild after nontrivial code changes just rerun `make`.)
 
+To check that everything is working fine, start the [listener](#listener), then run PHP like this:
+
+```console
+$ php -d "zend_extension=$PWD/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
+```
+
+Finally, install the PHP extension in the usual way, briefly:
+
+1. `make install`;
+2. place `zend_extension=xdebug.so` in a INI file parsed by PHP.
+
 Clean the source directory with:
 
 ```console
 $ make distclean
 $ phpize --clean
 ```
-
-To check that everything is working fine, start the [listener](#listener), then run PHP like this:
-
-```console
-$ php -d "zend_extension=$PWD/.libs/xdebug.so" # ...
-```
-
-Finally, install the PHP extension in the usual way, briefly:
-
-1. `make install`;
-2. place `zend_extension=xdebug.so` in a readable INI file.
 
 ### Listener
 
