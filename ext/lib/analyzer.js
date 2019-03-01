@@ -125,7 +125,6 @@ function run(server, options = {}) {
 
                         // loop over the matches
                         const regexp = argumentsRegexp.get();
-                        regexp.lastIndex = 0;
                         while (!argumentsRegexp.isEmpty() && (match = regexp.exec(object)) !== null) {
                             // add the span before the match
                             components.push(JSON.stringify(object.slice(index, match.index)).slice(1, -1));

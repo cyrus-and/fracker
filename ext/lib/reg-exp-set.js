@@ -28,6 +28,8 @@ class RegExpSet {
             this._cache = this._merge();
         }
 
+        // in any case reset the internal index
+        this._cache.lastIndex = 0;
         return this._cache;
     }
 
