@@ -96,7 +96,8 @@ class Server extends EventEmitter {
             }
         });
 
-        // TODO add client connect/close events?
+        // propagate the socket closing event
+        socket.on('close', () => requestEmitter.emit('close'));
     }
 };
 
