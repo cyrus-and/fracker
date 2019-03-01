@@ -48,12 +48,12 @@ class RegExpSet {
 
     // true if match include but not exclude (where empty include always match)
     static match(string, include, exclude) {
-        return string.match(include.get()) && !RegExpSet.exclude(string, exclude);
+        return include.get().test(string) && !RegExpSet.exclude(string, exclude);
     }
 
     // true if do not match exclude (where empty exclude never matches)
     static exclude(string, exclude) {
-        return !exclude.isEmpty() && string.match(exclude.get());
+        return !exclude.isEmpty() && exclude.get().test(string);
     }
 }
 
