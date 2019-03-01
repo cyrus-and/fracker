@@ -292,7 +292,7 @@ function run(server, options = {}) {
 
         events.on('warning', (message) => {
             const prefix = chalk.gray(`${request.id} │`);
-            console.error(chalk.red(`${prefix} ${chalk.red(message)}`));
+            console.error(`${prefix} ${chalk.red(message)}`);
         });
     });
 }
