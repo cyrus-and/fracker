@@ -1,12 +1,12 @@
 # Fracker
 
-Fracker is a suite of tools that allows to easily trace and analyze PHP function calls, it consists of several components:
+Fracker is a suite of tools that allows to easily trace and analyze PHP function calls, it consists of:
 
-- a PHP extension (an [Xdebug][] fork) that need to be installed in the environment of the target web application and sends tracing information to the listener;
+- a PHP extension that need to be installed in the environment of the target web application and sends tracing information to the listener;
 
-- a [listener](#listener) application that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user;
+- a listener application that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user;
 
-- a [utility script](#deploy-to-a-docker-container) to deploy the PHP extension to a Docker container.
+- a utility script that can be used to deploy the PHP extension to a Docker container.
 
 The goal is to assist the researcher during manual security assessments of PHP applications.
 
@@ -85,7 +85,9 @@ This allows users to easily implement their own tools; the provided listener app
 
 ### PHP extension
 
-The PHP extension is forked from [Xdebug][], the untouched README can be found [here](ext/README.rst) if needed. The installation process is fairly the same so the troubleshooting.
+The PHP extension is forked from [Xdebug][], the installation process is fairly the same so is the troubleshooting.
+
+[Xdebug]: https://github.com/xdebug/xdebug
 
 #### Deploy to a Docker container
 
@@ -97,7 +99,7 @@ Run it like:
 $ scripts/deploy.sh <container> [<port>]
 ```
 
-This script assumes that a [listener](#listener) application will be bound to the port 6666 of the host running Docker.
+This script assumes that a listener application will be bound to the port 6666 of the host running Docker.
 
 #### Manual setup
 
@@ -113,7 +115,7 @@ $ make
 
 (To rebuild after nontrivial code changes just rerun `make`.)
 
-To check that everything is working fine, start the [listener](#listener), then run PHP like this:
+To check that everything is working fine, start the listener (as described [here](#listener)), then run PHP like this:
 
 ```console
 $ php -d "zend_extension=$PWD/ext/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
@@ -148,26 +150,23 @@ The following serves as a template for the most common settings to be used with 
 
 ```ini
 ; trace only those requests with XDEBUG_TRACE=FRACKER in GET, POST or cookie
-;xdebug.auto_trace = 0
-;xdebug.trace_enable_trigger = 1
-;xdebug.trace_enable_trigger_value = FRACKER
+xdebug.auto_trace = 0
+xdebug.trace_enable_trigger = 1
+xdebug.trace_enable_trigger_value = FRACKER
 
 ; do not collect function arguments
-;xdebug.collect_params = 0
+xdebug.collect_params = 0
 
 ; do not collect return values
-;xdebug.collect_return = 0
+xdebug.collect_return = 0
 
-; fracker JSON server
-;xdebug.trace_fracker_host = 127.0.0.1
-;xdebug.trace_fracker_port = 6666
+; custom application address
+xdebug.trace_fracker_host = 127.0.0.1
+xdebug.trace_fracker_port = 6666
 ```
 
 ## License
 
-This product includes Xdebug, freely available from <https://xdebug.org/>. Unless explicitly stated otherwise, for the PHP extension itself, the copyright is retained by the original authors (see [LICENSE](ext/LICENSE)).
+This product includes Xdebug, freely available from <https://xdebug.org/>. Unless explicitly stated otherwise, for the PHP extension itself, the copyright is retained by the original authors.
 
-The listener application instead is released under the MIT license.
-
-
-[Xdebug]: https://github.com/xdebug/xdebug
+The listener application instead is released under a [different](app/LICENSE) license.
