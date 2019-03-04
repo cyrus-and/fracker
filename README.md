@@ -50,7 +50,7 @@ $ scripts/deploy.sh hello-fracker
 Install the dependencies locally:
 
 ```console
-$ ( cd app; npm install )
+$ npm install -C app
 ```
 
 Start Fracker then run the above `curl` command again:
@@ -133,14 +133,14 @@ $ phpize --clean
 
 ### Listener
 
-Install with (to be run in `app` directory):
+Install with:
 
 ```console
-$ npm install
-$ npm install -g . # optional
+$ npm install -C app
+$ npm install -g app # optional
 ```
 
-Then just run `fracker`, otherwise run it locally with `node app/bin/fracker.js`.
+Then just run `fracker`, otherwise run it locally with `app/bin/fracker.js`.
 
 ## Configuration
 
