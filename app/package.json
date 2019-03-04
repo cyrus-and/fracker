@@ -5,13 +5,12 @@
     "description": "PHP function tracker",
     "license": "MIT",
     "homepage": "https://github.com/cyrus-and/fracker",
-    "repository": "github:cyrus-and/fracker",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cyrus-and/fracker.git",
+        "directory": "app"
+    },
     "bin": "./bin/fracker.js",
-    "files": [
-        "bin",
-        "lib",
-        "index.js"
-    ],
     "dependencies": {
         "chalk": "^2.4.2",
         "commander": "^2.19.0",

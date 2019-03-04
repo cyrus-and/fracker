@@ -10,7 +10,7 @@ port="${2:-6666}"
 
 # copy the extension source in the container
 docker exec -u root -i "$container" rm -fr /tmp/fracker
-docker cp "$(dirname "$0")" "$container:/tmp/fracker"
+docker cp "$(dirname "$0")/../ext" "$container:/tmp/fracker"
 
 # run the setup script
 docker exec -u root -i "$container" sh <<EOF
@@ -43,8 +43,8 @@ echo "
 zend_extension=xdebug.so
 xdebug.trace_fracker_host=\$host
 xdebug.trace_fracker_port=$port
-" >/tmp/fracker.ini
-find / -path */php*/conf.d -exec cp /tmp/fracker.ini {} \; 2>/dev/null || true
+" >/tmp/fracker/fracker.ini
+find / -path */php*/conf.d -exec cp /tmp/fracker/fracker.ini {} \; 2>/dev/null || true
 
 # notify the user
 echo '---'
