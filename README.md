@@ -167,7 +167,7 @@ The following serves as a template for the most common settings to be used with 
 
 This product includes Xdebug, freely available from <https://xdebug.org/>. Unless explicitly stated otherwise, for the PHP extension itself, the copyright is retained by the original authors (see [LICENSE](ext/LICENSE)).
 
-The listener application instead is released under the [MIT](app/package.json) license.
+The listener application instead is released under the MIT license.
 
 
 [Xdebug]: https://github.com/xdebug/xdebug
