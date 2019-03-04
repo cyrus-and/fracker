@@ -24,7 +24,7 @@ apt-get install --yes php7.0-dev || true
 
 # compile and install
 cd /tmp/fracker
-make distclean
+make distclean || true
 phpize --clean
 phpize
 ./configure
