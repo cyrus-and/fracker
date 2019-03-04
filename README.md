@@ -6,7 +6,7 @@ Fracker is a suite of tools that allows to easily trace and analyze PHP function
 
 - a [listener](#listener) application that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user;
 
-- an [utility script](#deploy-to-a-docker-container) to deploy the PHP extension to a Docker container.
+- a [utility script](#deploy-to-a-docker-container) to deploy the PHP extension to a Docker container.
 
 The goal is to assist the researcher during manual security assessments of PHP applications.
 
