@@ -144,7 +144,24 @@ Then just run `fracker`, otherwise run it locally with `node app/bin/fracker.js`
 
 ## Configuration
 
-The [`fracker.ini`](fracker.ini) file serves as a template for the most common settings to be used with Fracker.
+The following serves as a template for the most common settings to be used with Fracker:
+
+```ini
+; trace only those requests with XDEBUG_TRACE=FRACKER in GET, POST or cookie
+;xdebug.auto_trace = 0
+;xdebug.trace_enable_trigger = 1
+;xdebug.trace_enable_trigger_value = FRACKER
+
+; do not collect function arguments
+;xdebug.collect_params = 0
+
+; do not collect return values
+;xdebug.collect_return = 0
+
+; fracker JSON server
+;xdebug.trace_fracker_host = 127.0.0.1
+;xdebug.trace_fracker_port = 6666
+```
 
 ## License
 
