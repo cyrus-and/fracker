@@ -15,7 +15,7 @@ const color = {
 };
 
 function run(server, options = {}) {
-    // create regexp sets from options (argumentsRegexp must be per-request dut to taint)
+    // create regexp sets from options (argumentsRegexp must be per-request dut to tracking)
     const functionsRegexp = new RegExpSet(options.functions, options.ignoreCase);
     const excludeFunctionsRegexp = new RegExpSet(options.excludeFunctions, options.ignoreCase);
     const excludeArgumentsRegexp = new RegExpSet(options.excludeArguments, options.ignoreCase);
@@ -181,8 +181,8 @@ function run(server, options = {}) {
             console.log(`${prefix} ${invocation}`);
         }
 
-        // prepare the initial taint regexps
-        if (options.taint) {
+        // prepare the initial tracking regexps
+        if (options.trackUserInputs) {
             // add inputs according to the PHP invocation
             const inputs = [];
             if (isWebRequest) {
@@ -200,13 +200,13 @@ function run(server, options = {}) {
                 inputs.push(request.server);
             }
 
-            // add taint inputs literally
+            // add tracking inputs literally
             argumentsRegexp.add([...walker.walk(inputs)], true);
         }
 
         events.on('call', (call, stackTrace) => {
-            // skip when taint mode and there are no arguments to match
-            if (options.taint && argumentsRegexp.isEmpty()) {
+            // skip when tracking and there are no arguments to match
+            if (options.trackUserInputs && argumentsRegexp.isEmpty()) {
                 return;
             }
 
@@ -285,8 +285,8 @@ function run(server, options = {}) {
         events.on('return', (return_) => {
             const isFunctionTracked = matchedCalls.has(return_.id);
 
-            // add the return value to the set of taint inputs and update the argument regexp
-            if (options.taint && options.recursive) {
+            // add the return value to the set of tracking inputs and update the argument regexp
+            if (options.trackUserInputs && options.recursive) {
                 // add return values literally
                 argumentsRegexp.add([...walker.walk(return_.return.value)], true);
             }

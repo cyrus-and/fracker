@@ -41,7 +41,7 @@ program
     .option('--mute-functions <regexp>', 'do not print values for arguments of functions whose name matches <regexp>', append, [])
     .option('--mute-arguments <regexp>', 'do not print values for arguments whose name matches <regexp>', append, [])
     .option('-i, --ignore-case', 'ignore case in matches')
-    .option('-t, --taint', 'automatically match user-controlled arguments')
+    .option('-t, --track-user-inputs', 'automatically track user-controlled arguments')
     .option('-r, --recursive', 'propagate user-controlled arguments through return values')
     .option('-u, --user-inputs <regexp>', 'use user-controlled arguments matching <regexp>', append, [])
     .option('-U, --exclude-user-inputs <regexp>', 'ignore user-controlled arguments matching <regexp>', append, [])
