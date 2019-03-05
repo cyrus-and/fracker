@@ -1,16 +1,14 @@
 # Fracker
 
-Fracker is a suite of tools that allows to easily trace and analyze PHP function calls, it consists of:
+Fracker is a suite of tools that allows to easily trace and analyze PHP function calls, its goal is to assist the researcher during manual security assessments of PHP applications.
 
-- a PHP extension that need to be installed in the environment of the target web application and sends tracing information to the listener;
+It consists of:
 
-- a listener application that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user;
+- a [PHP extension](#php-extension) that need to be installed in the environment of the target web application and sends tracing information to the listener;
 
-- a utility script that can be used to deploy the PHP extension to a Docker container.
+- a [listener application](#listener-application) that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user.
 
-The goal is to assist the researcher during manual security assessments of PHP applications.
-
-## Quick demonstration
+## Demo
 
 Spin a new Docker container running Apache with PHP support:
 
@@ -75,37 +73,37 @@ Run again with `-h` and experiment with other options too.
 
 ## Architecture
 
-Every PHP request or command line invocation triggers a TCP connection to the listener. The protocol is merely a stream of newline-terminated JSON objects from the PHP extension to the listener, such objects contains information about the current request, the calls performed and the return values.
+Every PHP request or command line invocation triggers a TCP connection to the listener. The protocol is merely a stream of newline-terminated JSON objects from the PHP extension to the listener, such objects contain information about the current request, the calls performed and the return values.
 
-This allows users to easily implement their own tools; the provided listener application can be used as a reference.
+This decoupling allows the users to implement their own tools and the provided listener application can be used as a reference.
 
-Raw JSON objects can be inspected by dumping the stream content to stdout, for example:
+Raw JSON objects can be inspected by dumping the stream content to standard output, for example:
 
 ```sh
 $ socat tcp-listen:6666,fork,reuseaddr 'exec:jq .,fdout=0'
 ```
 
-## Setup
+## PHP extension
 
-### PHP extension
-
-The PHP extension is forked from [Xdebug][], the installation process is fairly the same so is the troubleshooting.
+The PHP extension is forked from [Xdebug][] hence the installation process is fairly the same so is the troubleshooting.
 
 [Xdebug]: https://github.com/xdebug/xdebug
 
-#### Deploy to a Docker container
+The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides using the [provided script](#deploy-script). Use the [manual approach](#manual-setup) for a more versatile solution.
 
-The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides. The [`deploy.sh`](scripts/deploy.sh) script tries to do exactly that so that it works out-of-the-box with Debian-like distros:
+### Deploy script
+
+This script should work out-of-the-box with Debian-like distributions:
 
 ```console
 $ scripts/deploy.sh <container> [<port>]
 ```
 
-This script configures the PHP module to connect to host running Docker on the specified port (defaults to 6666).
+It configures the PHP module to connect to host running Docker on the specified port (defaults to 6666).
 
-#### Manual setup
+### Manual setup
 
-The above script is a shorthand for the following operations that need to be run in the `ext` directory.
+The following operations need to be performed in the `ext` directory.
 
 Build the PHP extension with:
 
@@ -117,7 +115,7 @@ $ make
 
 (To rebuild after nontrivial code changes just rerun `make`.)
 
-To check that everything is working fine, start the listener (as described [here](#listener)), then run PHP like this:
+To check that everything is working fine, start the [listener application](#listener-application) then run PHP like this:
 
 ```console
 $ php -d "zend_extension=$PWD/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
@@ -126,7 +124,7 @@ $ php -d "zend_extension=$PWD/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
 Finally, install the PHP extension in the usual way, briefly:
 
 1. `make install`;
-2. place `zend_extension=xdebug.so` in a INI file parsed by PHP.
+2. place `zend_extension=xdebug.so` in a INI file parsed by PHP along with any other custom [settings](#settings).
 
 Clean the source directory with:
 
@@ -135,23 +133,7 @@ $ make distclean
 $ phpize --clean
 ```
 
-### Listener
-
-Install the dependencies with:
-
-```console
-$ npm install -C app
-```
-
-Optionally install the executable globally by creating a symlink to this folder:
-
-```console
-$ npm install -g app
-```
-
-Then just run `fracker`, or run it locally with `app/bin/fracker.js`.
-
-## Configuration
+#### Settings
 
 The following serves as a template for the most common settings to be used with Fracker:
 
@@ -171,6 +153,22 @@ xdebug.collect_return = 0
 xdebug.trace_fracker_host = 127.0.0.1
 xdebug.trace_fracker_port = 6666
 ```
+
+## Listener application
+
+The provided listener application is a Node.js package. Install the dependencies with:
+
+```console
+$ npm install -C app
+```
+
+Optionally install the executable globally by creating a symlink to this folder:
+
+```console
+$ npm install -g app
+```
+
+Then just run `fracker`, or run it locally with `app/bin/fracker.js`.
 
 ## License
 
