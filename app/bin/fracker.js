@@ -29,7 +29,7 @@ function mergeConfig(base, others) {
 }
 
 program
-    .usage('[options] <config.yml>...')
+    .usage('[options] [<config.yml>...]')
     .option('--host <host>', 'bind the server to address <host>')
     .option('--port <port>', 'bind the server to port <port>')
     .option('-f, --functions <regexp>', 'show functions whose name matches <regexp>', append, [])
