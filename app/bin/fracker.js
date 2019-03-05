@@ -51,7 +51,7 @@ program
     .option('-v, --return-values', 'show return values')
     .option('-k, --stack-traces', 'show stack traces for each matched function')
     .option('-c, --children', 'show children calls for the first matched functions')
-    .option('-l, --call-locations', 'show file and line where the function is called');
+    .option('-L, --hide-call-locations', 'hide file and line where the function is called');
 
 // used by chalk to manage ANSI output
 program
@@ -67,7 +67,7 @@ program.on('--help', function () {
 <config.yml> is a YAML file containing long command line options in camel case,
 for example:
 
-  callLocations: true
+  hideCallLocations: true
   shallow: true
   functions:
     - foo

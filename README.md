@@ -58,15 +58,15 @@ $ app/bin/fracker.js
 [+] Listening on 0.0.0.0:6666
 
 1 ┌ GET localhost/?x=Hello+Fracker!
-1 │ {main}()
-1 │ »  explode(" ", "Hello Fracker!")
-1 │ »  var_dump(["Hello", "Fracker!"])
-1 │ »  foo(cmd="Hello")
-1 │ »  »  preg_replace("/[^a-z]/i", "", "Hello")
-1 │ »  »  system("echo Hello")
-1 │ »  foo(cmd="Fracker!")
-1 │ »  »  preg_replace("/[^a-z]/i", "", "Fracker!")
-1 │ »  »  system("echo Fracker")
+1 │ {main}() /var/www/html/index.php +0
+1 │ »  explode(" ", "Hello Fracker!") /var/www/html/index.php +6
+1 │ »  var_dump(["Hello", "Fracker!"]) /var/www/html/index.php +7
+1 │ »  foo(cmd="Hello") /var/www/html/index.php +9
+1 │ »  »  preg_replace("/[^a-z]/i", "", "Hello") /var/www/html/index.php +3
+1 │ »  »  system("echo Hello") /var/www/html/index.php +3
+1 │ »  foo(cmd="Fracker!") /var/www/html/index.php +9
+1 │ »  »  preg_replace("/[^a-z]/i", "", "Fracker!") /var/www/html/index.php +3
+1 │ »  »  system("echo Fracker") /var/www/html/index.php +3
 ```
 
 Run again with `-h` and experiment with other options too.

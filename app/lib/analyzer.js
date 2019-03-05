@@ -63,7 +63,7 @@ function run(server, options = {}) {
             const prefix = color.shadow(`${request.id} │`);
             const indentation = indent(call.level, options.shallow);
             const functionName = (isMatched ? color.function : color.context)(call.function);
-            const fileInfo = options.callLocations ? ` ${color.shadow(`${call.file} +${call.line}`)}` : '';
+            const fileInfo = options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
             const callId = isMatched && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
             const marker = !chalk.enabled && isMatched && (options.stackTraces || options.children) ? '*' : '';
             console.log(`${prefix} ${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`);
