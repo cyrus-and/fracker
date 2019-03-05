@@ -9,8 +9,9 @@ PHP_ARG_ENABLE(xdebug-dev, whether to enable Xdebug developer build flags,
 
 if test "$PHP_XDEBUG" != "no"; then
 
-  # TODO proper way to include a library and make it static
-  CPPFLAGS="$CPPFLAGS $(pkg-config --cflags --libs json-c)"
+  dnl Fracker dependencies
+  CPPFLAGS="$CPPFLAGS $(pkg-config --cflags json-c)"
+  PHP_CHECK_LIBRARY(json-c, json_object_new_object, [ PHP_ADD_LIBRARY(json-c,, XDEBUG_SHARED_LIBADD) ])
 
   AC_MSG_CHECKING([Check for supported PHP versions])
   PHP_XDEBUG_FOUND_VERSION=`${PHP_CONFIG} --version`
