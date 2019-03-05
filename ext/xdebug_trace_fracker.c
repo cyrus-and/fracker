@@ -25,7 +25,7 @@ extern ZEND_DECLARE_MODULE_GLOBALS(xdebug);
 static int connect_to_server()
 {
     struct addrinfo *addresses, *ptr, hints = {0};
-    int errorcode, socket_fd;
+    int errorcode, socket_fd = -1;
 
     /* resolve the given address */
     hints.ai_socktype = SOCK_STREAM;
