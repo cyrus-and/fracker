@@ -359,7 +359,7 @@ PHP_INI_BEGIN()
 	STD_PHP_INI_BOOLEAN("xdebug.show_local_vars", "0",                  PHP_INI_ALL,    OnUpdateBool,   show_local_vars,   zend_xdebug_globals, xdebug_globals)
 	STD_PHP_INI_BOOLEAN("xdebug.show_mem_delta",  "0",                  PHP_INI_ALL,    OnUpdateBool,   show_mem_delta,    zend_xdebug_globals, xdebug_globals)
 
-    /* fracker */
+    /* Fracker */
 	STD_PHP_INI_ENTRY("xdebug.trace_fracker_host", "127.0.0.1",         PHP_INI_ALL,    OnUpdateString, trace_fracker_host, zend_xdebug_globals, xdebug_globals)
 	STD_PHP_INI_ENTRY("xdebug.trace_fracker_port", "6666",              PHP_INI_ALL,    OnUpdateString, trace_fracker_port, zend_xdebug_globals, xdebug_globals)
 

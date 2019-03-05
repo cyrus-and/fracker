@@ -165,7 +165,7 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 	zend_long     force_error_reporting;
 	zend_long     halt_level;
 
-    /* fracker */
+    /* Fracker */
 	char         *trace_fracker_host;
 	char         *trace_fracker_port;
 
