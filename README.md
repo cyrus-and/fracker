@@ -47,7 +47,7 @@ Deploy Fracker to the container:
 $ scripts/deploy.sh hello-fracker
 ```
 
-Install the dependencies locally:
+Install the dependencies locally (this just needs to be performed once):
 
 ```console
 $ npm install -C app
@@ -79,7 +79,11 @@ Every PHP request or command line invocation triggers a TCP connection to the li
 
 This allows users to easily implement their own tools; the provided listener application can be used as a reference.
 
-<!-- TODO document the JSON objects -->
+Raw JSON objects can be inspected by dumping the stream content to stdout, for example:
+
+```sh
+$ socat tcp-listen:6666,fork,reuseaddr 'exec:jq .,fdout=0'
+```
 
 ## Setup
 
@@ -91,19 +95,17 @@ The PHP extension is forked from [Xdebug][], the installation process is fairly 
 
 #### Deploy to a Docker container
 
-The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides. The [`deploy.sh`](scripts/deploy.sh) script tries to do exactly that so that it works out-of-the-box with Debian-like distros.
-
-Run it like:
+The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides. The [`deploy.sh`](scripts/deploy.sh) script tries to do exactly that so that it works out-of-the-box with Debian-like distros:
 
 ```console
 $ scripts/deploy.sh <container> [<port>]
 ```
 
-This script assumes that a listener application will be bound to the port 6666 of the host running Docker.
+This script configures the PHP module to connect to host running Docker on the specified port (defaults to 6666).
 
 #### Manual setup
 
-The above script is a shorthand for the following operations (to be run in the `ext` directory).
+The above script is a shorthand for the following operations that need to be run in the `ext` directory.
 
 Build the PHP extension with:
 
@@ -118,7 +120,7 @@ $ make
 To check that everything is working fine, start the listener (as described [here](#listener)), then run PHP like this:
 
 ```console
-$ php -d "zend_extension=$PWD/ext/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
+$ php -d "zend_extension=$PWD/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
 ```
 
 Finally, install the PHP extension in the usual way, briefly:
@@ -135,14 +137,19 @@ $ phpize --clean
 
 ### Listener
 
-Install with:
+Install the dependencies with:
 
 ```console
 $ npm install -C app
-$ npm install -g app # optional
 ```
 
-Then just run `fracker`, otherwise run it locally with `app/bin/fracker.js`.
+Optionally install the executable globally by creating a symlink to this folder:
+
+```console
+$ npm install -g app
+```
+
+Then just run `fracker`, or run it locally with `app/bin/fracker.js`.
 
 ## Configuration
 
