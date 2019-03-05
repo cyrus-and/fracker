@@ -96,7 +96,7 @@ The most convenient way to use Fracker is probably to deploy it to the Docker co
 This script should work out-of-the-box with Debian-like distributions:
 
 ```console
-$ scripts/deploy.sh <container> [<port>]
+$ scripts/deploy.sh <container> [<port> [<host>]]
 ```
 
 It configures the PHP module to connect to host running Docker on the specified port (defaults to 6666).

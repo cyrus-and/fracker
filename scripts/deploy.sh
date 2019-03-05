@@ -1,12 +1,13 @@
 #!/bin/sh
 
-if [ "$#" != 1 -a "$#" != 2 ]; then
-    echo 'Usage: <container> [<port>]' >&2
+if [ "$#" -eq 0 -o "$#" -gt 3 ]; then
+    echo 'Usage: <container> [<port> [<host>]]' >&2
     exit 1
 fi
 
 container="$1"
 port="${2:-6666}"
+host="${3}"
 
 # copy the extension source in the container
 docker exec -u root -i "$container" rm -fr /tmp/fracker
@@ -31,11 +32,15 @@ phpize
 make -j "$(nproc)" all
 make install
 
-# gather host address
-if [ "$(uname)" = Linux ]; then
-   host="\$(route -n | awk '/UG/ { print \$2 }')"
+if [ "$host" ]; then
+    host="$host"
 else
-   host='host.docker.internal'
+    # gather host address
+    if [ "$(uname)" = Linux ]; then
+       host="\$(route -n | awk '/UG/ { print \$2 }')"
+    else
+       host='host.docker.internal'
+    fi
 fi
 
 # set up the extension
@@ -49,7 +54,7 @@ find / -path */php*/conf.d -exec cp /tmp/fracker/fracker.ini {} \; 2>/dev/null |
 # notify the user
 echo '---'
 echo
-echo "Start Fracker on port $port"
+echo "Start Fracker on port \$host:$port"
 echo
 
 # make the web server reload the configuration
