@@ -50,8 +50,6 @@ class Server extends EventEmitter {
                 // emit the object to the proper listener
                 switch (type) {
                 case 'request':
-                    // TODO make sure this is the first one
-
                     // add request id for convenience
                     event.id = requestId;
                     this.emit(type, event, requestEmitter);
