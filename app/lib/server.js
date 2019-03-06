@@ -88,7 +88,7 @@ class Server extends EventEmitter {
                     reader.close();
                 }
             } catch (err) {
-                // JSON errors
+                // all errors are caught and notified here
                 this.emit('error', err);
                 reader.close();
             }
