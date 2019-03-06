@@ -30,11 +30,11 @@ function run(server, options = {}) {
     const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly, options.excludeNonString);
 
     server.on('listening', (host, port) => {
-        console.error(color.shadow(`[+] Listening on ${host}:${port}`));
+        console.error(color.shadow(`+ │ Listening on ${host}:${port}`));
     });
 
     server.on('error', (err) => {
-        console.error(color.error(`[!] ${err.stack}`));
+        console.error(color.error(`! │ ${err.stack}`));
     });
 
     server.on('request', (request, events) => {
@@ -170,14 +170,14 @@ function run(server, options = {}) {
         let lastLevel;
 
         // print the request line
-        const prefix = color.shadow(`\n${request.id} ┌`);
+        const prefix = color.shadow(`\n${request.id} │`);
         if (isWebRequest) {
             const method = color.method(request.server.REQUEST_METHOD);
             const url = color.invocation(`${request.server.HTTP_HOST}${request.server.REQUEST_URI}`);
             console.log(`${prefix} ${method} ${url}`);
         } else {
             const argv = JSON.stringify(request.server.argv);
-            const invocation = `${color.method('$ php')} ${color.invocation(argv)}`;
+            const invocation = `${color.method('PHP')} ${color.invocation(argv)}`;
             console.log(`${prefix} ${invocation}`);
         }
 

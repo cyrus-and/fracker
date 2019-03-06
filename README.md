@@ -55,9 +55,9 @@ Start Fracker then run the above `curl` command again:
 
 ```console
 $ app/bin/fracker.js
-[+] Listening on 0.0.0.0:6666
++ │ Listening on 0.0.0.0:6666
 
-1 ┌ GET localhost/?x=Hello+Fracker!
+1 │ GET localhost/?x=Hello+Fracker!
 1 │ {main}() /var/www/html/index.php +0
 1 │ »  explode(" ", "Hello Fracker!") /var/www/html/index.php +6
 1 │ »  var_dump(["Hello", "Fracker!"]) /var/www/html/index.php +7
