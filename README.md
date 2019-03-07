@@ -99,7 +99,7 @@ This script should work out-of-the-box with Debian-like distributions:
 $ scripts/deploy.sh <container> [<port> [<host>]]
 ```
 
-It configures the PHP module to connect to host running Docker on the specified port (defaults to 6666).
+It configures the PHP module to connect to specified host on the specified port (defaults to the host running Docker and port 6666).
 
 ### Manual setup
 
