@@ -187,12 +187,18 @@ function run(server, options = {}) {
             const inputs = [];
             if (isWebRequest) {
                 // add common superglobals
-                inputs.push(request.get, request.post, request.cookie);
+                inputs.push(request.get, request.post);
 
-                // add headers (cookie included as a whole string)
-                for (const variable in request.server) {
-                    if (variable.startsWith('HTTP_')) {
-                        inputs.push(request.server[variable]);
+                // also add headers if requested
+                if (!options.excludeHeaders) {
+                    // add parsed cookie values
+                    inputs.push(request.cookie);
+
+                    // add headers (cookie included as a whole string)
+                    for (const variable in request.server) {
+                        if (variable.startsWith('HTTP_')) {
+                            inputs.push(request.server[variable]);
+                        }
                     }
                 }
             } else {

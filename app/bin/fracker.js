@@ -46,6 +46,7 @@ program
     .option('-u, --user-inputs <regexp>', 'use user-controlled arguments matching <regexp>', append, [])
     .option('-U, --exclude-user-inputs <regexp>', 'ignore user-controlled arguments matching <regexp>', append, [])
     .option('-X, --exclude-non-string', 'only consider string values as user-controlled arguments')
+    .option('-H, --exclude-headers', 'exclude headers from user-controlled arguments')
     .option('-o, --values-only', 'do not consider array names as user-controlled input initially')
     .option('-s, --shallow', 'use no indentation to show the call depth')
     .option('-v, --return-values', 'show return values')
