@@ -30,7 +30,6 @@ phpize --clean
 phpize
 ./configure
 make -j "$(nproc)" all
-make install
 
 if [ "$host" ]; then
     host="$host"
@@ -45,7 +44,7 @@ fi
 
 # set up the extension
 echo "
-zend_extension=xdebug.so
+zend_extension=/tmp/fracker/.libs/xdebug.so
 xdebug.trace_fracker_host=\$host
 xdebug.trace_fracker_port=$port
 " >/tmp/fracker/fracker.ini
