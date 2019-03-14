@@ -160,7 +160,7 @@ void *xdebug_trace_fracker_init(char *fname, char *script_filename, long options
     /* establish a connection to the server */
     socket_fd = connect_to_server();
     if (socket_fd == -1) {
-        printf(LOG_PREFIX "Cannot connect to %s:%s\n", XG(trace_fracker_host), XG(trace_fracker_port));
+        fprintf(stderr, LOG_PREFIX "Cannot connect to %s:%s\n", XG(trace_fracker_host), XG(trace_fracker_port));
         return NULL;
     }
 
