@@ -52,6 +52,7 @@ program
     .option('-v, --return-values', 'show return values')
     .option('-k, --stack-traces', 'show stack traces for each matched function')
     .option('-c, --children', 'show children calls for the first matched functions')
+    .option('-b, --siblings', 'show siblings calls for the first matched functions')
     .option('-L, --hide-call-locations', 'hide file and line where the function is called');
 
 // used by chalk to manage ANSI output

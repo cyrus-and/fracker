@@ -49,7 +49,7 @@ function run(server, options = {}) {
                     if (name && RegExpSet.exclude(name, muteArgumentsRegexp)) {
                         value = color.shadow('...');
                     } else {
-                        // stringify values for not already matched calls (i.e., stack and children)
+                        // stringify values for auto tracked calls
                         value = isMatched ? stringValue : JSON.stringify(value);
                     }
 
@@ -65,7 +65,7 @@ function run(server, options = {}) {
             const functionName = (isMatched ? color.function : color.context)(call.function);
             const fileInfo = options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
             const callId = isMatched && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
-            const marker = !chalk.enabled && isMatched && (options.stackTraces || options.children) ? '*' : '';
+            const marker = !chalk.enabled && isMatched && (options.stackTraces || options.children || options.siblings) ? '*' : '';
             console.log(`${prefix} ${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`);
         }
 
@@ -168,6 +168,7 @@ function run(server, options = {}) {
         const matchedCalls = new Set();
         const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase); // per-request
         let lastLevel;
+        let inMatchedFunction;
 
         // print the request line
         const prefix = color.shadow(`\n${request.id} │`);
@@ -222,18 +223,29 @@ function run(server, options = {}) {
             }
 
             // children of matched calls
-            if (options.children && lastLevel < call.level) {
+            if (options.children && lastLevel < call.level ||
+                options.siblings && lastLevel === call.level) {
+                // avoid matching children of siblings
+                if (options.siblings && lastLevel < call.level && !inMatchedFunction) {
+                    return;
+                }
+
                 // skip excluded functions anyway
                 if (RegExpSet.exclude(call.function, excludeFunctionsRegexp)) {
                     return;
                 }
 
-                // print the child call
+                // print the auto tracked call
                 renderCall(call, false);
             }
             // matched calls
             else {
-                // reset the index used to remember the children calls
+                // avoid matching siblings of children
+                if (options.siblings && lastLevel < call.level) {
+                    return;
+                }
+
+                // reset the index used to remember auto tracked calls
                 lastLevel = undefined;
 
                 // skip if the function name doesn't match
@@ -270,6 +282,7 @@ function run(server, options = {}) {
 
                 // at this point the function call is selected to be printed
                 matchedCalls.add(call.id);
+                inMatchedFunction = true;
 
                 // print the whole stack trace if requested
                 if (options.stackTraces) {
@@ -290,6 +303,11 @@ function run(server, options = {}) {
 
         events.on('return', (return_) => {
             const isFunctionTracked = matchedCalls.has(return_.id);
+
+            // marks the end of a matched function
+            if (isFunctionTracked) {
+                inMatchedFunction = false;
+            }
 
             // add the return value to the set of tracking inputs and update the argument regexp
             if (options.trackUserInputs && options.recursive) {
