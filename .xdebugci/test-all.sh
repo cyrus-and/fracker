@@ -2,10 +2,17 @@
 
 PATTERN=${1:-'7.3*'}
 
+PHP=`which php`
+if [[ "${PHP}" == "" ]]; then
+	echo "Can't find a PHP binary on the path"
+	exit
+fi
+
 PHP_DIR=${PHP_DIR:-/usr/local/php}
 SYSTEM_CORES=`nproc`
 NPROC=${NPROC:-$SYSTEM_CORES}
-
+MYFILE=`realpath $0`
+MYDIR=`dirname ${MYFILE}`
 PHPS=`ls -vd ${PHP_DIR}/${PATTERN}`
 
 mkdir -p /tmp/ptester
@@ -34,10 +41,14 @@ for i in `seq 0 $MAX`; do
 	GroupName=`printf group%03d.lst $i`
 
 	if [ -s /tmp/ptester/$GroupName ]; then
-		./test-thread.sh $i `cat /tmp/ptester/$GroupName` &
+		${MYDIR}/test-thread.sh $i `cat /tmp/ptester/$GroupName` &
 	fi
 done
 
 wait
+
+echo -n "Storing test results... "
+
+php -dextension=mongodb.so ${MYDIR}/ingest.php
 
 echo "DONE"
