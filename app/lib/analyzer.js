@@ -38,7 +38,7 @@ function run(server, options = {}) {
     });
 
     server.on('request', (request, events) => {
-        function renderCall(call, isMatched) {
+        function renderCall(call, type) {
             // format arguments
             let argumentList;
             if (RegExpSet.exclude(call.function, muteFunctionsRegexp)) {
@@ -50,7 +50,7 @@ function run(server, options = {}) {
                         value = color.shadow('...');
                     } else {
                         // stringify values for auto tracked calls
-                        value = isMatched ? stringValue : JSON.stringify(value);
+                        value = type === 'M' ? stringValue : JSON.stringify(value);
                     }
 
                     // format argument
@@ -62,10 +62,10 @@ function run(server, options = {}) {
             // format call and print
             const prefix = color.shadow(`${request.id} │`);
             const indentation = indent(call.level, options.shallow);
-            const functionName = (isMatched ? color.function : color.context)(call.function);
+            const functionName = (type === 'M' ? color.function : color.context)(call.function);
             const fileInfo = options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
-            const callId = isMatched && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
-            const marker = !chalk.enabled && isMatched && (options.stackTraces || options.children || options.siblings) ? '*' : '';
+            const callId = type === 'M' && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
+            const marker = (!chalk.enabled || options.shallow) && !options.returnValues && type !== 'M' && (options.stackTraces || options.children || options.siblings) ? `${color.shadow(type)} ` : '';
             console.log(`${prefix} ${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`);
         }
 
@@ -236,7 +236,8 @@ function run(server, options = {}) {
                 }
 
                 // print the auto tracked call
-                renderCall(call, false);
+                const type = inMatchedFunction ? 'C' : 'S';
+                renderCall(call, type);
             }
             // matched calls
             else {
@@ -292,12 +293,12 @@ function run(server, options = {}) {
                     }
 
                     stackTrace.forEach((call) => {
-                        renderCall(call, false);
+                        renderCall(call, 'C');
                     });
                 }
 
                 // print the actual call
-                renderCall(call, true);
+                renderCall(call, 'M');
             }
         });
 
