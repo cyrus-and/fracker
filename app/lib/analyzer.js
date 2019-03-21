@@ -225,6 +225,11 @@ function run(server, options = {}) {
             // children of matched calls
             if (options.children && lastMatchedLevel < call.level ||
                 options.siblings && lastMatchedLevel === call.level) {
+                // avoid matching of too deep children
+                if (options.children && call.level - lastMatchedLevel > options.children) {
+                    return;
+                }
+
                 // avoid matching children of siblings
                 if (options.siblings && lastMatchedLevel < call.level && !inMatchedFunction) {
                     return;
