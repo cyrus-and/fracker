@@ -48,11 +48,11 @@ program
     .option('-X, --exclude-non-string', 'only consider string values as user-controlled arguments')
     .option('-H, --exclude-headers', 'exclude headers from user-controlled arguments')
     .option('-o, --values-only', 'do not consider array names as user-controlled input initially')
-    .option('-s, --shallow', 'use no indentation to show the call depth')
+    .option('-w, --shallow', 'use no indentation to show the call depth')
     .option('-v, --return-values', 'show return values')
     .option('-k, --parents', 'show parent calls for each matched function (i.e., stack traces)')
     .option('-c, --children', 'show children calls for the first matched functions')
-    .option('-b, --siblings', 'show siblings calls for the first matched functions')
+    .option('-s, --siblings', 'show siblings calls for the first matched functions')
     .option('-L, --hide-call-locations', 'hide file and line where the function is called');
 
 // used by chalk to manage ANSI output
