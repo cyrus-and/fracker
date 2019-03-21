@@ -65,7 +65,7 @@ function run(server, options = {}) {
             const functionName = (type === 'M' ? color.function : color.context)(call.function);
             const fileInfo = options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
             const callId = type === 'M' && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
-            const marker = (!chalk.enabled || options.shallow) && !options.returnValues && type !== 'M' && (options.stackTraces || options.children || options.siblings) ? `${color.shadow(type)} ` : '';
+            const marker = (!chalk.enabled || options.shallow) && !options.returnValues && type !== 'M' && (options.parents || options.children || options.siblings) ? `${color.shadow(type)} ` : '';
             console.log(`${prefix} ${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`);
         }
 
@@ -286,7 +286,7 @@ function run(server, options = {}) {
                 inMatchedFunction = true;
 
                 // print the whole stack trace if requested
-                if (options.stackTraces) {
+                if (options.parents) {
                     // skip excluded functions anyway
                     if (RegExpSet.exclude(call.function, excludeFunctionsRegexp)) {
                         return;

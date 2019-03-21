@@ -57,7 +57,7 @@ class Server extends EventEmitter {
 
                 case 'call':
                     // collect the stack trace if requested
-                    if (this._options.stackTraces) {
+                    if (this._options.parents) {
                         for (let i = stackTrace.length - 1; i >= 0; i--) {
                             // skip deeper calls
                             if (stackTrace[i].level < event.level) {
@@ -70,7 +70,7 @@ class Server extends EventEmitter {
                     requestEmitter.emit(type, event, stackTrace);
 
                     // add the current call to the stack trace
-                    if (this._options.stackTraces) {
+                    if (this._options.parents) {
                         stackTrace.push(event);
                     }
                     break;
