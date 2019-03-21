@@ -167,7 +167,7 @@ function run(server, options = {}) {
         const isWebRequest = !!request.server.REQUEST_METHOD;
         const matchedCalls = new Set();
         const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase); // per-request
-        let lastLevel;
+        let lastMatchedLevel;
         let inMatchedFunction;
 
         // print the request line
@@ -223,10 +223,10 @@ function run(server, options = {}) {
             }
 
             // children of matched calls
-            if (options.children && lastLevel < call.level ||
-                options.siblings && lastLevel === call.level) {
+            if (options.children && lastMatchedLevel < call.level ||
+                options.siblings && lastMatchedLevel === call.level) {
                 // avoid matching children of siblings
-                if (options.siblings && lastLevel < call.level && !inMatchedFunction) {
+                if (options.siblings && lastMatchedLevel < call.level && !inMatchedFunction) {
                     return;
                 }
 
@@ -241,12 +241,12 @@ function run(server, options = {}) {
             // matched calls
             else {
                 // avoid matching siblings of children
-                if (options.siblings && lastLevel < call.level) {
+                if (options.siblings && lastMatchedLevel < call.level) {
                     return;
                 }
 
                 // reset the index used to remember auto tracked calls
-                lastLevel = undefined;
+                lastMatchedLevel = undefined;
 
                 // skip if the function name doesn't match
                 if (!RegExpSet.match(call.function, functionsRegexp, excludeFunctionsRegexp)) {
@@ -278,7 +278,7 @@ function run(server, options = {}) {
                 }
 
                 // save the level of this matched call
-                lastLevel = call.level;
+                lastMatchedLevel = call.level;
 
                 // at this point the function call is selected to be printed
                 matchedCalls.add(call.id);
