@@ -293,7 +293,7 @@ function run(server, options = {}) {
                     }
 
                     stackTrace.forEach((call) => {
-                        renderCall(call, 'C');
+                        renderCall(call, 'P');
                     });
                 }
 
