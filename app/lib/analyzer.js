@@ -32,6 +32,10 @@ function handleServerShutdown(server) {
     process.on('SIGTERM', handler);
 }
 
+function indent(level, shallow) {
+    return color.shadow(shallow ? '' : '»  '.repeat(level - 1));
+}
+
 function run(server, options = {}) {
     // create regexp sets from options (argumentsRegexp must be per-request dut to tracking)
     const functionsRegexp = new RegExpSet(options.functions, options.ignoreCase);
@@ -357,10 +361,6 @@ function run(server, options = {}) {
             console.error(`${prefix} ${color.error(message)}`);
         });
     });
-}
-
-function indent(level, shallow) {
-    return color.shadow(shallow ? '' : '»  '.repeat(level - 1));
 }
 
 module.exports = {run};
