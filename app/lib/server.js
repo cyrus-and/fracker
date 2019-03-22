@@ -26,6 +26,10 @@ class Server extends EventEmitter {
         this._server.listen(port, host);
     }
 
+    close() {
+        this._server.close();
+    }
+
     _handleClient(socket) {
         // notify request events using a separate emitter
         const requestEmitter = new EventEmitter();

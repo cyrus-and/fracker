@@ -14,6 +14,24 @@ const color = {
     invocation: chalk.yellow
 };
 
+function handleServerShutdown(server) {
+    let flag = false;
+
+    function handler() {
+        if (flag) {
+            console.error(color.shadow(`+ │ Forced shutdown`));
+            process.exit();
+        } else {
+            flag = true;
+            console.error(color.shadow(`+ │ Shuting down...`));
+            server.close();
+        }
+    }
+
+    process.on('SIGINT', handler);
+    process.on('SIGTERM', handler);
+}
+
 function run(server, options = {}) {
     // create regexp sets from options (argumentsRegexp must be per-request dut to tracking)
     const functionsRegexp = new RegExpSet(options.functions, options.ignoreCase);
@@ -28,6 +46,9 @@ function run(server, options = {}) {
 
     // facility used to extract single values from composite objects
     const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly, options.excludeNonString);
+
+    // allow graceful shutdown of the server
+    handleServerShutdown(server);
 
     server.on('listening', (host, port) => {
         console.error(color.shadow(`+ │ Listening on ${host}:${port}`));
