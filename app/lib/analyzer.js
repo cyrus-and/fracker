@@ -192,6 +192,7 @@ function run(server, options = {}) {
         const isWebRequest = !!request.server.REQUEST_METHOD;
         const matchedCalls = new Set();
         const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase); // per-request
+        const stackTrace = [];
         let lastMatchedLevel;
         let inMatchedFunction;
 
@@ -236,7 +237,23 @@ function run(server, options = {}) {
             argumentsRegexp.add([...walker.walk(inputs)], true);
         }
 
-        events.on('call', (call, stackTrace) => {
+        events.on('call', (call) => {
+            // collect the stack trace if requested
+            if (options.parents) {
+                // skip deeper calls
+                for (let i = stackTrace.length - 1; i >= 0; i--) {
+                    if (stackTrace[i].level < call.level) {
+                        stackTrace.splice(i + 1);
+                        break;
+                    }
+                }
+
+                // add the current call to the stack trace
+                if (options.parents) {
+                    stackTrace.push(call);
+                }
+            }
+
             // skip when tracking and there are no arguments to match
             if (options.trackUserInputs && argumentsRegexp.isEmpty()) {
                 return;
@@ -323,7 +340,7 @@ function run(server, options = {}) {
                         return;
                     }
 
-                    stackTrace.forEach((call) => {
+                    stackTrace.slice(0, -1).forEach((call) => {
                         renderCall(call, 'P');
                     });
                 }

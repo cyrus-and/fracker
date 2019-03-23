@@ -12,7 +12,6 @@ class Server extends EventEmitter {
         this._requestId = 0;
         const host = options.host || DEFAULT_HOST;
         const port = options.port || DEFAULT_PORT;
-        this._options = options;
 
         // create the server and forward some base events
         this._server = net.createServer();
@@ -37,9 +36,6 @@ class Server extends EventEmitter {
         // keep track of the number of requests
         const requestId = ++this._requestId;
 
-        // keep track of the stack trace for each call/return (if needed)
-        const stackTrace = [];
-
         // read each line as a JSON object
         const reader = readline.createInterface({
             input: socket
@@ -60,27 +56,11 @@ class Server extends EventEmitter {
                     break;
 
                 case 'call':
-                    // collect the stack trace if requested
-                    if (this._options.parents) {
-                        for (let i = stackTrace.length - 1; i >= 0; i--) {
-                            // skip deeper calls
-                            if (stackTrace[i].level < event.level) {
-                                stackTrace.splice(i + 1);
-                                break;
-                            }
-                        }
-                    }
-
-                    requestEmitter.emit(type, event, stackTrace);
-
-                    // add the current call to the stack trace
-                    if (this._options.parents) {
-                        stackTrace.push(event);
-                    }
+                    requestEmitter.emit(type, event);
                     break;
 
                 case 'return':
-                    requestEmitter.emit(type, event, stackTrace);
+                    requestEmitter.emit(type, event);
                     break;
 
                 case 'warning':
