@@ -250,8 +250,9 @@ function run(server, options = {}) {
             // children of matched calls
             if (options.children && lastMatchedLevel < call.level ||
                 options.siblings && lastMatchedLevel === call.level) {
-                // avoid matching of too deep children
-                if (options.children && call.level - lastMatchedLevel > options.children) {
+                // avoid matching of too deep children (true when omitted)
+                const children = typeof options.children === 'boolean' ? Infinity : options.children;
+                if (options.children && call.level - lastMatchedLevel > children) {
                     return;
                 }
 

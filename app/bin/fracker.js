@@ -51,7 +51,7 @@ program
     .option('-w, --shallow', 'use no indentation to show the call depth')
     .option('-v, --return-values', 'show return values')
     .option('-k, --parents', 'show parent calls for each matched function (i.e., stack traces)')
-    .option('-c, --children [n]', 'show children calls for the first matched functions up to depth <n>', Infinity)
+    .option('-c, --children [n]', 'show children calls for the first matched functions up to depth <n>')
     .option('-s, --siblings', 'show siblings calls for the first matched functions')
     .option('-L, --hide-call-locations', 'hide file and line where the function is called');
 
