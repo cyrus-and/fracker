@@ -374,9 +374,9 @@ function run(server, options = {}) {
             }
         });
 
-        events.on('warning', (message) => {
+        events.on('warning', (warning) => {
             const prefix = color.shadow(`${request.id} │`);
-            console.error(`${prefix} ${color.error(message)}`);
+            console.error(`${prefix} ${color.error(warning.message)}`);
         });
     });
 }

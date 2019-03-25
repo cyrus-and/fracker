@@ -37,9 +37,7 @@ class Server extends EventEmitter {
         const requestId = ++this._requestId;
 
         // read each line as a JSON object
-        const reader = readline.createInterface({
-            input: socket
-        });
+        const reader = readline.createInterface({input: socket});
         reader.on('line', (json) => {
             try {
                 // prepare the event object
@@ -56,15 +54,9 @@ class Server extends EventEmitter {
                     break;
 
                 case 'call':
-                    requestEmitter.emit(type, event);
-                    break;
-
                 case 'return':
-                    requestEmitter.emit(type, event);
-                    break;
-
                 case 'warning':
-                    requestEmitter.emit(type, event.message);
+                    requestEmitter.emit(type, event);
                     break;
 
                 default:
