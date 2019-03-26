@@ -1,10 +1,10 @@
 const net = require('net');
 const readline = require('readline');
 
+const EventEmitter = require('events');
+
 const DEFAULT_HOST = '0.0.0.0';
 const DEFAULT_PORT = 6666;
-
-const EventEmitter = require('events');
 
 class Server extends EventEmitter {
     constructor(options = {}) {
@@ -73,6 +73,6 @@ class Server extends EventEmitter {
         // propagate the socket closing event
         socket.on('close', () => requestEmitter.emit('close'));
     }
-};
+}
 
 module.exports = Server;
