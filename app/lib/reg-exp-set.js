@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 class RegExpSet {
     constructor(regexp, ignoreCase, literally = false) {
         this._regexps = new Set();
