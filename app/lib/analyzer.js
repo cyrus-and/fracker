@@ -1,15 +1,11 @@
-const color = require('./color.js');
+const Formatter = require('./formatter.js');
 const ObjectStringifier = require('./object-stringifier.js');
 const ObjectWalker = require('./object-walker.js');
 const RegExpSet = require('./reg-exp-set.js');
 const term = require('./term.js');
 
-function indent(level, shallow) {
-    return color.shadow(shallow ? '' : '»  '.repeat(level - 1));
-}
-
 function run(server, options = {}) {
-    // create regexp sets from options (argumentsRegexp must be per-request dut to tracking)
+    // create regexp sets from options (argumentsRegexp must be per-request due to tracking)
     const functionsRegexp = new RegExpSet(options.functions, options.ignoreCase);
     const excludeFunctionsRegexp = new RegExpSet(options.excludeFunctions, options.ignoreCase);
     const excludeArgumentsRegexp = new RegExpSet(options.excludeArguments, options.ignoreCase);
@@ -24,59 +20,25 @@ function run(server, options = {}) {
     const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly, options.excludeNonString);
 
     server.on('request', (request, events) => {
-        function renderCall(call, type) {
-            // format arguments
-            let argumentList;
-            if (RegExpSet.exclude(call.function, muteFunctionsRegexp)) {
-                argumentList = color.shadow('...');
-            } else {
-                argumentList = call.arguments.map(({name, value, stringValue}) => {
-                    // omit muted arguments
-                    if (name && RegExpSet.exclude(name, muteArgumentsRegexp)) {
-                        value = color.shadow('...');
-                    } else {
-                        // stringify values for auto tracked calls
-                        value = type === 'M' ? stringValue : JSON.stringify(value);
-                    }
+        // argumentsRegexp must be per-request due to tracking
+        const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase);
 
-                    // format argument
-                    return name ? `${color.argument(`${name}=`)}${value}` : value;
-                }).join(color.shadow(', '));
-            }
-            argumentList = `${color.shadow('(')}${argumentList}${color.shadow(')')}`;
-
-            // format call and print
-            const indentation = indent(call.level, options.shallow);
-            const functionName = (type === 'M' ? color.function : color.context)(call.function);
-            const fileInfo = options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
-            const callId = type === 'M' && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
-            const marker = (!color.isEnabled || options.shallow) && !options.returnValues && type !== 'M' && (options.parents || options.children || options.siblings) ? `${color.shadow(type)} ` : '';
-            term.out(color.reset(`${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`), request.id);
-        }
-
-        const isWebRequest = !!request.server.REQUEST_METHOD;
-        const matchedCalls = new Set();
-        const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase); // per-request
+        // state variables and facilities
+        const formatter = new Formatter(request, options, muteFunctionsRegexp, muteArgumentsRegexp);
         const stringifier = new ObjectStringifier(argumentsRegexp, excludeArgumentsRegexp);
+        const matchedCalls = new Set();
         const stackTrace = [];
         let lastMatchedLevel;
         let inMatchedFunction;
 
         // print the request line
-        const prefix = `\n${request.id}`;
-        if (isWebRequest) {
-            const method = color.method(request.server.REQUEST_METHOD);
-            const url = color.invocation(`${request.server.HTTP_HOST}${request.server.REQUEST_URI}`);
-            term.out(`${method} ${url}`, prefix);
-        } else {
-            const argv = JSON.stringify(request.server.argv);
-            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, prefix);
-        }
+        formatter.formatRequest();
 
         // prepare the initial tracking regexps
         if (options.trackUserInputs) {
             // add inputs according to the PHP invocation
             const inputs = [];
+            const isWebRequest = !!request.server.REQUEST_METHOD;
             if (isWebRequest) {
                 // add common superglobals
                 inputs.push(request.get, request.post);
@@ -150,7 +112,7 @@ function run(server, options = {}) {
 
                 // print the auto tracked call
                 const type = inMatchedFunction ? 'C' : 'S';
-                renderCall(call, type);
+                formatter.formatCall(call, type);
             }
             // matched calls
             else {
@@ -206,12 +168,12 @@ function run(server, options = {}) {
                     }
 
                     stackTrace.slice(0, -1).forEach((call) => {
-                        renderCall(call, 'P');
+                        formatter.formatCall(call, 'P');
                     });
                 }
 
                 // print the actual call
-                renderCall(call, 'M');
+                formatter.formatCall(call, 'M');
             }
         });
 
@@ -231,10 +193,7 @@ function run(server, options = {}) {
 
             // also print the return value
             if (options.returnValues && isFunctionTracked) {
-                const indentation = indent(return_.level, options.shallow);
-                const json_value = JSON.stringify(return_.return.value);
-                const callId = options.shallow ? `${color.shadow(return_.id)} ` : '';
-                term.out(`${indentation}${callId}${color.function('=')} ${json_value}`, request.id);
+                formatter.formatReturn(return_);
             }
         });
 
