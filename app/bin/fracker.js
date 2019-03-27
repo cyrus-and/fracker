@@ -3,6 +3,7 @@
 const analyzer = require('../lib/analyzer.js');
 const packageInfo = require('../package.json');
 const Server = require('../lib/server.js');
+const term = require('../lib/term.js');
 
 const yaml = require('js-yaml');
 
@@ -99,7 +100,38 @@ function parseArguments(argv) {
     return options;
 }
 
-// start!
+function handleServerShutdown(server) {
+    let flag = false;
+
+    function handler() {
+        if (flag) {
+            term.log('Forced shutdown');
+            process.exit();
+        } else {
+            flag = true;
+            term.log('Shuting down...');
+            server.close();
+        }
+    }
+
+    process.on('SIGINT', handler);
+    process.on('SIGTERM', handler);
+}
+
+// parse options
 const options = parseArguments(process.argv);
+
+// set up server
 const server = new Server(options);
+handleServerShutdown(server);
+
+server.on('listening', (host, port) => {
+    term.log(`Listening on ${host}:${port}`);
+});
+
+server.on('error', (err) => {
+    term.err(err.stack);
+});
+
+// start!
 analyzer.run(server, options);

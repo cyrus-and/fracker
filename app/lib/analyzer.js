@@ -3,24 +3,6 @@ const ObjectWalker = require('./object-walker.js');
 const RegExpSet = require('./reg-exp-set.js');
 const term = require('./term.js');
 
-function handleServerShutdown(server) {
-    let flag = false;
-
-    function handler() {
-        if (flag) {
-            term.log('Forced shutdown');
-            process.exit();
-        } else {
-            flag = true;
-            term.log('Shuting down...');
-            server.close();
-        }
-    }
-
-    process.on('SIGINT', handler);
-    process.on('SIGTERM', handler);
-}
-
 function indent(level, shallow) {
     return color.shadow(shallow ? '' : '»  '.repeat(level - 1));
 }
@@ -39,17 +21,6 @@ function run(server, options = {}) {
 
     // facility used to extract single values from composite objects
     const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly, options.excludeNonString);
-
-    // allow graceful shutdown of the server
-    handleServerShutdown(server);
-
-    server.on('listening', (host, port) => {
-        term.log(`Listening on ${host}:${port}`);
-    });
-
-    server.on('error', (err) => {
-        term.err(err.stack);
-    });
 
     server.on('request', (request, events) => {
         function renderCall(call, type) {
