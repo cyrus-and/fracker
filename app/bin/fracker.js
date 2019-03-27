@@ -82,7 +82,12 @@ function parseArguments(argv) {
 
     // load YAML files and store them in reversed order
     const configs = program.args.map((path) => {
-        return yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
+        try {
+            return yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
+        } catch (err) {
+            term.err(`Cannot parse YAML file '${path}'`);
+            return {};
+        }
     }).reverse();
 
     // merge into base others with decreasing priority
