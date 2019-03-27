@@ -62,7 +62,7 @@ class Formatter {
         const indentation = indent(return_.level, this._options.shallow);
         const json_value = JSON.stringify(return_.return.value);
         const callId = this._options.shallow ? `${color.shadow(return_.id)} ` : '';
-        term.out(`${indentation}${callId}${color.function('=')} ${json_value}`, this._request.id);
+        term.out(color.reset(`${indentation}${callId}${color.function('=')} ${json_value}`), this._request.id);
     }
 
     formatWarning(warning) {
