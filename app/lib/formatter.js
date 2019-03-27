@@ -64,6 +64,10 @@ class Formatter {
         const callId = this._options.shallow ? `${color.shadow(return_.id)} ` : '';
         term.out(`${indentation}${callId}${color.function('=')} ${json_value}`, this._request.id);
     }
+
+    formatWarning(warning) {
+        term.err(warning.message, this._request.id);
+    }
 }
 
 module.exports = Formatter;

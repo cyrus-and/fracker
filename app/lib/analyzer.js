@@ -2,7 +2,6 @@ const Formatter = require('./formatter.js');
 const Matcher = require('./matcher.js');
 const Stringifier = require('./stringifier.js');
 const Walker = require('./walker.js');
-const term = require('./term.js');
 
 function run(server, options = {}) {
     // create regexp sets from options (argumentsRegexp must be per-request due to tracking)
@@ -199,7 +198,7 @@ function run(server, options = {}) {
         });
 
         events.on('warning', (warning) => {
-            term.err(warning.message, request.id);
+            formatter.formatWarning(warning);
         });
     });
 }
