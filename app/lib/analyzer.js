@@ -1,5 +1,5 @@
 const Formatter = require('./formatter.js');
-const RegExpSet = require('./reg-exp-set.js');
+const Matcher = require('./matcher.js');
 const Stringifier = require('./stringifier.js');
 const Walker = require('./walker.js');
 const term = require('./term.js');
@@ -7,22 +7,22 @@ const term = require('./term.js');
 function run(server, options = {}) {
     // create regexp sets from options (argumentsRegexp must be per-request due to tracking)
     const {ignoreCase} = options;
-    const functionsRegexp = new RegExpSet(options.functions, ignoreCase);
-    const excludeFunctionsRegexp = new RegExpSet(options.excludeFunctions, ignoreCase);
-    const excludeArgumentsRegexp = new RegExpSet(options.excludeArguments, ignoreCase);
-    const pathsRegexp = new RegExpSet(options.paths, ignoreCase);
-    const excludePathsRegexp = new RegExpSet(options.excludePaths, ignoreCase);
-    const muteFunctionsRegexp = new RegExpSet(options.muteFunctions, ignoreCase);
-    const muteArgumentsRegexp = new RegExpSet(options.muteArguments, ignoreCase);
-    const userInputsRegexp = new RegExpSet(options.userInputs, ignoreCase);
-    const excludeUserInputsRegexp = new RegExpSet(options.excludeUserInputs, ignoreCase);
+    const functionsRegexp = new Matcher(options.functions, ignoreCase);
+    const excludeFunctionsRegexp = new Matcher(options.excludeFunctions, ignoreCase);
+    const excludeArgumentsRegexp = new Matcher(options.excludeArguments, ignoreCase);
+    const pathsRegexp = new Matcher(options.paths, ignoreCase);
+    const excludePathsRegexp = new Matcher(options.excludePaths, ignoreCase);
+    const muteFunctionsRegexp = new Matcher(options.muteFunctions, ignoreCase);
+    const muteArgumentsRegexp = new Matcher(options.muteArguments, ignoreCase);
+    const userInputsRegexp = new Matcher(options.userInputs, ignoreCase);
+    const excludeUserInputsRegexp = new Matcher(options.excludeUserInputs, ignoreCase);
 
     // facility used to extract single values from composite objects
     const walker = new Walker(options, userInputsRegexp, excludeUserInputsRegexp);
 
     server.on('request', (request, events) => {
         // argumentsRegexp must be per-request due to tracking
-        const argumentsRegexp = new RegExpSet(options.arguments, ignoreCase);
+        const argumentsRegexp = new Matcher(options.arguments, ignoreCase);
 
         // state variables and facilities
         const formatter = new Formatter(request, options, muteFunctionsRegexp, muteArgumentsRegexp);
@@ -88,7 +88,7 @@ function run(server, options = {}) {
             }
 
             // skip if the script file path doesn't match
-            if (!RegExpSet.match(call.file, pathsRegexp, excludePathsRegexp)) {
+            if (!Matcher.match(call.file, pathsRegexp, excludePathsRegexp)) {
                 return;
             }
 
@@ -107,7 +107,7 @@ function run(server, options = {}) {
                 }
 
                 // skip excluded functions anyway
-                if (RegExpSet.exclude(call.function, excludeFunctionsRegexp)) {
+                if (Matcher.exclude(call.function, excludeFunctionsRegexp)) {
                     return;
                 }
 
@@ -126,7 +126,7 @@ function run(server, options = {}) {
                 lastMatchedLevel = undefined;
 
                 // skip if the function name doesn't match
-                if (!RegExpSet.match(call.function, functionsRegexp, excludeFunctionsRegexp)) {
+                if (!Matcher.match(call.function, functionsRegexp, excludeFunctionsRegexp)) {
                     return;
                 }
 
@@ -164,7 +164,7 @@ function run(server, options = {}) {
                 // print the whole stack trace if requested
                 if (options.parents) {
                     // skip excluded functions anyway
-                    if (RegExpSet.exclude(call.function, excludeFunctionsRegexp)) {
+                    if (Matcher.exclude(call.function, excludeFunctionsRegexp)) {
                         return;
                     }
 

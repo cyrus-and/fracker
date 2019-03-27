@@ -1,4 +1,4 @@
-const RegExpSet = require('./reg-exp-set.js');
+const Matcher = require('./matcher.js');
 const color = require('./color.js');
 const term = require('./term.js');
 
@@ -30,12 +30,12 @@ class Formatter {
     formatCall(call, type) {
         // format arguments
         let argumentList;
-        if (RegExpSet.exclude(call.function, this._muteFunctionsRegexp)) {
+        if (Matcher.exclude(call.function, this._muteFunctionsRegexp)) {
             argumentList = color.shadow('...');
         } else {
             argumentList = call.arguments.map(({name, value, stringValue}) => {
                 // omit muted arguments
-                if (name && RegExpSet.exclude(name, this._muteArgumentsRegexp)) {
+                if (name && Matcher.exclude(name, this._muteArgumentsRegexp)) {
                     value = color.shadow('...');
                 } else {
                     // stringify values for auto tracked calls

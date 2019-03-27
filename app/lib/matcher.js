@@ -1,4 +1,4 @@
-class RegExpSet {
+class Matcher {
     constructor(regexp, ignoreCase, literally = false) {
         this._regexps = new Set();
         this._ignoreCase = ignoreCase;
@@ -46,7 +46,7 @@ class RegExpSet {
 
     // true if match include but not exclude (where empty include always match)
     static match(string, include, exclude) {
-        return include.get().test(string) && !RegExpSet.exclude(string, exclude);
+        return include.get().test(string) && !Matcher.exclude(string, exclude);
     }
 
     // true if do not match exclude (where empty exclude never matches)
@@ -60,4 +60,4 @@ function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
 
-module.exports = RegExpSet;
+module.exports = Matcher;

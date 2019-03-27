@@ -1,4 +1,4 @@
-const RegExpSet = require('./reg-exp-set.js');
+const Matcher = require('./matcher.js');
 
 class Walker {
     constructor(options, userInputsRegexp, excludeUserInputsRegexp) {
@@ -28,7 +28,7 @@ class Walker {
             }
 
             // apply regexps to include/exclude the value
-            if (RegExpSet.match(object, this._userInputsRegexp, this._excludeUserInputsRegexp)) {
+            if (Matcher.match(object, this._userInputsRegexp, this._excludeUserInputsRegexp)) {
                 yield object;
             }
         }

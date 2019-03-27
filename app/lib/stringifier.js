@@ -1,5 +1,5 @@
+const Matcher = require('./matcher.js');
 const color = require('./color.js');
-const RegExpSet = require('./reg-exp-set.js');
 
 class Stringifier {
     constructor(argumentsRegexp, excludeArgumentsRegexp) {
@@ -65,7 +65,7 @@ class Stringifier {
                 string += String(object);
             } else {
                 // match against exclusions
-                if (RegExpSet.exclude(object, this._excludeArgumentsRegexp)) {
+                if (Matcher.exclude(object, this._excludeArgumentsRegexp)) {
                     return null;
                 } else {
                     const components = [];
