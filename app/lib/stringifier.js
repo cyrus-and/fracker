@@ -1,7 +1,7 @@
 const color = require('./color.js');
 const RegExpSet = require('./reg-exp-set.js');
 
-class ObjectStringifier {
+class Stringifier {
     constructor(argumentsRegexp, excludeArgumentsRegexp) {
         this._argumentsRegexp = argumentsRegexp;
         this._excludeArgumentsRegexp = excludeArgumentsRegexp;
@@ -103,4 +103,4 @@ class ObjectStringifier {
     }
 }
 
-module.exports = ObjectStringifier;
+module.exports = Stringifier;

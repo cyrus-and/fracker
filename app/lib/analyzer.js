@@ -1,7 +1,7 @@
 const Formatter = require('./formatter.js');
-const ObjectStringifier = require('./object-stringifier.js');
-const ObjectWalker = require('./object-walker.js');
 const RegExpSet = require('./reg-exp-set.js');
+const Stringifier = require('./stringifier.js');
+const Walker = require('./walker.js');
 const term = require('./term.js');
 
 function run(server, options = {}) {
@@ -17,7 +17,7 @@ function run(server, options = {}) {
     const excludeUserInputsRegexp = new RegExpSet(options.excludeUserInputs, options.ignoreCase);
 
     // facility used to extract single values from composite objects
-    const walker = new ObjectWalker(options, userInputsRegexp, excludeUserInputsRegexp);
+    const walker = new Walker(options, userInputsRegexp, excludeUserInputsRegexp);
 
     server.on('request', (request, events) => {
         // argumentsRegexp must be per-request due to tracking
@@ -25,7 +25,7 @@ function run(server, options = {}) {
 
         // state variables and facilities
         const formatter = new Formatter(request, options, muteFunctionsRegexp, muteArgumentsRegexp);
-        const stringifier = new ObjectStringifier(argumentsRegexp, excludeArgumentsRegexp);
+        const stringifier = new Stringifier(argumentsRegexp, excludeArgumentsRegexp);
         const matchedCalls = new Set();
         const stackTrace = [];
         let lastMatchedLevel;

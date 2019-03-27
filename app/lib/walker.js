@@ -1,6 +1,6 @@
 const RegExpSet = require('./reg-exp-set.js');
 
-class ObjectWalker {
+class Walker {
     constructor(options, userInputsRegexp, excludeUserInputsRegexp) {
         this._userInputsRegexp = userInputsRegexp;
         this._excludeUserInputsRegexp = excludeUserInputsRegexp;
@@ -35,4 +35,4 @@ class ObjectWalker {
     }
 }
 
-module.exports = ObjectWalker;
+module.exports = Walker;
