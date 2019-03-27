@@ -16,14 +16,14 @@ class Formatter {
 
     formatRequest() {
         const isWebRequest = !!this._request.server.REQUEST_METHOD;
-        const prefix = `\n${this._request.id}`;
+        term.log();
         if (isWebRequest) {
             const method = color.method(this._request.server.REQUEST_METHOD);
             const url = color.invocation(`${this._request.server.HTTP_HOST}${this._request.server.REQUEST_URI}`);
-            term.out(`${method} ${url}`, prefix);
+            term.out(`${method} ${url}`, this._request.id);
         } else {
             const argv = JSON.stringify(this._request.server.argv);
-            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, prefix);
+            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, this._request.id);
         }
     }
 

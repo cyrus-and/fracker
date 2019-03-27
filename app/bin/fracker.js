@@ -51,7 +51,7 @@ function prepareParser() {
 
     // common options (help and version are automatically added)
     program
-        .version(packageInfo.version, '--version');
+        .version(package.version, '--version');
 
     program.on('--help', () => {
         console.log(`
@@ -109,6 +109,7 @@ function handleServerShutdown(server) {
             process.exit();
         } else {
             flag = true;
+            term.log();
             term.log('Shuting down...');
             server.close();
         }
