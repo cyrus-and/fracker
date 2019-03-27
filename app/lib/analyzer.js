@@ -17,7 +17,7 @@ function run(server, options = {}) {
     const excludeUserInputsRegexp = new RegExpSet(options.excludeUserInputs, options.ignoreCase);
 
     // facility used to extract single values from composite objects
-    const walker = new ObjectWalker(userInputsRegexp, excludeUserInputsRegexp, options.valuesOnly, options.excludeNonString);
+    const walker = new ObjectWalker(options, userInputsRegexp, excludeUserInputsRegexp);
 
     server.on('request', (request, events) => {
         // argumentsRegexp must be per-request due to tracking

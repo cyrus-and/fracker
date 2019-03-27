@@ -1,18 +1,16 @@
 const RegExpSet = require('./reg-exp-set.js');
 
 class ObjectWalker {
-    constructor(include, exclude, valuesOnly, excludeNonString) {
-        this._include = include;
-        this._exclude = exclude;
-        this._valuesOnly = valuesOnly;
-        this._excludeNonString = excludeNonString;
+    constructor(options, userInputsRegexp, excludeUserInputsRegexp) {
+        this._userInputsRegexp = userInputsRegexp;
+        this._excludeUserInputsRegexp = excludeUserInputsRegexp;
     }
 
     *walk(object) {
         if (typeof(object) === 'object') {
             for (const key in object) {
                 // add key if proper object and requested
-                if (!Array.isArray(object) && !this._valuesOnly) {
+                if (!Array.isArray(object) && !this._options.valuesOnly) {
                     yield* this.walk(key);
                 }
 
@@ -22,7 +20,7 @@ class ObjectWalker {
         } else {
             // skip or convert non-string arguments
             if (typeof(object) !== 'string') {
-                if (this._excludeNonString) {
+                if (this._options.excludeNonString) {
                     return;
                 } else {
                     object = String(object);
@@ -30,7 +28,7 @@ class ObjectWalker {
             }
 
             // apply regexps to include/exclude the value
-            if (RegExpSet.match(object, this._include, this._exclude)) {
+            if (RegExpSet.match(object, this._userInputsRegexp, this._excludeUserInputsRegexp)) {
                 yield object;
             }
         }
