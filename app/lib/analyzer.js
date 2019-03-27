@@ -1,29 +1,18 @@
+const color = require('./color.js');
 const ObjectWalker = require('./object-walker.js');
 const RegExpSet = require('./reg-exp-set.js');
-
-const chalk = require('chalk');
-
-const color = {
-    shadow: chalk.gray,
-    function: chalk.green,
-    argument: chalk.cyan,
-    highlight: chalk.red,
-    context: chalk.blue,
-    error: chalk.red,
-    method: chalk.white.bold,
-    invocation: chalk.yellow
-};
+const term = require('./term.js');
 
 function handleServerShutdown(server) {
     let flag = false;
 
     function handler() {
         if (flag) {
-            console.error(color.shadow(`+ │ Forced shutdown`));
+            term.log('Forced shutdown');
             process.exit();
         } else {
             flag = true;
-            console.error(color.shadow(`+ │ Shuting down...`));
+            term.log('Shuting down...');
             server.close();
         }
     }
@@ -55,11 +44,11 @@ function run(server, options = {}) {
     handleServerShutdown(server);
 
     server.on('listening', (host, port) => {
-        console.error(color.shadow(`+ │ Listening on ${host}:${port}`));
+        term.log(`Listening on ${host}:${port}`);
     });
 
     server.on('error', (err) => {
-        console.error(color.error(`! │ ${err.stack}`));
+        term.err(err.stack);
     });
 
     server.on('request', (request, events) => {
@@ -85,13 +74,12 @@ function run(server, options = {}) {
             argumentList = `${color.shadow('(')}${argumentList}${color.shadow(')')}`;
 
             // format call and print
-            const prefix = color.shadow(`${request.id} │`);
             const indentation = indent(call.level, options.shallow);
             const functionName = (type === 'M' ? color.function : color.context)(call.function);
             const fileInfo = options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
             const callId = type === 'M' && options.shallow && options.returnValues ? `${color.shadow(call.id)} ` : '';
-            const marker = (!chalk.enabled || options.shallow) && !options.returnValues && type !== 'M' && (options.parents || options.children || options.siblings) ? `${color.shadow(type)} ` : '';
-            console.log(`${prefix} ${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`);
+            const marker = (!color.isEnabled || options.shallow) && !options.returnValues && type !== 'M' && (options.parents || options.children || options.siblings) ? `${color.shadow(type)} ` : '';
+            term.out(color.reset(`${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`), request.id);
         }
 
         function stringifyObject(object) {
@@ -197,15 +185,14 @@ function run(server, options = {}) {
         let inMatchedFunction;
 
         // print the request line
-        const prefix = color.shadow(`\n${request.id} │`);
+        const prefix = `\n${request.id}`;
         if (isWebRequest) {
             const method = color.method(request.server.REQUEST_METHOD);
             const url = color.invocation(`${request.server.HTTP_HOST}${request.server.REQUEST_URI}`);
-            console.log(`${prefix} ${method} ${url}`);
+            term.out(`${method} ${url}`, prefix);
         } else {
             const argv = JSON.stringify(request.server.argv);
-            const invocation = `${color.method('PHP')} ${color.invocation(argv)}`;
-            console.log(`${prefix} ${invocation}`);
+            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, prefix);
         }
 
         // prepare the initial tracking regexps
@@ -366,17 +353,15 @@ function run(server, options = {}) {
 
             // also print the return value
             if (options.returnValues && isFunctionTracked) {
-                const prefix = color.shadow(`${request.id} │`);
                 const indentation = indent(return_.level, options.shallow);
                 const json_value = JSON.stringify(return_.return.value);
                 const callId = options.shallow ? `${color.shadow(return_.id)} ` : '';
-                console.log(`${prefix} ${indentation}${callId}${color.function('=')} ${json_value}`);
+                term.out(`${indentation}${callId}${color.function('=')} ${json_value}`, request.id);
             }
         });
 
         events.on('warning', (warning) => {
-            const prefix = color.shadow(`${request.id} │`);
-            console.error(`${prefix} ${color.error(warning.message)}`);
+            term.err(warning.message, request.id);
         });
     });
 }
