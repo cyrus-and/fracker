@@ -6,22 +6,23 @@ const term = require('./term.js');
 
 function run(server, options = {}) {
     // create regexp sets from options (argumentsRegexp must be per-request due to tracking)
-    const functionsRegexp = new RegExpSet(options.functions, options.ignoreCase);
-    const excludeFunctionsRegexp = new RegExpSet(options.excludeFunctions, options.ignoreCase);
-    const excludeArgumentsRegexp = new RegExpSet(options.excludeArguments, options.ignoreCase);
-    const pathsRegexp = new RegExpSet(options.paths, options.ignoreCase);
-    const excludePathsRegexp = new RegExpSet(options.excludePaths, options.ignoreCase);
-    const muteFunctionsRegexp = new RegExpSet(options.muteFunctions, options.ignoreCase);
-    const muteArgumentsRegexp = new RegExpSet(options.muteArguments, options.ignoreCase);
-    const userInputsRegexp = new RegExpSet(options.userInputs, options.ignoreCase);
-    const excludeUserInputsRegexp = new RegExpSet(options.excludeUserInputs, options.ignoreCase);
+    const {ignoreCase} = options;
+    const functionsRegexp = new RegExpSet(options.functions, ignoreCase);
+    const excludeFunctionsRegexp = new RegExpSet(options.excludeFunctions, ignoreCase);
+    const excludeArgumentsRegexp = new RegExpSet(options.excludeArguments, ignoreCase);
+    const pathsRegexp = new RegExpSet(options.paths, ignoreCase);
+    const excludePathsRegexp = new RegExpSet(options.excludePaths, ignoreCase);
+    const muteFunctionsRegexp = new RegExpSet(options.muteFunctions, ignoreCase);
+    const muteArgumentsRegexp = new RegExpSet(options.muteArguments, ignoreCase);
+    const userInputsRegexp = new RegExpSet(options.userInputs, ignoreCase);
+    const excludeUserInputsRegexp = new RegExpSet(options.excludeUserInputs, ignoreCase);
 
     // facility used to extract single values from composite objects
     const walker = new Walker(options, userInputsRegexp, excludeUserInputsRegexp);
 
     server.on('request', (request, events) => {
         // argumentsRegexp must be per-request due to tracking
-        const argumentsRegexp = new RegExpSet(options.arguments, options.ignoreCase);
+        const argumentsRegexp = new RegExpSet(options.arguments, ignoreCase);
 
         // state variables and facilities
         const formatter = new Formatter(request, options, muteFunctionsRegexp, muteArgumentsRegexp);

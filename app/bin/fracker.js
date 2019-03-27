@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const analyzer = require('../lib/analyzer.js');
-const packageInfo = require('../package.json');
 const Server = require('../lib/server.js');
+const analyzer = require('../lib/analyzer.js');
+const package = require('../package.json');
 const term = require('../lib/term.js');
 
 const yaml = require('js-yaml');
@@ -118,7 +118,7 @@ function handleServerShutdown(server) {
     process.on('SIGTERM', handler);
 }
 
-// parse options
+// obtain options from command line
 const options = parseArguments(process.argv);
 
 // set up server
