@@ -24,6 +24,9 @@ run-test() {
     # create an empty check file if missing so to show the content
     touch "$check"
 
+    # normalize the paths
+    sed -i "s@$PWD@@" "$result"
+
     # check the result
     diff "$result" "$check"
 }
