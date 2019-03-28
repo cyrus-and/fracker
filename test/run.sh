@@ -21,14 +21,20 @@ run-test() {
     kill "$fracker_pid"
     wait -n
 
-    # create an empty check file if missing so to show the content
-    touch "$check"
-
     # normalize the paths
     sed -i "s@$PWD@@" "$result"
 
     # check the result
     diff "$result" "$check"
+    local status=$?
+
+    # create the check file from result if missing
+    if ! [ -f "$check" ]; then
+        cp "$result" "$check"
+        echo "Automatically creating $(readlink -f "$check")"
+    fi
+
+    return "$status"
 }
 
 run-suite() {
