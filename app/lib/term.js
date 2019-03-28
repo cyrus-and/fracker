@@ -1,7 +1,7 @@
 const color = require('./color.js');
 
 function write(stream, style, text, marker) {
-    stream.write(style(`${marker} │ ${text || ''}`));
+    stream.write(style(`${marker} │${text ? ` ${text}` : ''}`));
     stream.write('\n');
 }
 
