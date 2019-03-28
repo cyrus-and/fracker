@@ -1,0 +1,6 @@
++ │ Listening on 0.0.0.0:6666
++ │
+1 │ GET localhost:8080/empty.php
+1 │ {main}() /fracker/test/cases/empty.php +0
++ │
++ │ Shuting down...
