@@ -7,6 +7,6 @@ RUN apt-get install --yes --no-install-recommends \
 COPY . /fracker
 
 WORKDIR /fracker/test
-RUN make rebuild-extension
+RUN make rebuild
 
-ENTRYPOINT make
+ENTRYPOINT make test

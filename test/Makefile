@@ -1,19 +1,19 @@
 test:
 	@./run.sh
 
-clean:
-	@rm -f cases/*.out
-
-rebuild-extension:
+rebuild:
 	-make -C ../ext distclean
 	cd ../ext && phpize --clean && phpize
 	cd ../ext && ./configure && make -j $(shell nproc) all
 
-build-docker-image:
-	@docker build -f Dockerfile -t fracker-test ..
+clean:
+	@rm -f cases/*.out
 
-run-docker-image:
-	@docker run --rm -it fracker-test
+test-docker:
+	@docker run --rm -it fracker-testsuite
 
-clean-docker-image:
-	@docker rmi fracker-test
+rebuild-docker:
+	@docker build -f Dockerfile -t fracker-testsuite ..
+
+clean-docker:
+	@docker rmi fracker-testsuite

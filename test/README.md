@@ -1,8 +1,17 @@
 # Test suite
 
-Tests are run inside a Docker container for convenience:
+## Run inside a Docker container
 
 ```console
-$ make build-docker-image
-$ make run-docker-image
+$ make rebuild-docker
+$ make test-docker
+```
+
+## Run locally
+
+Make sure to install the PHP development files.
+
+```console
+$ make rebuild
+$ make test
 ```
