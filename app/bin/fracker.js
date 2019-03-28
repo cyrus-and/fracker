@@ -88,7 +88,7 @@ function parseArguments(argv) {
             term.err(`Cannot parse YAML file '${path}'`);
             return {};
         }
-    }).reverse();
+    }).filter((x) => !!x).reverse();
 
     // merge into base others with decreasing priority
     configs.forEach((object) => {
