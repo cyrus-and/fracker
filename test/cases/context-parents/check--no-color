@@ -1,0 +1,26 @@
++ │ Listening on 0.0.0.0:6666
++ │
+1 │ GET localhost:8080/
+1 │ P {main}() /php/index.php +0
+1 │ »  P require_once("/php/objects.php") /php/index.php +4
+1 │ »  »  P Foo->method1(y="foo") /php/objects.php +23
+1 │ »  »  »  P Foo->method2(x=123, y="foo") /php/objects.php +9
+1 │ »  »  »  »  Foo->method3(x=123) /php/objects.php +13
+1 │ P {main}() /php/index.php +0
+1 │ »  P require_once("/php/objects.php") /php/index.php +4
+1 │ »  »  P Foo->method1(y="foo") /php/objects.php +23
+1 │ »  »  »  P Foo->method2(x=123, y="foo") /php/objects.php +9
+1 │ »  »  »  »  Foo->method3(x="foo") /php/objects.php +14
+1 │ P {main}() /php/index.php +0
+1 │ »  P require_once("/php/objects.php") /php/index.php +4
+1 │ »  »  P Foo->method2(x="bar", y="baz") /php/objects.php +24
+1 │ »  »  »  Foo->method3(x="bar") /php/objects.php +13
+1 │ P {main}() /php/index.php +0
+1 │ »  P require_once("/php/objects.php") /php/index.php +4
+1 │ »  »  P Foo->method2(x="bar", y="baz") /php/objects.php +24
+1 │ »  »  »  Foo->method3(x="baz") /php/objects.php +14
+1 │ P {main}() /php/index.php +0
+1 │ »  P require_once("/php/objects.php") /php/index.php +4
+1 │ »  »  Foo->method3(x="qwerty") /php/objects.php +25
++ │
++ │ Shuting down...

@@ -1,0 +1,5 @@
+functions:
+  - Foo->method3
+  - dump
+siblings: true
+parents: true
