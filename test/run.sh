@@ -25,7 +25,7 @@ run-test() {
     sed -i "s@$PWD@@" "$result"
 
     # check the result
-    diff "$result" "$check"
+    diff "$result" "$check" 2>/dev/null
     local status=$?
 
     # create the check file from result if missing
@@ -56,7 +56,10 @@ run-suite() {
 
     # clean up
     kill "$server_pid"
-    [ "$failed" -eq 0 ]
+    if [ "$failed" -gt 0 ]; then
+        echo -e "\n\n# FAILED\n\n"
+        false
+    fi
 }
 
 run-suite
