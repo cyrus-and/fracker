@@ -1,24 +1,28 @@
 #!/bin/bash
 
-FRACKER_ROOT="$(readlink -f ..)"
+root="$(readlink -f ..)"
 
 run-test() {
     # gather test files
-    local name="$1"
-    local color_flag="$2"
-    local script="$name.php"
-    local config="$name.yml"
-    local check="$name$color_flag.chk"
-    local result="$name$color_flag.out"
+    local base="$1"
+    local color="$2"
+    local script="$base/script.sh"
+    local config="$base/config.yml"
+    local check="$base/check$color"
+    local result="$base/.result$color"
 
     # start fracker and wait for it to be fully up
-    "$FRACKER_ROOT/app/bin/fracker.js" "$config" "$color_flag" &>"$result" & fracker_pid=$!
+    "$root/app/bin/fracker.js" "$config" "$color" &>"$result" & fracker_pid=$!
     while [ -z "$(ss -ltH 'sport = 6666')" ]; do
         sleep 0.1
     done
 
-    # run PHP code and wait for completion
-    curl "http://localhost:8080/$script" &>/dev/null
+    # run test logic
+    local url="http://localhost:8080/"
+    local php="$root/test/php"
+    source "$script" &>/dev/null
+
+    # wait for completion
     kill "$fracker_pid"
     wait -n
 
@@ -39,23 +43,22 @@ run-test() {
 }
 
 run-suite() {
-    cd cases
-
-    # start PHP server
-    php -d "zend_extension=$FRACKER_ROOT/ext/.libs/xdebug.so" -S localhost:8080 &>/dev/null & server_pid=$!
+    # start the PHP server
+    php -d "zend_extension=$root/ext/.libs/xdebug.so" -S localhost:8080 -t php &>/dev/null & server_pid=$!
 
     # run each individual test
     let failed=0
-    for config in *.yml; do
-        name="$(basename -s '.yml' "$config")"
+    for config in cases/*/*.yml; do
+        base="$(dirname "$config")"
+        name="$(basename "$base")"
 
-        echo "# Running test case '$name' --color"
-        if ! run-test "$name" '--color'; then
+        echo "# Testing '$name' (ANSI)"
+        if ! run-test "$base" '--color'; then
             let failed++
         fi
 
-        echo "# Running test case '$name' --no-color"
-        if ! run-test "$name" '--no-color'; then
+        echo "# Testing '$name' (plain)"
+        if ! run-test "$base" '--no-color'; then
             let failed++
         fi
     done

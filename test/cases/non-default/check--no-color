@@ -1,0 +1,78 @@
++ │ Listening on 0.0.0.0:6666
++ │
+1 │ GET localhost:8080/
+1 │ 0 {main}()
+1 │ 1 require_once("/php/eval.php")
+1 │ 2 eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n")
+1 │ 3 foo(x="test")
+1 │ 3 = "test"
+1 │ 4 var_dump("test")
+1 │ 4 = null
+1 │ 5 require_once("/php/objects.php")
+1 │ 6 Foo->__construct(x=123)
+1 │ 7 Foo->method1(y="foo")
+1 │ 8 Foo->method2(x=123, y="foo")
+1 │ 9 Foo->method3(x=123)
+1 │ 10 var_dump(123)
+1 │ 10 = null
+1 │ 11 Foo->method3(x="foo")
+1 │ 12 var_dump("foo")
+1 │ 12 = null
+1 │ 13 Foo->method2(x="bar", y="baz")
+1 │ 14 Foo->method3(x="bar")
+1 │ 15 var_dump("bar")
+1 │ 15 = null
+1 │ 16 Foo->method3(x="baz")
+1 │ 17 var_dump("baz")
+1 │ 17 = null
+1 │ 18 Foo->method3(x="qwerty")
+1 │ 19 var_dump("qwerty")
+1 │ 19 = null
+1 │ 20 require_once("/php/recursion.php")
+1 │ 21 fibo(n=5)
+1 │ 22 fibo(n=4)
+1 │ 23 fibo(n=3)
+1 │ 24 fibo(n=2)
+1 │ 25 fibo(n=1)
+1 │ 25 = 1
+1 │ 26 fibo(n=0)
+1 │ 26 = 1
+1 │ 24 = 2
+1 │ 27 fibo(n=1)
+1 │ 27 = 1
+1 │ 23 = 3
+1 │ 28 fibo(n=2)
+1 │ 29 fibo(n=1)
+1 │ 29 = 1
+1 │ 30 fibo(n=0)
+1 │ 30 = 1
+1 │ 28 = 2
+1 │ 22 = 5
+1 │ 31 fibo(n=3)
+1 │ 32 fibo(n=2)
+1 │ 33 fibo(n=1)
+1 │ 33 = 1
+1 │ 34 fibo(n=0)
+1 │ 34 = 1
+1 │ 32 = 2
+1 │ 35 fibo(n=1)
+1 │ 35 = 1
+1 │ 31 = 3
+1 │ 21 = 8
+1 │ 36 require_once("/php/types.php")
+1 │ 37 var_dump(123)
+1 │ 37 = null
+1 │ 38 var_dump(3.14)
+1 │ 38 = null
+1 │ 39 var_dump("foo")
+1 │ 39 = null
+1 │ 40 var_dump([])
+1 │ 40 = null
+1 │ 41 var_dump([123, 3.14, "foo"])
+1 │ 41 = null
+1 │ 42 var_dump({"foo": 1, "bar": 2, "baz": 3})
+1 │ 42 = null
+1 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
+1 │ 43 = null
++ │
++ │ Shuting down...
