@@ -1,0 +1,5 @@
+functions:
+  - var_dump
+  - ^Foo->
+excludeFunctions:
+  - ->method2$
