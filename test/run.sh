@@ -11,7 +11,7 @@ run-test() {
     local result="$name.out"
 
     # start fracker and wait for it to be fully up
-    "$FRACKER_ROOT/app/bin/fracker.js" "$config" &>"$result" & fracker_pid=$!
+    "$FRACKER_ROOT/app/bin/fracker.js" "$config" --color &>"$result" & fracker_pid=$!
     while [ -z "$(ss -ltH 'sport = 6666')" ]; do
         sleep 0.1
     done
