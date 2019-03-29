@@ -5,13 +5,14 @@ FRACKER_ROOT="$(readlink -f ..)"
 run-test() {
     # gather test files
     local name="$1"
+    local color_flag="$2"
     local script="$name.php"
     local config="$name.yml"
-    local check="$name.chk"
-    local result="$name.out"
+    local check="$name$color_flag.chk"
+    local result="$name$color_flag.out"
 
     # start fracker and wait for it to be fully up
-    "$FRACKER_ROOT/app/bin/fracker.js" "$config" --color &>"$result" & fracker_pid=$!
+    "$FRACKER_ROOT/app/bin/fracker.js" "$config" "$color_flag" &>"$result" & fracker_pid=$!
     while [ -z "$(ss -ltH 'sport = 6666')" ]; do
         sleep 0.1
     done
@@ -48,8 +49,13 @@ run-suite() {
     for config in *.yml; do
         name="$(basename -s '.yml' "$config")"
 
-        echo "# Running test case '$name'"
-        if ! run-test "$name"; then
+        echo "# Running test case '$name' --color"
+        if ! run-test "$name" '--color'; then
+            let failed++
+        fi
+
+        echo "# Running test case '$name' --no-color"
+        if ! run-test "$name" '--no-color'; then
             let failed++
         fi
     done
