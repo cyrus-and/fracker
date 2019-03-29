@@ -1,0 +1,4 @@
+muteFunctions:
+  - dump
+muteArguments:
+  - ^n$

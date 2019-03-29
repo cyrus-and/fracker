@@ -1,0 +1,49 @@
+[90m+ │ Listening on 0.0.0.0:6666[39m
+[90m+ │[39m
+[90m1 │ [37m[1mGET[22m[90m [33mlocalhost:8080/[90m[39m
+[90m1 │ [37m[32m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
+[90m1 │ [37m[90m»  [37m[32mrequire_once[37m[90m([37m"/php/eval.php"[90m)[37m [90m/php/index.php +3[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32meval[37m[90m([37m"\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n"[90m)[37m [90m/php/eval.php +3[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mfoo[37m[90m([37m[36mx=[37m"test"[90m)[37m [90m/php/eval.php(3) : eval()'d code +6[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/eval.php(3) : eval()'d code +6[37m[90m[39m
+[90m1 │ [37m[90m»  [37m[32mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mFoo->__construct[37m[90m([37m[36mx=[37m123[90m)[37m [90m/php/objects.php +22[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mFoo->method1[37m[90m([37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +23[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mFoo->method2[37m[90m([37m[36mx=[37m123[90m, [37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +9[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m123[90m)[37m [90m/php/objects.php +13[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/objects.php +18[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"foo"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/objects.php +18[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mFoo->method2[37m[90m([37m[36mx=[37m"bar"[90m, [37m[36my=[37m"baz"[90m)[37m [90m/php/objects.php +24[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"bar"[90m)[37m [90m/php/objects.php +13[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/objects.php +18[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"baz"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/objects.php +18[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"qwerty"[90m)[37m [90m/php/objects.php +25[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/objects.php +18[37m[90m[39m
+[90m1 │ [37m[90m»  [37m[32mrequire_once[37m[90m([37m"/php/recursion.php"[90m)[37m [90m/php/index.php +5[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +11[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  »  »  [37m[32mfibo[37m[90m([37m[36mn=[37m[90m...[37m[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  [37m[32mrequire_once[37m[90m([37m"/php/types.php"[90m)[37m [90m/php/index.php +6[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/types.php +3[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/types.php +4[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/types.php +5[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/types.php +6[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/types.php +7[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/types.php +8[37m[90m[39m
+[90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[90m...[37m[90m)[37m [90m/php/types.php +9[37m[90m[39m
+[90m+ │[39m
+[90m+ │ Shuting down...[39m
