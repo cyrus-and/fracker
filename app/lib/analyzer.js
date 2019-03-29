@@ -91,7 +91,7 @@ function run(server, options = {}) {
                 return;
             }
 
-            // children of matched calls
+            // children or siblings of matched calls
             if (options.children && lastMatchedLevel < call.level ||
                 options.siblings && lastMatchedLevel === call.level) {
                 // avoid matching of too deep children (true when omitted)
@@ -101,7 +101,7 @@ function run(server, options = {}) {
                 }
 
                 // avoid matching children of siblings
-                if (options.siblings && lastMatchedLevel < call.level && !inMatchedFunction) {
+                if (options.siblings && lastMatchedLevel < call.level) {
                     return;
                 }
 
@@ -111,6 +111,7 @@ function run(server, options = {}) {
                 }
 
                 // print the auto tracked call
+                const inMatchedFunction = lastMatchedLevel < call.level;
                 const type = inMatchedFunction ? 'C' : 'S';
                 formatter.formatCall(call, type);
             }
@@ -158,7 +159,6 @@ function run(server, options = {}) {
 
                 // at this point the function call is selected to be printed
                 matchedCalls.add(call.id);
-                inMatchedFunction = true;
 
                 // print the whole stack trace if requested
                 if (options.parents) {
@@ -178,12 +178,7 @@ function run(server, options = {}) {
         });
 
         events.on('return', (return_) => {
-            const isFunctionTracked = matchedCalls.has(return_.id);
-
-            // marks the end of a matched function
-            if (isFunctionTracked) {
-                inMatchedFunction = false;
-            }
+            // XXX the return event is only generated when a value is actually returned
 
             // add the return value to the set of tracking inputs and update the argument regexp
             if (options.trackUserInputs && options.recursive) {
@@ -192,6 +187,7 @@ function run(server, options = {}) {
             }
 
             // also print the return value
+            const isFunctionTracked = matchedCalls.has(return_.id);
             if (options.returnValues && isFunctionTracked) {
                 formatter.formatReturn(return_);
             }
