@@ -22,7 +22,7 @@ run-test() {
     wait -n
 
     # normalize the paths
-    sed -i "s@$PWD@@" "$result"
+    sed -i "s@$(pwd -P)@@g" "$result"
 
     # check the result
     diff "$result" "$check" 2>/dev/null
