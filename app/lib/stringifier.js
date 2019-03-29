@@ -13,35 +13,37 @@ class Stringifier {
         if (typeof(object) === 'object' && object !== null) {
             if (Array.isArray(object)) {
                 string += '[';
-                object.forEach((element, i) => {
+                let i = 0;
+                for (const element of object) {
                     // separator
-                    if (i !== 0) {
+                    if (i++ !== 0) {
                         string += ', ';
                     }
 
                     // stringify the element
                     const result = this.stringify(element);
                     if (!result) {
-                        return;
+                        return null;
                     }
                     string += result.string;
                     matched = matched || result.matched;
-                });
+                }
                 string += ']';
             } else {
                 string += '{';
-                Object.keys(object).forEach((key, i) => {
+                let i = 0;
+                for (const key of Object.keys(object)) {
                     let result;
 
                     // separator
-                    if (i !== 0) {
+                    if (i++ !== 0) {
                         string += ', ';
                     }
 
                     // stringify the key
                     result = this.stringify(key);
                     if (!result) {
-                        return;
+                        return null;
                     }
                     string += result.string;
                     matched = matched || result.matched;
@@ -52,11 +54,11 @@ class Stringifier {
                     // stringify the value
                     result = this.stringify(object[key]);
                     if (!result) {
-                        return;
+                        return null;
                     }
                     string += result.string;
                     matched = matched || result.matched;
-                });
+                }
                 string += '}';
             }
         } else {
