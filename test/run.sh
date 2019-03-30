@@ -2,7 +2,7 @@
 
 root="$(readlink -f ..)"
 
-run-test() {
+run-single-test() {
     # gather test files
     local base="$1"
     local color="$2"
@@ -42,25 +42,30 @@ run-test() {
     return "$status"
 }
 
+run-test() {
+    local config="$1"
+    local base="$(dirname "$config")"
+    local name="$(basename "$base")"
+
+    echo "# Testing '$name' (ANSI)"
+    if ! run-single-test "$base" '--color'; then
+        let failed++
+    fi
+
+    echo "# Testing '$name' (plain)"
+    if ! run-single-test "$base" '--no-color'; then
+        let failed++
+    fi
+}
+
 run-suite() {
     # start the PHP server
-    php -d "zend_extension=$root/ext/.libs/xdebug.so" -S localhost:8080 -t php &>/dev/null & server_pid=$!
+    start-server & server_pid=$!
 
     # run each individual test
     let failed=0
     for config in cases/*/*.yml; do
-        base="$(dirname "$config")"
-        name="$(basename "$base")"
-
-        echo "# Testing '$name' (ANSI)"
-        if ! run-test "$base" '--color'; then
-            let failed++
-        fi
-
-        echo "# Testing '$name' (plain)"
-        if ! run-test "$base" '--no-color'; then
-            let failed++
-        fi
+        run-test "$config"
     done
 
     # clean up
@@ -71,5 +76,20 @@ run-suite() {
     fi
 }
 
-trap 'kill "$server_pid" "$fracker_pid" &>/dev/null; exit' INT
-run-suite
+start-server() {
+    echo "# Starting PHP server..."
+    php -d "zend_extension=$root/ext/.libs/xdebug.so" -S localhost:8080 -t php &>/dev/null
+}
+
+case "$1" in
+    '-d')
+        start-server
+        ;;
+    '')
+        trap 'kill "$server_pid" "$fracker_pid" &>/dev/null; exit' INT
+        run-suite
+        ;;
+    *)
+        run-test "$1"
+        ;;
+esac
