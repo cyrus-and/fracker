@@ -1,5 +1,8 @@
 arguments:
   - FOO
+  # not matched since never appears in a string in tests
+  - 123
+  - 3.14
 excludeArguments:
   - BAZ
 ignoreCase: true
