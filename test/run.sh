@@ -77,8 +77,10 @@ run-suite() {
 }
 
 start-server() {
+    trap 'kill "$server_pid" &>/dev/null' TERM
     echo "# Starting PHP server..."
-    php -d "zend_extension=$root/ext/.libs/xdebug.so" -S localhost:8080 -t php &>/dev/null
+    php -d "zend_extension=$root/ext/.libs/xdebug.so" -S localhost:8080 -t php &>/dev/null & server_pid=$!
+    wait
 }
 
 case "$1" in
