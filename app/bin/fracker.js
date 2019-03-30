@@ -36,12 +36,12 @@ function prepareParser() {
         .option('-U, --exclude-user-inputs <regexp>', 'ignore user-controlled arguments matching <regexp>', append, [])
         .option('-X, --exclude-non-string', 'only consider string values as user-controlled arguments')
         .option('-H, --exclude-headers', 'exclude headers from user-controlled arguments')
-        .option('-o, --values-only', 'do not consider array names as user-controlled input initially')
+        .option('-o, --track-values-only', 'do not consider array names as user-controlled input initially')
         .option('-w, --shallow', 'use no indentation to show the call depth')
-        .option('-v, --return-values', 'show return values')
-        .option('-k, --parents', 'show parent calls for each matched function (i.e., stack traces)')
-        .option('-c, --children [n]', 'show children calls for the first matched functions up to depth <n>')
-        .option('-s, --siblings', 'show siblings calls for the first matched functions')
+        .option('-v, --show-return-values', 'show return values')
+        .option('-k, --show-parents', 'show parent calls for each matched function (i.e., stack traces)')
+        .option('-c, --show-children [n]', 'show children calls for the first matched functions up to depth <n>')
+        .option('-s, --show-siblings', 'show siblings calls for the first matched functions')
         .option('-L, --hide-call-locations', 'hide file and line where the function is called');
 
     // used by chalk to manage ANSI output

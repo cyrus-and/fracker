@@ -1,4 +1,4 @@
 functions:
   - fibo
-children: true
-parents: true
+showChildren: true
+showParents: true

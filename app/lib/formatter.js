@@ -52,8 +52,8 @@ class Formatter {
         const indentation = indent(call.level, this._options.shallow);
         const functionName = (type === 'M' ? color.function : color.context)(call.function);
         const fileInfo = this._options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
-        const callId = type === 'M' && this._options.shallow && this._options.returnValues ? `${color.shadow(call.id)} ` : '';
-        const marker = (!color.isEnabled || this._options.shallow) && !this._options.returnValues && type !== 'M' && (this._options.parents || this._options.children || this._options.siblings) ? `${color.shadow(type)} ` : '';
+        const callId = type === 'M' && this._options.shallow && this._options.showReturnValues ? `${color.shadow(call.id)} ` : '';
+        const marker = (!color.isEnabled || this._options.shallow) && !this._options.showReturnValues && type !== 'M' && (this._options.showParents || this._options.showChildren || this._options.showSiblings) ? `${color.shadow(type)} ` : '';
         term.out(color.reset(`${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`), this._request.id);
     }
 

@@ -1,3 +1,3 @@
 functions:
   - fibo
-children: true
+showChildren: true

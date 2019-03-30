@@ -66,7 +66,7 @@ function run(server, options = {}) {
 
         events.on('call', (call) => {
             // collect the stack trace if requested
-            if (options.parents) {
+            if (options.showParents) {
                 // skip deeper calls
                 for (let i = stackTrace.length - 1; i >= 0; i--) {
                     if (stackTrace[i].level < call.level) {
@@ -76,7 +76,7 @@ function run(server, options = {}) {
                 }
 
                 // add the current call to the stack trace
-                if (options.parents) {
+                if (options.showParents) {
                     stackTrace.push(call);
                 }
             }
@@ -92,16 +92,16 @@ function run(server, options = {}) {
             }
 
             // children or siblings of matched calls
-            if (options.children && lastMatchedLevel < call.level ||
-                options.siblings && lastMatchedLevel === call.level) {
+            if (options.showChildren && lastMatchedLevel < call.level ||
+                options.showSiblings && lastMatchedLevel === call.level) {
                 // avoid matching of too deep children (true when omitted)
-                const children = typeof options.children === 'boolean' ? Infinity : options.children;
-                if (options.children && call.level - lastMatchedLevel > children) {
+                const children = typeof options.showChildren === 'boolean' ? Infinity : options.showChildren;
+                if (options.showChildren && call.level - lastMatchedLevel > children) {
                     return;
                 }
 
                 // avoid matching children of siblings
-                if (options.siblings && lastMatchedLevel < call.level) {
+                if (options.showSiblings && lastMatchedLevel < call.level) {
                     return;
                 }
 
@@ -118,7 +118,7 @@ function run(server, options = {}) {
             // matched calls
             else {
                 // avoid matching siblings of children
-                if (options.siblings && lastMatchedLevel < call.level) {
+                if (options.showSiblings && lastMatchedLevel < call.level) {
                     return;
                 }
 
@@ -161,7 +161,7 @@ function run(server, options = {}) {
                 matchedCalls.add(call.id);
 
                 // print the whole stack trace if requested
-                if (options.parents) {
+                if (options.showParents) {
                     // skip excluded functions anyway
                     if (Matcher.exclude(call.function, excludeFunctionsRegexp)) {
                         return;
@@ -188,7 +188,7 @@ function run(server, options = {}) {
 
             // also print the return value
             const isFunctionTracked = matchedCalls.has(return_.id);
-            if (options.returnValues && isFunctionTracked) {
+            if (options.showReturnValues && isFunctionTracked) {
                 formatter.formatReturn(return_);
             }
         });

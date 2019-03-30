@@ -1,5 +1,5 @@
 functions:
   - Foo->method3
   - dump
-siblings: true
-parents: true
+showSiblings: true
+showParents: true
