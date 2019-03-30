@@ -18,7 +18,7 @@ run-test() {
     done
 
     # run test logic
-    local url="http://localhost:8080/"
+    local url="http://localhost:8080"
     local php="$root/test/php"
     source "$script" &>/dev/null
 
