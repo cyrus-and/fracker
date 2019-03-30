@@ -71,4 +71,5 @@ run-suite() {
     fi
 }
 
+trap 'kill "$server_pid" "$fracker_pid" &>/dev/null; exit' INT
 run-suite
