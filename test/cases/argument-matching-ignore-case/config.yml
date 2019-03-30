@@ -1,0 +1,5 @@
+arguments:
+  - FOO
+excludeArguments:
+  - BAZ
+ignoreCase: true

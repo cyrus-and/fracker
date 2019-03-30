@@ -1,0 +1,6 @@
+functions:
+  - VAR_dump
+  - ^foo->
+excludeFunctions:
+  - ->Method2$
+ignoreCase: true
