@@ -1,0 +1,6 @@
+trackUserInputs: true
+returnValues: true
+recursive: true
+excludeNonString: true
+excludeHeaders: true
+valuesOnly: true

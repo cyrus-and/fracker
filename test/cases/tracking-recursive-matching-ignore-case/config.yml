@@ -1,0 +1,8 @@
+trackUserInputs: true
+returnValues: true
+recursive: true
+userInputs:
+  - VALUE
+excludeUserInputs:
+  - "'Value'"
+ignoreCase: true
