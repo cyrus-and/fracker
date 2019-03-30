@@ -29,7 +29,6 @@ function prepareParser() {
         .option('-P, --exclude-paths <regexp>', 'hide functions called in files matching <regexp>', append, [])
         .option('--mute-functions <regexp>', 'do not print values for arguments of functions whose name matches <regexp>', append, [])
         .option('--mute-arguments <regexp>', 'do not print values for arguments whose name matches <regexp>', append, [])
-        .option('-i, --ignore-case', 'ignore case in matches')
         .option('-t, --track-user-inputs', 'automatically track user-controlled arguments')
         .option('-r, --recursive', 'propagate user-controlled arguments through return values')
         .option('-u, --user-inputs <regexp>', 'use user-controlled arguments matching <regexp>', append, [])
@@ -37,11 +36,12 @@ function prepareParser() {
         .option('-X, --exclude-non-string', 'only consider string values as user-controlled arguments')
         .option('-H, --exclude-headers', 'exclude headers from user-controlled arguments')
         .option('-o, --track-values-only', 'do not consider array names as user-controlled input initially')
-        .option('-w, --shallow', 'use no indentation to show the call depth')
         .option('-v, --show-return-values', 'show return values')
         .option('-k, --show-parents', 'show parent calls for each matched function (i.e., stack traces)')
         .option('-c, --show-children [n]', 'show children calls for the first matched functions up to depth <n>')
         .option('-s, --show-siblings', 'show siblings calls for the first matched functions')
+        .option('-i, --ignore-case', 'ignore case in matches')
+        .option('-w, --shallow', 'use no indentation to show the call depth')
         .option('-L, --hide-call-locations', 'hide file and line where the function is called');
 
     // used by chalk to manage ANSI output
