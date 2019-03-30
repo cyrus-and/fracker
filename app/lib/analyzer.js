@@ -76,9 +76,7 @@ function run(server, options = {}) {
                 }
 
                 // add the current call to the stack trace
-                if (options.showParents) {
-                    stackTrace.push(call);
-                }
+                stackTrace.push(call);
             }
 
             // skip when tracking and there are no arguments to match
