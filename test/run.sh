@@ -9,7 +9,7 @@ run-test() {
     local script="$base/script.sh"
     local config="$base/config.yml"
     local check="$base/check$color"
-    local result="$base/.result$color"
+    local result="$base/result$color"
 
     # start fracker and wait for it to be fully up
     "$root/app/bin/fracker.js" "$config" "$color" &>"$result" & fracker_pid=$!

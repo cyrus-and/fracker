@@ -7,7 +7,7 @@ rebuild:
 	cd ../ext && ./configure && make -j $(shell nproc) all
 
 clean:
-	@rm -f cases/*.out
+	@find cases/ -name 'result--*' -delete
 
 test-docker:
 	@docker run --rm -it fracker-testsuite
