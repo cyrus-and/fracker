@@ -30,7 +30,7 @@ run-test() {
     sed -i "s@$(pwd -P)@@g" "$result"
 
     # check the result
-    diff --color=always -u "$result" "$check" 2>/dev/null
+    diff --color=always -u "$check" "$result" 2>/dev/null
     local status=$?
 
     # create the check file from result if missing
