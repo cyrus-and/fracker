@@ -4,6 +4,7 @@ class Walker {
     constructor(options, userInputsRegexp, excludeUserInputsRegexp) {
         this._userInputsRegexp = userInputsRegexp;
         this._excludeUserInputsRegexp = excludeUserInputsRegexp;
+        this._options = options;
     }
 
     *walk(object) {
