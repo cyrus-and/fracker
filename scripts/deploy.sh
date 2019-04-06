@@ -20,7 +20,6 @@ set -e
 # install dependencies
 apt-get update
 apt-get install --yes autoconf gcc make pkg-config git libjson-c-dev net-tools vim
-apt-get install --yes php-dev || true
 apt-get install --yes php7.0-dev || true
 
 # compile and install
