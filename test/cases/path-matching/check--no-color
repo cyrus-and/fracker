@@ -1,3 +1,4 @@
++ │ Loaded config from 'cases/path-matching/config.yml'
 + │ Listening on 0.0.0.0:6666
 + │
 1 │ GET localhost:8080/

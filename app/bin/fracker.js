@@ -83,9 +83,15 @@ function parseArguments(argv) {
     // load YAML files and store them in reversed order
     const configs = program.args.map((path) => {
         try {
-            return yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
+            const config = yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
+            term.log(`Loaded config from '${path}'`);
+            return config;
         } catch (err) {
-            term.err(`Cannot parse YAML file '${path}'`);
+            if (err instanceof yaml.YAMLException) {
+                term.err(`Invalid YAML file '${path}'`);
+            } else {
+                term.err(`Cannot access '${path}'`);
+            }
             return {};
         }
     }).filter((x) => !!x).reverse();

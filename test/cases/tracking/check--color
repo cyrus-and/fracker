@@ -1,3 +1,4 @@
+[90m+ │ Loaded config from 'cases/tracking/config.yml'[39m
 [90m+ │ Listening on 0.0.0.0:6666[39m
 [90m+ │[39m
 [90m1 │ [37m[1mGET[22m[90m [33mlocalhost:8080/tracking.php?GET_key=GET_value[90m[39m
