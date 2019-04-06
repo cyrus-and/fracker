@@ -2,6 +2,7 @@ test:
 	@./run.sh
 
 rebuild:
+	npm install -C ../app
 	-make -C ../ext distclean
 	cd ../ext && phpize --clean && phpize
 	cd ../ext && ./configure && make -j $(shell nproc) all
