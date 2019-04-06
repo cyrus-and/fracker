@@ -8,6 +8,8 @@ It consists of:
 
 - a [listener application](#listener-application) that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user.
 
+![Screenshot](https://i.imgur.com/lEr7FZa.png)
+
 ## Demo
 
 Spin a new Docker container running Apache with PHP support:
@@ -51,23 +53,7 @@ Install the dependencies locally (this just needs to be performed once):
 $ npm install -C app
 ```
 
-Start Fracker then run the above `curl` command again:
-
-```console
-$ app/bin/fracker.js
-+ │ Listening on 0.0.0.0:6666
-+ │
-1 │ GET localhost/?x=Hello+Fracker!
-1 │ {main}() /var/www/html/index.php +0
-1 │ »  explode(" ", "Hello Fracker!") /var/www/html/index.php +6
-1 │ »  var_dump(["Hello", "Fracker!"]) /var/www/html/index.php +7
-1 │ »  foo(cmd="Hello") /var/www/html/index.php +9
-1 │ »  »  preg_replace("/[^a-z]/i", "", "Hello") /var/www/html/index.php +3
-1 │ »  »  system("echo Hello") /var/www/html/index.php +3
-1 │ »  foo(cmd="Fracker!") /var/www/html/index.php +9
-1 │ »  »  preg_replace("/[^a-z]/i", "", "Fracker!") /var/www/html/index.php +3
-1 │ »  »  system("echo Fracker") /var/www/html/index.php +3
-```
+Start Fracker with `app/bin/fracker.js` then run the above `curl` command again, the output should be similar to the above screenshot.
 
 Run again with `--help` and experiment with other options too.
 
