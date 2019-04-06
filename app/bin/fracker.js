@@ -121,7 +121,7 @@ function handleServerShutdown(server) {
         } else {
             flag = true;
             term.log();
-            term.log('Shuting down...');
+            term.log('Shutting down...');
             server.close();
         }
     }

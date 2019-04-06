@@ -30,4 +30,4 @@
 [90m1 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m{"foo":1,"bar":2,"baz":3}[90m)[37m [90m/php/types.php +8[37m[90m[39m
 [90m1 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m{"1":"foo","2":"bar","3":"baz"}[90m)[37m [90m/php/types.php +9[37m[90m[39m
 [90m+ │[39m
-[90m+ │ Shuting down...[39m
+[90m+ │ Shutting down...[39m
