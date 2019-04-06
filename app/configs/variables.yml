@@ -1,0 +1,6 @@
+functions:
+  - ^extract$
+  - ^ini_(alter|set)$
+  - ^parse_ini_file$
+  - ^parse_str$
+  - ^unserialize$

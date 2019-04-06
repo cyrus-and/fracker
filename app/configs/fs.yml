@@ -1,0 +1,12 @@
+functions:
+  - ^chgrp$
+  - ^chmod$
+  - ^chown$
+  - ^copy$
+  - ^link$
+  - ^mkdir$
+  - ^move_uploaded_file$
+  - ^rename$
+  - ^rmdir$
+  - ^symlink$
+  - ^unlink$

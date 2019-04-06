@@ -1,0 +1,7 @@
+functions:
+  - ^Closure->call$
+  - ^ReflectionFunction->(__construct|invoke|invokeArgs)$
+  - ^ReflectionMethod->(__construct|invoke|invokeArgs)$
+  - ^assert$
+  - ^create_function$
+  - ^eval$

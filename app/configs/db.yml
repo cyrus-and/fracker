@@ -1,0 +1,5 @@
+functions:
+  - ^mysql_\w+$
+  - ^mysqli->\w+$
+  - ^odbc_\w+$
+  - ^pg_\w+$

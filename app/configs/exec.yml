@@ -1,0 +1,8 @@
+functions:
+  - ^exec$
+  - ^passthru$
+  - ^popen$
+  - ^proc_open$
+  - ^shell_exec$
+  - ^system$
+  - ^pcntl_(exec|fork)$

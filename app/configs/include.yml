@@ -1,0 +1,2 @@
+functions:
+  - ^(include|require)(|_once)$

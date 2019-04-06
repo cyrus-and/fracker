@@ -1,0 +1,10 @@
+functions:
+  - ^exif_read_data$
+  - ^file$
+  - ^file_get_contents$
+  - ^gzfile$
+  - ^highlight_file$
+  - ^read_exif_data$
+  - ^readfile$
+  - ^show_source$
+  - ^readgzfile$

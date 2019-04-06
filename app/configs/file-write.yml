@@ -1,0 +1,3 @@
+functions:
+  - ^image(2wbmp|gd|gd2|gif|jpeg|png|wbmp|xbm)$
+  - ^file_put_contents$

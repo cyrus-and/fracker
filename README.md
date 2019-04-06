@@ -168,6 +168,18 @@ $ npm install -g app
 
 Then just run `fracker`, or run it locally with `app/bin/fracker.js`.
 
+### Configuration
+
+Command line options in long format can be written in YAML files (camel case) and passed as command line arguments. Multiple files with increasing priority can be specified, but command line options will have the highest priority.
+
+For convenience some [configuration files][configs] listing some classes of *interesting* PHP functions are provided along with this repo. Use them like:
+
+```console
+$ fracker app/configs/file-* # ...
+```
+
+[configs]: app/configs/
+
 ## License
 
 This product includes Xdebug, freely available from <https://xdebug.org/>. Unless explicitly stated otherwise, for the PHP extension itself, the copyright is retained by the original authors.

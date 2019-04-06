@@ -1,0 +1,5 @@
+functions:
+  - ^SplFileObject->f(open|get\w+|put\w+|read|write)$
+  - ^bz(open|read|write)$
+  - ^f(open|get\w+|put\w+|read|write)$
+  - ^gz(open|get\w+|put|read|write|passthru)$

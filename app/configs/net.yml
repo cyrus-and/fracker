@@ -1,0 +1,5 @@
+functions:
+  - ^fsockopen$
+  - ^ftp_\w+$
+  - ^imap_\w+$
+  - ^mail$
