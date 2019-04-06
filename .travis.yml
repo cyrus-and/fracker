@@ -1,0 +1,4 @@
+services:
+  - docker
+
+script: make -C test rebuild-docker test-docker
