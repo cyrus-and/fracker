@@ -10,4 +10,4 @@
 [90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m"[31mfoo[37m"[90m)[37m [90m/php/types.php +5[37m[90m[39m
 [90m1 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[123, 3.14, "[31mfoo[37m"][90m)[37m [90m/php/types.php +7[37m[90m[39m
 [90m+ │[39m
-[90m+ │ Shuting down...[39m
+[90m+ │ Shutting down...[39m
