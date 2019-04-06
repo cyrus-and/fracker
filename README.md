@@ -4,7 +4,7 @@ Fracker is a suite of tools that allows to easily trace and analyze PHP function
 
 It consists of:
 
-- a [PHP extension](#php-extension) that need to be installed in the environment of the target web application and sends tracing information to the listener;
+- a [PHP extension](#php-extension) that needs to be installed in the environment of the target web application that sends tracing information to the listener;
 
 - a [listener application](#listener-application) that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user.
 
@@ -69,15 +69,13 @@ $ app/bin/fracker.js
 1 │ »  »  system("echo Fracker") /var/www/html/index.php +3
 ```
 
-Run again with `-h` and experiment with other options too.
+Run again with `--help` and experiment with other options too.
 
 ## Architecture
 
-Every PHP request or command line invocation triggers a TCP connection to the listener. The protocol is merely a stream of newline-terminated JSON objects from the PHP extension to the listener, such objects contain information about the current request, the calls performed and the return values.
+Every PHP request or command line invocation triggers a TCP connection with the listener. The protocol is merely a stream of newline-terminated JSON objects from the PHP extension to the listener, such objects contain information about the current request, the calls performed and the return values.
 
-This decoupling allows the users to implement their own tools and the provided listener application can be used as a reference.
-
-Raw JSON objects can be inspected by dumping the stream content to standard output, for example:
+This decoupling allows the users to implement their own tools. Raw JSON objects can be inspected by dumping the stream content to standard output, for example:
 
 ```sh
 $ socat tcp-listen:6666,fork,reuseaddr 'exec:jq .,fdout=0'
