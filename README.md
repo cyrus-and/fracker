@@ -12,50 +12,64 @@ It consists of:
 
 ## Demo
 
-Spin a new Docker container running Apache with PHP support:
+1.  Clone or download this repository then move into the root directory.
 
-```console
-$ docker run --rm -d -p 80:80 --name hello-fracker php:apache
-```
+2.  Spin a new Docker container running Apache with PHP support:
 
-Create some dummy PHP script:
+    ```console
+    $ docker run --rm -d -p 80:80 --name hello-fracker php:apache
+    ```
 
-```console
-$ docker exec -i hello-fracker tee /var/www/html/index.php <<\EOF
-<?php
-    function foo($cmd) {
-        system('echo ' . preg_replace('/[^a-z]/i', '', $cmd));
-    }
+3.  Create some dummy PHP script as index:
 
-    $a = explode(' ', $_GET['x']);
-    var_dump($a);
-    foreach ($a as $cmd) {
-        foo($cmd);
-    }
-EOF
-```
+    ```console
+    $ docker exec -i hello-fracker tee /var/www/html/index.php <<\EOF
+    <?php
+        function foo($cmd) {
+            system('echo ' . preg_replace('/[^a-z]/i', '', $cmd));
+        }
 
-Test that the PHP file is properly served:
+        $a = explode(' ', $_GET['x']);
+        var_dump($a);
+        foreach ($a as $cmd) {
+            foo($cmd);
+        }
+    EOF
+    ```
 
-```console
-$ curl 'http://localhost/?x=Hello+Fracker!'
-```
+4.  Test that the PHP file is properly served:
 
-Deploy Fracker to the container:
+    ```console
+    $ curl 'http://localhost/?x=Hello+Fracker!'
+    ```
 
-```console
-$ scripts/deploy.sh hello-fracker
-```
+5.  Deploy Fracker to the container:
 
-Install the dependencies locally (this just needs to be performed once):
+    ```console
+    $ scripts/deploy.sh hello-fracker
+    ```
 
-```console
-$ npm install -C app
-```
+6.  Install the dependencies locally (this just needs to be performed once):
 
-Start Fracker with `app/bin/fracker.js` then run the above `curl` command again, the output should be similar to the above screenshot.
+    ```console
+    $ npm install -C app
+    ```
 
-Run again with `--help` and experiment with other options too.
+7.  Start Fracker with:
+
+    ```console
+    $ app/bin/fracker.js
+    ```
+
+8.  Run the above `curl` command again. (The output should be similar to the above screenshot.)
+
+9.  Run Fracker again with `--help` and experiment with other options too.
+
+10. Stop and remove the container:
+
+    ```console
+    $ docker stop hello-fracker
+    ```
 
 ## Architecture
 
