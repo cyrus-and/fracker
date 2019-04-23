@@ -77,7 +77,7 @@ Every PHP request or command line invocation triggers a TCP connection with the 
 
 This decoupling allows the users to implement their own tools. Raw JSON objects can be inspected by dumping the stream content to standard output, for example:
 
-```sh
+```console
 $ socat tcp-listen:6666,fork,reuseaddr 'exec:jq .,fdout=0'
 ```
 
