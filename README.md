@@ -85,9 +85,9 @@ $ socat tcp-listen:6666,fork,reuseaddr 'exec:jq .,fdout=0'
 
 The PHP extension is forked from [Xdebug][] hence the installation process is fairly the same so is the troubleshooting.
 
-[Xdebug]: https://github.com/xdebug/xdebug
-
 The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides using the [provided script](#deploy-script). Use the [manual approach](#manual-setup) for a more versatile solution.
+
+[Xdebug]: https://github.com/xdebug/xdebug
 
 ### Deploy script
 
