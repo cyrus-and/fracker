@@ -101,6 +101,12 @@ It configures the PHP module to connect to specified host on the specified port 
 
 ### Manual setup
 
+Install the PHP development files and other dependencies. For example, on a Debian-like distribution:
+
+```console
+$ apt-get install php7.0-dev libjson-c-dev pkg-config
+```
+
 The following operations need to be performed in the `ext` directory.
 
 Build the PHP extension with:
