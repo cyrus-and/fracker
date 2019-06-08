@@ -43,7 +43,8 @@ function prepareParser() {
         .option('-i, --ignore-case', 'ignore case in matches')
         .option('-w, --shallow', 'use no indentation to show the call depth')
         .option('-L, --hide-call-locations', 'hide file and line where the function is called')
-        .option('-e, --show-empty-requests', 'show requests that do not match any filter');
+        .option('-e, --show-empty-requests', 'show requests that do not match any filter')
+        .option('-b, --show-server-variable <variables>', 'show a verbose dump of (q)uery, (b)ody, (c)ookie and (s)erver variables, e.g., "bs"');
 
     // used by chalk to manage ANSI output
     program

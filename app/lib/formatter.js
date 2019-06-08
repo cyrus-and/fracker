@@ -87,6 +87,33 @@ class Formatter {
             const argv = JSON.stringify(this._request.server.argv);
             term.out(`${color.method('PHP')} ${color.invocation(argv)}`, this._formattedId);
         }
+
+        // format the server variables
+        if (this._options.showServerVariable) {
+            if (this._options.showServerVariable.indexOf('q') !== -1) {
+                this._formatServerVariables('query', this._request.get);
+            }
+            if (this._options.showServerVariable.indexOf('b') !== -1) {
+                this._formatServerVariables('body', this._request.post);
+            }
+            if (this._options.showServerVariable.indexOf('c') !== -1) {
+                this._formatServerVariables('cookie', this._request.cookie);
+            }
+            if (this._options.showServerVariable.indexOf('s') !== -1) {
+                this._formatServerVariables('server', this._request.server);
+            }
+        }
+    }
+
+    _formatServerVariables(label, object) {
+        if (Object.keys(object).length === 0) {
+            return;
+        }
+        term.out(color.shadow(`${label}:`), this._formattedId);
+        for (const key in object) {
+            const value = object[key];
+            term.out(color.reset(`${color.argument(`${key}=`)}${JSON.stringify(value)}`), this._formattedId);
+        }
     }
 }
 
