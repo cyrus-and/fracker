@@ -1,26 +1,26 @@
-+ │ Loaded config from 'cases/function-matching/config.yml'
-+ │ Listening on 0.0.0.0:6666
-+ │
-1 │ GET localhost:8080/
-1 │ »  »  »  var_dump("test") /php/eval.php(3) : eval()'d code +6
-1 │ »  »  Foo->__construct(x=123) /php/objects.php +22
-1 │ »  »  Foo->method1(y="foo") /php/objects.php +23
-1 │ »  »  »  »  Foo->method3(x=123) /php/objects.php +13
-1 │ »  »  »  »  »  var_dump(123) /php/objects.php +18
-1 │ »  »  »  »  Foo->method3(x="foo") /php/objects.php +14
-1 │ »  »  »  »  »  var_dump("foo") /php/objects.php +18
-1 │ »  »  »  Foo->method3(x="bar") /php/objects.php +13
-1 │ »  »  »  »  var_dump("bar") /php/objects.php +18
-1 │ »  »  »  Foo->method3(x="baz") /php/objects.php +14
-1 │ »  »  »  »  var_dump("baz") /php/objects.php +18
-1 │ »  »  Foo->method3(x="qwerty") /php/objects.php +25
-1 │ »  »  »  var_dump("qwerty") /php/objects.php +18
-1 │ »  »  var_dump(123) /php/types.php +3
-1 │ »  »  var_dump(3.14) /php/types.php +4
-1 │ »  »  var_dump("foo") /php/types.php +5
-1 │ »  »  var_dump([]) /php/types.php +6
-1 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
-1 │ »  »  var_dump({"foo": 1, "bar": 2, "baz": 3}) /php/types.php +8
-1 │ »  »  var_dump({"1": "foo", "2": "bar", "3": "baz"}) /php/types.php +9
-+ │
-+ │ Shutting down...
++++ │ Loaded config from 'cases/function-matching/config.yml'
++++ │ Listening on 0.0.0.0:6666
++++ │
+001 │ GET localhost:8080/
+001 │ »  »  »  var_dump("test") /php/eval.php(3) : eval()'d code +6
+001 │ »  »  Foo->__construct(x=123) /php/objects.php +22
+001 │ »  »  Foo->method1(y="foo") /php/objects.php +23
+001 │ »  »  »  »  Foo->method3(x=123) /php/objects.php +13
+001 │ »  »  »  »  »  var_dump(123) /php/objects.php +18
+001 │ »  »  »  »  Foo->method3(x="foo") /php/objects.php +14
+001 │ »  »  »  »  »  var_dump("foo") /php/objects.php +18
+001 │ »  »  »  Foo->method3(x="bar") /php/objects.php +13
+001 │ »  »  »  »  var_dump("bar") /php/objects.php +18
+001 │ »  »  »  Foo->method3(x="baz") /php/objects.php +14
+001 │ »  »  »  »  var_dump("baz") /php/objects.php +18
+001 │ »  »  Foo->method3(x="qwerty") /php/objects.php +25
+001 │ »  »  »  var_dump("qwerty") /php/objects.php +18
+001 │ »  »  var_dump(123) /php/types.php +3
+001 │ »  »  var_dump(3.14) /php/types.php +4
+001 │ »  »  var_dump("foo") /php/types.php +5
+001 │ »  »  var_dump([]) /php/types.php +6
+001 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
+001 │ »  »  var_dump({"foo": 1, "bar": 2, "baz": 3}) /php/types.php +8
+001 │ »  »  var_dump({"1": "foo", "2": "bar", "3": "baz"}) /php/types.php +9
++++ │
++++ │ Shutting down...

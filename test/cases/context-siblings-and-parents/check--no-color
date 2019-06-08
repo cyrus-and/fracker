@@ -1,33 +1,33 @@
-+ │ Loaded config from 'cases/context-siblings-and-parents/config.yml'
-+ │ Listening on 0.0.0.0:6666
-+ │
-1 │ GET localhost:8080/
-1 │ P {main}() /php/index.php +0
-1 │ »  P require_once("/php/eval.php") /php/index.php +3
-1 │ »  »  P eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n") /php/eval.php +3
-1 │ »  »  »  var_dump("test") /php/eval.php(3) : eval()'d code +6
-1 │ P {main}() /php/index.php +0
-1 │ »  P require_once("/php/objects.php") /php/index.php +4
-1 │ »  »  P Foo->method1(y="foo") /php/objects.php +23
-1 │ »  »  »  P Foo->method2(x=123, y="foo") /php/objects.php +9
-1 │ »  »  »  »  Foo->method3(x=123) /php/objects.php +13
-1 │ »  »  »  »  S Foo->method3(x="foo") /php/objects.php +14
-1 │ P {main}() /php/index.php +0
-1 │ »  P require_once("/php/objects.php") /php/index.php +4
-1 │ »  »  P Foo->method2(x="bar", y="baz") /php/objects.php +24
-1 │ »  »  »  Foo->method3(x="bar") /php/objects.php +13
-1 │ »  »  »  S Foo->method3(x="baz") /php/objects.php +14
-1 │ P {main}() /php/index.php +0
-1 │ »  P require_once("/php/objects.php") /php/index.php +4
-1 │ »  »  Foo->method3(x="qwerty") /php/objects.php +25
-1 │ P {main}() /php/index.php +0
-1 │ »  P require_once("/php/types.php") /php/index.php +6
-1 │ »  »  var_dump(123) /php/types.php +3
-1 │ »  »  S var_dump(3.14) /php/types.php +4
-1 │ »  »  S var_dump("foo") /php/types.php +5
-1 │ »  »  S var_dump([]) /php/types.php +6
-1 │ »  »  S var_dump([123,3.14,"foo"]) /php/types.php +7
-1 │ »  »  S var_dump({"foo":1,"bar":2,"baz":3}) /php/types.php +8
-1 │ »  »  S var_dump({"1":"foo","2":"bar","3":"baz"}) /php/types.php +9
-+ │
-+ │ Shutting down...
++++ │ Loaded config from 'cases/context-siblings-and-parents/config.yml'
++++ │ Listening on 0.0.0.0:6666
++++ │
+001 │ GET localhost:8080/
+001 │ P {main}() /php/index.php +0
+001 │ »  P require_once("/php/eval.php") /php/index.php +3
+001 │ »  »  P eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n") /php/eval.php +3
+001 │ »  »  »  var_dump("test") /php/eval.php(3) : eval()'d code +6
+001 │ P {main}() /php/index.php +0
+001 │ »  P require_once("/php/objects.php") /php/index.php +4
+001 │ »  »  P Foo->method1(y="foo") /php/objects.php +23
+001 │ »  »  »  P Foo->method2(x=123, y="foo") /php/objects.php +9
+001 │ »  »  »  »  Foo->method3(x=123) /php/objects.php +13
+001 │ »  »  »  »  S Foo->method3(x="foo") /php/objects.php +14
+001 │ P {main}() /php/index.php +0
+001 │ »  P require_once("/php/objects.php") /php/index.php +4
+001 │ »  »  P Foo->method2(x="bar", y="baz") /php/objects.php +24
+001 │ »  »  »  Foo->method3(x="bar") /php/objects.php +13
+001 │ »  »  »  S Foo->method3(x="baz") /php/objects.php +14
+001 │ P {main}() /php/index.php +0
+001 │ »  P require_once("/php/objects.php") /php/index.php +4
+001 │ »  »  Foo->method3(x="qwerty") /php/objects.php +25
+001 │ P {main}() /php/index.php +0
+001 │ »  P require_once("/php/types.php") /php/index.php +6
+001 │ »  »  var_dump(123) /php/types.php +3
+001 │ »  »  S var_dump(3.14) /php/types.php +4
+001 │ »  »  S var_dump("foo") /php/types.php +5
+001 │ »  »  S var_dump([]) /php/types.php +6
+001 │ »  »  S var_dump([123,3.14,"foo"]) /php/types.php +7
+001 │ »  »  S var_dump({"foo":1,"bar":2,"baz":3}) /php/types.php +8
+001 │ »  »  S var_dump({"1":"foo","2":"bar","3":"baz"}) /php/types.php +9
++++ │
++++ │ Shutting down...

@@ -14,6 +14,9 @@ class Formatter {
         this._muteArgumentsRegexp = muteArgumentsRegexp;
         this._headerFormatted = false;
 
+        // format the marker according to the default width
+        this._formattedId = String(this._request.id).padStart(term.DEFAULT_MARKER_WIDTH, '0');
+
         // format the header anyway if requested
         if (options.showEmptyRequests) {
             this._formatHeaderIfNeeded();
@@ -34,10 +37,10 @@ class Formatter {
         if (isWebRequest) {
             const method = color.method(this._request.server.REQUEST_METHOD);
             const url = color.invocation(`${this._request.server.HTTP_HOST}${this._request.server.REQUEST_URI}`);
-            term.out(`${method} ${url}`, this._request.id);
+            term.out(`${method} ${url}`, this._formattedId);
         } else {
             const argv = JSON.stringify(this._request.server.argv);
-            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, this._request.id);
+            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, this._formattedId);
         }
     }
 
@@ -70,7 +73,7 @@ class Formatter {
         const fileInfo = this._options.hideCallLocations ? '' : ` ${color.shadow(`${call.file} +${call.line}`)}`;
         const callId = type === 'M' && this._options.shallow && this._options.showReturnValues ? `${color.shadow(call.id)} ` : '';
         const marker = (!color.isEnabled || this._options.shallow) && !this._options.showReturnValues && type !== 'M' && (this._options.showParents || this._options.showChildren || this._options.showSiblings) ? `${color.shadow(type)} ` : '';
-        term.out(color.reset(`${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`), this._request.id);
+        term.out(color.reset(`${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`), this._formattedId);
     }
 
     formatReturn(return_) {
@@ -78,12 +81,12 @@ class Formatter {
         const indentation = indent(return_.level, this._options.shallow);
         const json_value = JSON.stringify(return_.return.value);
         const callId = this._options.shallow ? `${color.shadow(return_.id)} ` : '';
-        term.out(color.reset(`${indentation}${callId}${color.function('=')} ${json_value}`), this._request.id);
+        term.out(color.reset(`${indentation}${callId}${color.function('=')} ${json_value}`), this._formattedId);
     }
 
     formatWarning(warning) {
         this._formatHeaderIfNeeded();
-        term.err(warning.message, this._request.id);
+        term.err(warning.message, this._formattedId);
     }
 }
 

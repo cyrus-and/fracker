@@ -1,13 +1,13 @@
-+ │ Loaded config from 'cases/argument-matching-ignore-case/config.yml'
-+ │ Listening on 0.0.0.0:6666
-+ │
-1 │ GET localhost:8080/
-1 │ »  »  eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n") /php/eval.php +3
-1 │ »  »  Foo->method1(y="foo") /php/objects.php +23
-1 │ »  »  »  Foo->method2(x=123, y="foo") /php/objects.php +9
-1 │ »  »  »  »  Foo->method3(x="foo") /php/objects.php +14
-1 │ »  »  »  »  »  var_dump("foo") /php/objects.php +18
-1 │ »  »  var_dump("foo") /php/types.php +5
-1 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
-+ │
-+ │ Shutting down...
++++ │ Loaded config from 'cases/argument-matching-ignore-case/config.yml'
++++ │ Listening on 0.0.0.0:6666
++++ │
+001 │ GET localhost:8080/
+001 │ »  »  eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n") /php/eval.php +3
+001 │ »  »  Foo->method1(y="foo") /php/objects.php +23
+001 │ »  »  »  Foo->method2(x=123, y="foo") /php/objects.php +9
+001 │ »  »  »  »  Foo->method3(x="foo") /php/objects.php +14
+001 │ »  »  »  »  »  var_dump("foo") /php/objects.php +18
+001 │ »  »  var_dump("foo") /php/types.php +5
+001 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
++++ │
++++ │ Shutting down...

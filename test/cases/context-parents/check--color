@@ -1,27 +1,27 @@
-[90m+ │ Loaded config from 'cases/context-parents/config.yml'[39m
-[90m+ │ Listening on 0.0.0.0:6666[39m
-[90m+ │[39m
-[90m1 │ [37m[1mGET[22m[90m [33mlocalhost:8080/[90m[39m
-[90m1 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
-[90m1 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
-[90m1 │ [37m[90m»  »  [37m[34mFoo->method1[37m[90m([37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +23[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m123[90m, [37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +9[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m123[90m)[37m [90m/php/objects.php +13[37m[90m[39m
-[90m1 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
-[90m1 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
-[90m1 │ [37m[90m»  »  [37m[34mFoo->method1[37m[90m([37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +23[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m123[90m, [37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +9[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"foo"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
-[90m1 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
-[90m1 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
-[90m1 │ [37m[90m»  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m"bar"[90m, [37m[36my=[37m"baz"[90m)[37m [90m/php/objects.php +24[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"bar"[90m)[37m [90m/php/objects.php +13[37m[90m[39m
-[90m1 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
-[90m1 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
-[90m1 │ [37m[90m»  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m"bar"[90m, [37m[36my=[37m"baz"[90m)[37m [90m/php/objects.php +24[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"baz"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
-[90m1 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
-[90m1 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
-[90m1 │ [37m[90m»  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"qwerty"[90m)[37m [90m/php/objects.php +25[37m[90m[39m
-[90m+ │[39m
-[90m+ │ Shutting down...[39m
+[90m+++ │ Loaded config from 'cases/context-parents/config.yml'[39m
+[90m+++ │ Listening on 0.0.0.0:6666[39m
+[90m+++ │[39m
+[90m001 │ [37m[1mGET[22m[90m [33mlocalhost:8080/[90m[39m
+[90m001 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
+[90m001 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mFoo->method1[37m[90m([37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +23[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m123[90m, [37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +9[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m123[90m)[37m [90m/php/objects.php +13[37m[90m[39m
+[90m001 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
+[90m001 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mFoo->method1[37m[90m([37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +23[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m123[90m, [37m[36my=[37m"foo"[90m)[37m [90m/php/objects.php +9[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"foo"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
+[90m001 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
+[90m001 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m"bar"[90m, [37m[36my=[37m"baz"[90m)[37m [90m/php/objects.php +24[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"bar"[90m)[37m [90m/php/objects.php +13[37m[90m[39m
+[90m001 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
+[90m001 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mFoo->method2[37m[90m([37m[36mx=[37m"bar"[90m, [37m[36my=[37m"baz"[90m)[37m [90m/php/objects.php +24[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"baz"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
+[90m001 │ [37m[34m{main}[37m[90m([37m[90m)[37m [90m/php/index.php +0[37m[90m[39m
+[90m001 │ [37m[90m»  [37m[34mrequire_once[37m[90m([37m"/php/objects.php"[90m)[37m [90m/php/index.php +4[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"qwerty"[90m)[37m [90m/php/objects.php +25[37m[90m[39m
+[90m+++ │[39m
+[90m+++ │ Shutting down...[39m

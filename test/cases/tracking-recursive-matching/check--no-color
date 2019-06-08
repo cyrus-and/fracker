@@ -1,68 +1,68 @@
-+ │ Loaded config from 'cases/tracking-recursive-matching/config.yml'
-+ │ Listening on 0.0.0.0:6666
-+ │
-1 │ GET localhost:8080/tracking.php?GET_key=GET_value
-1 │ »  do_actual_stuff(x="GET_value") /php/tracking.php +26
-1 │ »  »  transform1(x="GET_value") /php/tracking.php +20
-1 │ »  »  »  strtolower("GET_value") /php/tracking.php +4
-1 │ »  »  »  = "get_value"
-1 │ »  »  = "get_value"
-1 │ »  »  transform2(x="get_value") /php/tracking.php +20
-1 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "get_value") /php/tracking.php +8
-1 │ »  »  »  = "getvalue"
-1 │ »  »  = "getvalue"
-1 │ »  »  transform3(x="getvalue") /php/tracking.php +20
-1 │ »  »  = "'getvalue'"
-1 │ »  »  process(x="'getvalue'") /php/tracking.php +20
-1 │ »  »  »  var_dump("'getvalue'") /php/tracking.php +16
-1 │ »  »  »  = null
-+ │
-2 │ POST localhost:8080/tracking.php
-2 │ »  do_actual_stuff(x="POST_value") /php/tracking.php +32
-2 │ »  »  transform1(x="POST_value") /php/tracking.php +20
-2 │ »  »  »  strtolower("POST_value") /php/tracking.php +4
-2 │ »  »  »  = "post_value"
-2 │ »  »  = "post_value"
-2 │ »  »  transform2(x="post_value") /php/tracking.php +20
-2 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "post_value") /php/tracking.php +8
-2 │ »  »  »  = "postvalue"
-2 │ »  »  = "postvalue"
-2 │ »  »  transform3(x="postvalue") /php/tracking.php +20
-2 │ »  »  = "'postvalue'"
-2 │ »  »  process(x="'postvalue'") /php/tracking.php +20
-2 │ »  »  »  var_dump("'postvalue'") /php/tracking.php +16
-2 │ »  »  »  = null
-+ │
-3 │ GET localhost:8080/tracking.php
-3 │ »  do_actual_stuff(x="COOKIE_value") /php/tracking.php +38
-3 │ »  »  transform1(x="COOKIE_value") /php/tracking.php +20
-3 │ »  »  »  strtolower("COOKIE_value") /php/tracking.php +4
-3 │ »  »  »  = "cookie_value"
-3 │ »  »  = "cookie_value"
-3 │ »  »  transform2(x="cookie_value") /php/tracking.php +20
-3 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "cookie_value") /php/tracking.php +8
-3 │ »  »  »  = "cookievalue"
-3 │ »  »  = "cookievalue"
-3 │ »  »  transform3(x="cookievalue") /php/tracking.php +20
-3 │ »  »  = "'cookievalue'"
-3 │ »  »  process(x="'cookievalue'") /php/tracking.php +20
-3 │ »  »  »  var_dump("'cookievalue'") /php/tracking.php +16
-3 │ »  »  »  = null
-+ │
-4 │ GET localhost:8080/tracking.php
-4 │ »  do_actual_stuff(x="HEADER_value") /php/tracking.php +44
-4 │ »  »  transform1(x="HEADER_value") /php/tracking.php +20
-4 │ »  »  »  strtolower("HEADER_value") /php/tracking.php +4
-4 │ »  »  »  = "header_value"
-4 │ »  »  = "header_value"
-4 │ »  »  transform2(x="header_value") /php/tracking.php +20
-4 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "header_value") /php/tracking.php +8
-4 │ »  »  »  = "headervalue"
-4 │ »  »  = "headervalue"
-4 │ »  »  transform3(x="headervalue") /php/tracking.php +20
-4 │ »  »  = "'headervalue'"
-4 │ »  »  process(x="'headervalue'") /php/tracking.php +20
-4 │ »  »  »  var_dump("'headervalue'") /php/tracking.php +16
-4 │ »  »  »  = null
-+ │
-+ │ Shutting down...
++++ │ Loaded config from 'cases/tracking-recursive-matching/config.yml'
++++ │ Listening on 0.0.0.0:6666
++++ │
+001 │ GET localhost:8080/tracking.php?GET_key=GET_value
+001 │ »  do_actual_stuff(x="GET_value") /php/tracking.php +26
+001 │ »  »  transform1(x="GET_value") /php/tracking.php +20
+001 │ »  »  »  strtolower("GET_value") /php/tracking.php +4
+001 │ »  »  »  = "get_value"
+001 │ »  »  = "get_value"
+001 │ »  »  transform2(x="get_value") /php/tracking.php +20
+001 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "get_value") /php/tracking.php +8
+001 │ »  »  »  = "getvalue"
+001 │ »  »  = "getvalue"
+001 │ »  »  transform3(x="getvalue") /php/tracking.php +20
+001 │ »  »  = "'getvalue'"
+001 │ »  »  process(x="'getvalue'") /php/tracking.php +20
+001 │ »  »  »  var_dump("'getvalue'") /php/tracking.php +16
+001 │ »  »  »  = null
++++ │
+002 │ POST localhost:8080/tracking.php
+002 │ »  do_actual_stuff(x="POST_value") /php/tracking.php +32
+002 │ »  »  transform1(x="POST_value") /php/tracking.php +20
+002 │ »  »  »  strtolower("POST_value") /php/tracking.php +4
+002 │ »  »  »  = "post_value"
+002 │ »  »  = "post_value"
+002 │ »  »  transform2(x="post_value") /php/tracking.php +20
+002 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "post_value") /php/tracking.php +8
+002 │ »  »  »  = "postvalue"
+002 │ »  »  = "postvalue"
+002 │ »  »  transform3(x="postvalue") /php/tracking.php +20
+002 │ »  »  = "'postvalue'"
+002 │ »  »  process(x="'postvalue'") /php/tracking.php +20
+002 │ »  »  »  var_dump("'postvalue'") /php/tracking.php +16
+002 │ »  »  »  = null
++++ │
+003 │ GET localhost:8080/tracking.php
+003 │ »  do_actual_stuff(x="COOKIE_value") /php/tracking.php +38
+003 │ »  »  transform1(x="COOKIE_value") /php/tracking.php +20
+003 │ »  »  »  strtolower("COOKIE_value") /php/tracking.php +4
+003 │ »  »  »  = "cookie_value"
+003 │ »  »  = "cookie_value"
+003 │ »  »  transform2(x="cookie_value") /php/tracking.php +20
+003 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "cookie_value") /php/tracking.php +8
+003 │ »  »  »  = "cookievalue"
+003 │ »  »  = "cookievalue"
+003 │ »  »  transform3(x="cookievalue") /php/tracking.php +20
+003 │ »  »  = "'cookievalue'"
+003 │ »  »  process(x="'cookievalue'") /php/tracking.php +20
+003 │ »  »  »  var_dump("'cookievalue'") /php/tracking.php +16
+003 │ »  »  »  = null
++++ │
+004 │ GET localhost:8080/tracking.php
+004 │ »  do_actual_stuff(x="HEADER_value") /php/tracking.php +44
+004 │ »  »  transform1(x="HEADER_value") /php/tracking.php +20
+004 │ »  »  »  strtolower("HEADER_value") /php/tracking.php +4
+004 │ »  »  »  = "header_value"
+004 │ »  »  = "header_value"
+004 │ »  »  transform2(x="header_value") /php/tracking.php +20
+004 │ »  »  »  preg_replace("/[^a-z0-9]/i", "", "header_value") /php/tracking.php +8
+004 │ »  »  »  = "headervalue"
+004 │ »  »  = "headervalue"
+004 │ »  »  transform3(x="headervalue") /php/tracking.php +20
+004 │ »  »  = "'headervalue'"
+004 │ »  »  process(x="'headervalue'") /php/tracking.php +20
+004 │ »  »  »  var_dump("'headervalue'") /php/tracking.php +16
+004 │ »  »  »  = null
++++ │
++++ │ Shutting down...

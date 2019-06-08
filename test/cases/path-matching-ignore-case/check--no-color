@@ -1,13 +1,13 @@
-+ │ Loaded config from 'cases/path-matching-ignore-case/config.yml'
-+ │ Listening on 0.0.0.0:6666
-+ │
-1 │ GET localhost:8080/
-1 │ »  »  var_dump(123) /php/types.php +3
-1 │ »  »  var_dump(3.14) /php/types.php +4
-1 │ »  »  var_dump("foo") /php/types.php +5
-1 │ »  »  var_dump([]) /php/types.php +6
-1 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
-1 │ »  »  var_dump({"foo": 1, "bar": 2, "baz": 3}) /php/types.php +8
-1 │ »  »  var_dump({"1": "foo", "2": "bar", "3": "baz"}) /php/types.php +9
-+ │
-+ │ Shutting down...
++++ │ Loaded config from 'cases/path-matching-ignore-case/config.yml'
++++ │ Listening on 0.0.0.0:6666
++++ │
+001 │ GET localhost:8080/
+001 │ »  »  var_dump(123) /php/types.php +3
+001 │ »  »  var_dump(3.14) /php/types.php +4
+001 │ »  »  var_dump("foo") /php/types.php +5
+001 │ »  »  var_dump([]) /php/types.php +6
+001 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
+001 │ »  »  var_dump({"foo": 1, "bar": 2, "baz": 3}) /php/types.php +8
+001 │ »  »  var_dump({"1": "foo", "2": "bar", "3": "baz"}) /php/types.php +9
++++ │
++++ │ Shutting down...

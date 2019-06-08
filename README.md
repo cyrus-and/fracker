@@ -11,7 +11,7 @@ It consists of:
 
 - a [listener application](#listener-application) that is in charge of receiving the tracing information and performing some analysis in order to show some meaningful data to the user.
 
-![Screenshot](https://i.imgur.com/N6uZVyy.png)
+![Screenshot](https://i.imgur.com/kcmq8PA.png)
 
 ## Demo
 

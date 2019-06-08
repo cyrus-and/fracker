@@ -1,9 +1,9 @@
-[90m+ │ Loaded config from 'cases/context-children-1/config.yml'[39m
-[90m+ │ Listening on 0.0.0.0:6666[39m
-[90m+ │[39m
-[90m1 │ [37m[1mGET[22m[90m [33mlocalhost:8080/[90m[39m
-[90m1 │ [37m[90m»  »  [37m[32mfibo[37m[90m([37m[36mn=[37m5[90m)[37m [90m/php/recursion.php +11[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  [37m[34mfibo[37m[90m([37m[36mn=[37m4[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
-[90m1 │ [37m[90m»  »  »  [37m[34mfibo[37m[90m([37m[36mn=[37m3[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
-[90m+ │[39m
-[90m+ │ Shutting down...[39m
+[90m+++ │ Loaded config from 'cases/context-children-1/config.yml'[39m
+[90m+++ │ Listening on 0.0.0.0:6666[39m
+[90m+++ │[39m
+[90m001 │ [37m[1mGET[22m[90m [33mlocalhost:8080/[90m[39m
+[90m001 │ [37m[90m»  »  [37m[32mfibo[37m[90m([37m[36mn=[37m5[90m)[37m [90m/php/recursion.php +11[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  [37m[34mfibo[37m[90m([37m[36mn=[37m4[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  [37m[34mfibo[37m[90m([37m[36mn=[37m3[90m)[37m [90m/php/recursion.php +7[37m[90m[39m
+[90m+++ │[39m
+[90m+++ │ Shutting down...[39m

@@ -1,9 +1,9 @@
-+ │ Loaded config from 'cases/context-children-1/config.yml'
-+ │ Listening on 0.0.0.0:6666
-+ │
-1 │ GET localhost:8080/
-1 │ »  »  fibo(n=5) /php/recursion.php +11
-1 │ »  »  »  C fibo(n=4) /php/recursion.php +7
-1 │ »  »  »  C fibo(n=3) /php/recursion.php +7
-+ │
-+ │ Shutting down...
++++ │ Loaded config from 'cases/context-children-1/config.yml'
++++ │ Listening on 0.0.0.0:6666
++++ │
+001 │ GET localhost:8080/
+001 │ »  »  fibo(n=5) /php/recursion.php +11
+001 │ »  »  »  C fibo(n=4) /php/recursion.php +7
+001 │ »  »  »  C fibo(n=3) /php/recursion.php +7
++++ │
++++ │ Shutting down...
