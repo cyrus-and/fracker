@@ -72,3 +72,83 @@
 001 │ 42 = null
 001 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
 001 │ 43 = null
+002 │ POST localhost:8080/?GET_key=GET_value
+002 │ query:
+002 │ GET_key="GET_value"
+002 │ body:
+002 │ POST_key="POST_value"
+002 │ cookie:
+002 │ COOKIE_key="COOKIE_value"
+002 │ 0 {main}()
+002 │ 1 require_once("/php/eval.php")
+002 │ 2 eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n")
+002 │ 3 foo(x="test")
+002 │ 3 = "test"
+002 │ 4 var_dump("test")
+002 │ 4 = null
+002 │ 5 require_once("/php/objects.php")
+002 │ 6 Foo->__construct(x=123)
+002 │ 7 Foo->method1(y="foo")
+002 │ 8 Foo->method2(x=123, y="foo")
+002 │ 9 Foo->method3(x=123)
+002 │ 10 var_dump(123)
+002 │ 10 = null
+002 │ 11 Foo->method3(x="foo")
+002 │ 12 var_dump("foo")
+002 │ 12 = null
+002 │ 13 Foo->method2(x="bar", y="baz")
+002 │ 14 Foo->method3(x="bar")
+002 │ 15 var_dump("bar")
+002 │ 15 = null
+002 │ 16 Foo->method3(x="baz")
+002 │ 17 var_dump("baz")
+002 │ 17 = null
+002 │ 18 Foo->method3(x="qwerty")
+002 │ 19 var_dump("qwerty")
+002 │ 19 = null
+002 │ 20 require_once("/php/recursion.php")
+002 │ 21 fibo(n=5)
+002 │ 22 fibo(n=4)
+002 │ 23 fibo(n=3)
+002 │ 24 fibo(n=2)
+002 │ 25 fibo(n=1)
+002 │ 25 = 1
+002 │ 26 fibo(n=0)
+002 │ 26 = 1
+002 │ 24 = 2
+002 │ 27 fibo(n=1)
+002 │ 27 = 1
+002 │ 23 = 3
+002 │ 28 fibo(n=2)
+002 │ 29 fibo(n=1)
+002 │ 29 = 1
+002 │ 30 fibo(n=0)
+002 │ 30 = 1
+002 │ 28 = 2
+002 │ 22 = 5
+002 │ 31 fibo(n=3)
+002 │ 32 fibo(n=2)
+002 │ 33 fibo(n=1)
+002 │ 33 = 1
+002 │ 34 fibo(n=0)
+002 │ 34 = 1
+002 │ 32 = 2
+002 │ 35 fibo(n=1)
+002 │ 35 = 1
+002 │ 31 = 3
+002 │ 21 = 8
+002 │ 36 require_once("/php/types.php")
+002 │ 37 var_dump(123)
+002 │ 37 = null
+002 │ 38 var_dump(3.14)
+002 │ 38 = null
+002 │ 39 var_dump("foo")
+002 │ 39 = null
+002 │ 40 var_dump([])
+002 │ 40 = null
+002 │ 41 var_dump([123, 3.14, "foo"])
+002 │ 41 = null
+002 │ 42 var_dump({"foo": 1, "bar": 2, "baz": 3})
+002 │ 42 = null
+002 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
+002 │ 43 = null

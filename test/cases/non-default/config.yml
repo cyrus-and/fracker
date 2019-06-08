@@ -1,3 +1,4 @@
 shallow: true
 showReturnValues: true
 hideCallLocations: true
+showServerVariable: qbc
