@@ -1,6 +1,3 @@
-[90m+++ │ Loaded config from 'cases/tracking-recursive-exclusions/config.yml'[39m
-[90m+++ │ Listening on 0.0.0.0:6666[39m
-[90m+++ │[39m
 [90m001 │ [37m[1mGET[22m[90m [33mlocalhost:8080/tracking.php?GET_key=GET_value[90m[39m
 [90m001 │ [37m[90m»  [37m[32mdo_actual_stuff[37m[90m([37m[36mx=[37m"[31mGET_value[37m"[90m)[37m [90m/php/tracking.php +26[37m[90m[39m
 [90m001 │ [37m[90m»  »  [37m[32mtransform1[37m[90m([37m[36mx=[37m"[31mGET_value[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
@@ -16,7 +13,6 @@
 [90m001 │ [37m[90m»  »  [37m[32mprocess[37m[90m([37m[36mx=[37m"[31m'getvalue'[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
 [90m001 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m"[31m'getvalue'[37m"[90m)[37m [90m/php/tracking.php +16[37m[90m[39m
 [90m001 │ [37m[90m»  »  »  [37m[32m=[37m null[90m[39m
-[90m+++ │[39m
 [90m002 │ [37m[1mPOST[22m[90m [33mlocalhost:8080/tracking.php[90m[39m
 [90m002 │ [37m[90m»  [37m[32mdo_actual_stuff[37m[90m([37m[36mx=[37m"[31mPOST_value[37m"[90m)[37m [90m/php/tracking.php +32[37m[90m[39m
 [90m002 │ [37m[90m»  »  [37m[32mtransform1[37m[90m([37m[36mx=[37m"[31mPOST_value[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
@@ -32,7 +28,6 @@
 [90m002 │ [37m[90m»  »  [37m[32mprocess[37m[90m([37m[36mx=[37m"[31m'postvalue'[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
 [90m002 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m"[31m'postvalue'[37m"[90m)[37m [90m/php/tracking.php +16[37m[90m[39m
 [90m002 │ [37m[90m»  »  »  [37m[32m=[37m null[90m[39m
-[90m+++ │[39m
 [90m003 │ [37m[1mGET[22m[90m [33mlocalhost:8080/tracking.php[90m[39m
 [90m003 │ [37m[90m»  »  [37m[32mtransform2[37m[90m([37m[36mx=[37m"[31mcookie_value[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
 [90m003 │ [37m[90m»  »  »  [37m[32mpreg_replace[37m[90m([37m"/[^a-z0-9]/i"[90m, [37m""[90m, [37m"[31mcookie_value[37m"[90m)[37m [90m/php/tracking.php +8[37m[90m[39m
@@ -43,7 +38,6 @@
 [90m003 │ [37m[90m»  »  [37m[32mprocess[37m[90m([37m[36mx=[37m"[31m'cookievalue'[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
 [90m003 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m"[31m'cookievalue'[37m"[90m)[37m [90m/php/tracking.php +16[37m[90m[39m
 [90m003 │ [37m[90m»  »  »  [37m[32m=[37m null[90m[39m
-[90m+++ │[39m
 [90m004 │ [37m[1mGET[22m[90m [33mlocalhost:8080/tracking.php[90m[39m
 [90m004 │ [37m[90m»  »  [37m[32mtransform2[37m[90m([37m[36mx=[37m"[31mheader_value[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
 [90m004 │ [37m[90m»  »  »  [37m[32mpreg_replace[37m[90m([37m"/[^a-z0-9]/i"[90m, [37m""[90m, [37m"[31mheader_value[37m"[90m)[37m [90m/php/tracking.php +8[37m[90m[39m
@@ -54,5 +48,3 @@
 [90m004 │ [37m[90m»  »  [37m[32mprocess[37m[90m([37m[36mx=[37m"[31m'headervalue'[37m"[90m)[37m [90m/php/tracking.php +20[37m[90m[39m
 [90m004 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m"[31m'headervalue'[37m"[90m)[37m [90m/php/tracking.php +16[37m[90m[39m
 [90m004 │ [37m[90m»  »  »  [37m[32m=[37m null[90m[39m
-[90m+++ │[39m
-[90m+++ │ Shutting down...[39m

@@ -1,6 +1,3 @@
-+++ │ Loaded config from 'cases/non-default/config.yml'
-+++ │ Listening on 0.0.0.0:6666
-+++ │
 001 │ GET localhost:8080/
 001 │ 0 {main}()
 001 │ 1 require_once("/php/eval.php")
@@ -75,5 +72,3 @@
 001 │ 42 = null
 001 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
 001 │ 43 = null
-+++ │
-+++ │ Shutting down...

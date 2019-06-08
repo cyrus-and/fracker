@@ -1,6 +1,3 @@
-+++ │ Loaded config from 'cases/tracking-recursive/config.yml'
-+++ │ Listening on 0.0.0.0:6666
-+++ │
 001 │ GET localhost:8080/tracking.php?GET_key=GET_value
 001 │ »  var_dump("GET_key") /php/tracking.php +24
 001 │ »  = null
@@ -20,7 +17,6 @@
 001 │ »  »  »  = null
 001 │ »  var_dump("123") /php/tracking.php +52
 001 │ »  = null
-+++ │
 002 │ POST localhost:8080/tracking.php
 002 │ »  var_dump("POST_key") /php/tracking.php +30
 002 │ »  = null
@@ -40,7 +36,6 @@
 002 │ »  »  »  = null
 002 │ »  var_dump("123") /php/tracking.php +52
 002 │ »  = null
-+++ │
 003 │ GET localhost:8080/tracking.php
 003 │ »  var_dump("COOKIE_key") /php/tracking.php +36
 003 │ »  = null
@@ -60,7 +55,6 @@
 003 │ »  »  »  = null
 003 │ »  var_dump("123") /php/tracking.php +52
 003 │ »  = null
-+++ │
 004 │ GET localhost:8080/tracking.php
 004 │ »  do_actual_stuff(x="HEADER_value") /php/tracking.php +44
 004 │ »  »  transform1(x="HEADER_value") /php/tracking.php +20
@@ -78,5 +72,3 @@
 004 │ »  »  »  = null
 004 │ »  var_dump("123") /php/tracking.php +52
 004 │ »  = null
-+++ │
-+++ │ Shutting down...

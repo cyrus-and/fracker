@@ -1,6 +1,3 @@
-+++ │ Loaded config from 'cases/function-matching/config.yml'
-+++ │ Listening on 0.0.0.0:6666
-+++ │
 001 │ GET localhost:8080/
 001 │ »  »  »  var_dump("test") /php/eval.php(3) : eval()'d code +6
 001 │ »  »  Foo->__construct(x=123) /php/objects.php +22
@@ -22,5 +19,3 @@
 001 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
 001 │ »  »  var_dump({"foo": 1, "bar": 2, "baz": 3}) /php/types.php +8
 001 │ »  »  var_dump({"1": "foo", "2": "bar", "3": "baz"}) /php/types.php +9
-+++ │
-+++ │ Shutting down...

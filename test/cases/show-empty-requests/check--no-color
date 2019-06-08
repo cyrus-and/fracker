@@ -1,6 +1,1 @@
-+++ │ Loaded config from 'cases/show-empty-requests/config.yml'
-+++ │ Listening on 0.0.0.0:6666
-+++ │
 001 │ GET localhost:8080/
-+++ │
-+++ │ Shutting down...
