@@ -23,27 +23,6 @@ class Formatter {
         }
     }
 
-    _formatHeaderIfNeeded() {
-        // format the header just once
-        if (this._headerFormatted) {
-            return;
-        } else {
-            this._headerFormatted = true;
-        }
-
-        // format the request header
-        const isWebRequest = !!this._request.server.REQUEST_METHOD;
-        term.log();
-        if (isWebRequest) {
-            const method = color.method(this._request.server.REQUEST_METHOD);
-            const url = color.invocation(`${this._request.server.HTTP_HOST}${this._request.server.REQUEST_URI}`);
-            term.out(`${method} ${url}`, this._formattedId);
-        } else {
-            const argv = JSON.stringify(this._request.server.argv);
-            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, this._formattedId);
-        }
-    }
-
     formatCall(call, type) {
         this._formatHeaderIfNeeded();
 
@@ -87,6 +66,27 @@ class Formatter {
     formatWarning(warning) {
         this._formatHeaderIfNeeded();
         term.err(warning.message, this._formattedId);
+    }
+
+    _formatHeaderIfNeeded() {
+        // format the header just once
+        if (this._headerFormatted) {
+            return;
+        } else {
+            this._headerFormatted = true;
+        }
+
+        // format the request header
+        term.log();
+        const isWebRequest = !!this._request.server.REQUEST_METHOD;
+        if (isWebRequest) {
+            const method = color.method(this._request.server.REQUEST_METHOD);
+            const url = color.invocation(`${this._request.server.HTTP_HOST}${this._request.server.REQUEST_URI}`);
+            term.out(`${method} ${url}`, this._formattedId);
+        } else {
+            const argv = JSON.stringify(this._request.server.argv);
+            term.out(`${color.method('PHP')} ${color.invocation(argv)}`, this._formattedId);
+        }
     }
 }
 
