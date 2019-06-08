@@ -31,9 +31,6 @@ function run(server, options = {}) {
         let lastMatchedLevel;
         let inMatchedFunction;
 
-        // print the request line
-        formatter.formatRequest();
-
         // prepare the initial tracking regexps
         if (options.trackUserInputs) {
             // add inputs according to the PHP invocation

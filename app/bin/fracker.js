@@ -42,7 +42,8 @@ function prepareParser() {
         .option('-s, --show-siblings', 'show siblings calls for the first matched functions')
         .option('-i, --ignore-case', 'ignore case in matches')
         .option('-w, --shallow', 'use no indentation to show the call depth')
-        .option('-L, --hide-call-locations', 'hide file and line where the function is called');
+        .option('-L, --hide-call-locations', 'hide file and line where the function is called')
+        .option('-e, --show-empty-requests', 'show requests that do not match any filter');
 
     // used by chalk to manage ANSI output
     program

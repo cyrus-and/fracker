@@ -12,9 +12,23 @@ class Formatter {
         this._options = options;
         this._muteFunctionsRegexp = muteFunctionsRegexp;
         this._muteArgumentsRegexp = muteArgumentsRegexp;
+        this._headerFormatted = false;
+
+        // format the header anyway if requested
+        if (options.showEmptyRequests) {
+            this._formatHeaderIfNeeded();
+        }
     }
 
-    formatRequest() {
+    _formatHeaderIfNeeded() {
+        // format the header just once
+        if (this._headerFormatted) {
+            return;
+        } else {
+            this._headerFormatted = true;
+        }
+
+        // format the request header
         const isWebRequest = !!this._request.server.REQUEST_METHOD;
         term.log();
         if (isWebRequest) {
@@ -28,6 +42,8 @@ class Formatter {
     }
 
     formatCall(call, type) {
+        this._formatHeaderIfNeeded();
+
         // format arguments
         let argumentList;
         if (Matcher.exclude(call.function, this._muteFunctionsRegexp)) {
@@ -66,6 +82,7 @@ class Formatter {
     }
 
     formatWarning(warning) {
+        this._formatHeaderIfNeeded();
         term.err(warning.message, this._request.id);
     }
 }
