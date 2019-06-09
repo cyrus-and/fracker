@@ -79,6 +79,8 @@
 002 │ POST_key="POST_value"
 002 │ cookie:
 002 │ COOKIE_key="COOKIE_value"
+002 │ input:
+002 │ "POST_key=POST_value"
 002 │ 0 {main}()
 002 │ 1 require_once("/php/eval.php")
 002 │ 2 eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n")

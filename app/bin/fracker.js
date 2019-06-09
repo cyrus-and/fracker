@@ -44,7 +44,7 @@ function prepareParser() {
         .option('-w, --shallow', 'use no indentation to show the call depth')
         .option('-L, --hide-call-locations', 'hide file and line where the function is called')
         .option('-e, --show-empty-requests', 'show requests that do not match any filter')
-        .option('-b, --show-server-variable <variables>', 'show a verbose dump of (q)uery, (b)ody, (c)ookie and (s)erver variables, e.g., "bs"');
+        .option('-b, --show-server-variable <variables>', 'show a verbose dump of (q)uery, (b)ody, (c)ookie, (s)erver and (i)nput, e.g., "ci"');
 
     // used by chalk to manage ANSI output
     program

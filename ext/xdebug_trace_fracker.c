@@ -152,6 +152,24 @@ static void add_json_typed_zval(void *ctxt, struct json_object *parent, zval *va
     xdebug_str_free(type);
 }
 
+static struct json_object *get_php_input()
+{
+    php_stream *php_input;
+    json_object *input = NULL;
+    zend_string *data = NULL;
+
+    /* open the PHP inpuit stream (POST data or stdin) and read its value */
+    php_input = php_stream_open_wrapper("php://input", "r", 0, NULL);
+    data = php_stream_copy_to_mem(php_input, PHP_STREAM_COPY_ALL, 0);
+    if (data) {
+        input = json_object_new_string_len(ZSTR_VAL(data), ZSTR_LEN(data));
+        zend_string_free(data);
+    }
+
+    php_stream_close(php_input);
+    return input;
+}
+
 void *xdebug_trace_fracker_init(char *fname, char *script_filename, long options TSRMLS_DC)
 {
     xdebug_trace_fracker_context *ctxt;
@@ -188,6 +206,7 @@ void xdebug_trace_fracker_write_header(void *ctxt TSRMLS_DC)
     add_json_zval(ctxt, info, "get", &PG(http_globals)[TRACK_VARS_GET]);
     add_json_zval(ctxt, info, "post", &PG(http_globals)[TRACK_VARS_POST]);
     add_json_zval(ctxt, info, "cookie", &PG(http_globals)[TRACK_VARS_COOKIE]);
+    json_object_object_add(info, "input", get_php_input());
     write_json_object(CTXT(socket_fd), info);
 }
 

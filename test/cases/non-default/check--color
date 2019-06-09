@@ -79,6 +79,8 @@
 [90m002 │ [37m[36mPOST_key=[37m"POST_value"[90m[39m
 [90m002 │ [90mcookie:[90m[39m
 [90m002 │ [37m[36mCOOKIE_key=[37m"COOKIE_value"[90m[39m
+[90m002 │ [90minput:[90m[39m
+[90m002 │ [37m"POST_key=POST_value"[90m[39m
 [90m002 │ [37m[90m0[37m [32m{main}[37m[90m([37m[90m)[37m[90m[39m
 [90m002 │ [37m[90m1[37m [32mrequire_once[37m[90m([37m"/php/eval.php"[90m)[37m[90m[39m
 [90m002 │ [37m[90m2[37m [32meval[37m[90m([37m"\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n"[90m)[37m[90m[39m

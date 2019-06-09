@@ -102,6 +102,10 @@ class Formatter {
             if (this._options.showServerVariable.indexOf('s') !== -1) {
                 this._formatServerVariables('server', this._request.server);
             }
+            if (this._options.showServerVariable.indexOf('i') !== -1 && this._request.input) {
+                term.out(color.shadow(`input:`), this._formattedId);
+                term.out(color.reset(JSON.stringify(this._request.input)), this._formattedId);
+            }
         }
     }
 
