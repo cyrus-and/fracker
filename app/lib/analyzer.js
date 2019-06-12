@@ -62,6 +62,11 @@ function run(server, options = {}) {
         }
 
         events.on('call', (call) => {
+            // just show request info
+            if (options.disableCallLog) {
+                return;
+            }
+
             // collect the stack trace if requested
             if (options.showParents) {
                 // skip deeper calls
@@ -174,6 +179,11 @@ function run(server, options = {}) {
 
         // XXX the return event is only generated when a value is actually returned
         events.on('return', (return_) => {
+            // just show request info
+            if (options.disableCallLog) {
+                return;
+            }
+
             // add the return value to the set of tracking inputs and update the argument regexp
             if (options.trackUserInputs && options.recursive) {
                 // add return values literally

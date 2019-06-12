@@ -1,0 +1,12 @@
+[90m001 │ [37m[1mGET[22m[90m [33mlocalhost:8080/tracking.php?GET_key=GET_value[90m[39m
+[90m001 │ [90mquery:[90m[39m
+[90m001 │ [37m[36mGET_key=[37m"GET_value"[90m[39m
+[90m002 │ [37m[1mPOST[22m[90m [33mlocalhost:8080/tracking.php[90m[39m
+[90m002 │ [90mbody:[90m[39m
+[90m002 │ [37m[36mPOST_key=[37m"POST_value"[90m[39m
+[90m002 │ [90minput:[90m[39m
+[90m002 │ [37m"POST_key=POST_value"[90m[39m
+[90m003 │ [37m[1mGET[22m[90m [33mlocalhost:8080/tracking.php[90m[39m
+[90m003 │ [90mcookie:[90m[39m
+[90m003 │ [37m[36mCOOKIE_key=[37m"COOKIE_value"[90m[39m
+[90m004 │ [37m[1mGET[22m[90m [33mlocalhost:8080/tracking.php[90m[39m

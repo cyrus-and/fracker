@@ -1,0 +1,12 @@
+001 │ GET localhost:8080/tracking.php?GET_key=GET_value
+001 │ query:
+001 │ GET_key="GET_value"
+002 │ POST localhost:8080/tracking.php
+002 │ body:
+002 │ POST_key="POST_value"
+002 │ input:
+002 │ "POST_key=POST_value"
+003 │ GET localhost:8080/tracking.php
+003 │ cookie:
+003 │ COOKIE_key="COOKIE_value"
+004 │ GET localhost:8080/tracking.php

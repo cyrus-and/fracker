@@ -18,7 +18,7 @@ class Formatter {
         this._formattedId = String(this._request.id).padStart(term.DEFAULT_MARKER_WIDTH, '0');
 
         // format the header anyway if requested
-        if (options.showEmptyRequests) {
+        if (options.showEmptyRequests || options.disableCallLog) {
             this._formatHeaderIfNeeded();
         }
     }
