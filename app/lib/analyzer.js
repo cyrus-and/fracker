@@ -172,9 +172,8 @@ function run(server, options = {}) {
             }
         });
 
+        // XXX the return event is only generated when a value is actually returned
         events.on('return', (return_) => {
-            // XXX the return event is only generated when a value is actually returned
-
             // add the return value to the set of tracking inputs and update the argument regexp
             if (options.trackUserInputs && options.recursive) {
                 // add return values literally
