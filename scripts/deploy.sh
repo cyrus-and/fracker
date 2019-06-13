@@ -14,7 +14,7 @@ docker exec -u root -i "$container" rm -fr /tmp/fracker
 docker cp "$(dirname "$0")/../ext" "$container:/tmp/fracker"
 
 # run the setup script
-docker exec -u root -i "$container" sh <<EOF
+docker exec -u root -i "$container" sh <<SETUP
 set -e
 
 # install dependencies
@@ -42,21 +42,19 @@ else
 fi
 
 # set up the extension
-echo "
+cat >/tmp/fracker/fracker.ini <<INI
 zend_extension=/tmp/fracker/.libs/xdebug.so
 xdebug.trace_fracker_host=\$host
 xdebug.trace_fracker_port=$port
-" >/tmp/fracker/fracker.ini
+INI
 find / -path */php*/conf.d -exec cp /tmp/fracker/fracker.ini {} \; 2>/dev/null || true
-
-# notify the user
-echo '---'
-echo
-echo "Start Fracker on port \$host:$port"
-echo
 
 # make the web server reload the configuration
 sleep 1
 pkill -x -HUP apache2 &
 pkill -x -HUP httpd &
-EOF
+
+# notify the user
+TERM=$TERM clear || true
+echo "\n\tDone! Start Fracker on port \$host:$port\n"
+SETUP
