@@ -131,7 +131,7 @@ $ php -d "zend_extension=$PWD/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
 Finally, install the PHP extension in the usual way, briefly:
 
 1. `make install`;
-2. place `zend_extension=xdebug.so` in a INI file parsed by PHP along with any other custom [settings](#settings).
+2. place `zend_extension=xdebug.so` in a INI file parsed by PHP along with any other custom [settings](#settings) if needed.
 
 Clean the source directory with:
 
@@ -142,7 +142,7 @@ $ phpize --clean
 
 #### Settings
 
-The following serves as a template for the most common settings to be used with Fracker:
+The default INI settings should work just fine in most cases. The following serves as a template for some common ways to override the default values:
 
 ```ini
 ; trace only those requests with XDEBUG_TRACE=FRACKER in GET, POST or cookie
@@ -156,9 +156,9 @@ xdebug.collect_params = 0
 ; do not collect return values
 xdebug.collect_return = 0
 
-; custom application address
-xdebug.trace_fracker_host = 127.0.0.1
-xdebug.trace_fracker_port = 6666
+; custom listener application address (instead of 127.0.0.1:6666)
+xdebug.trace_fracker_host = 10.10.10.10
+xdebug.trace_fracker_port = 1234
 ```
 
 ## Listener application
