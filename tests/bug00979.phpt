@@ -1,11 +1,14 @@
 --TEST--
 Test for bug #979: property_value -m 0 should mean all bytes, not 0 bytes
 --SKIPIF--
-<?php if (getenv("SKIP_DBGP_TESTS")) { exit("skip Excluding DBGp tests"); } ?>
+<?php
+require __DIR__ . '/utils.inc';
+check_reqs('dbgp');
+?>
 --FILE--
 <?php
 require 'dbgp/dbgpclient.php';
-$data = file_get_contents(dirname(__FILE__) . '/bug00979.inc');
+$filename = dirname(__FILE__) . '/bug00979.inc';
 
 $commands = array(
 	'step_into',
@@ -18,17 +21,18 @@ $commands = array(
 	'property_value -n $a -m "-1"',
 	'property_value -n $a -m 20',
 	'property_value -n $a',
+	'detach',
 );
 
-dbgpRun( $data, $commands );
+dbgpRunFile( $filename, $commands );
 ?>
---EXPECTF--
+--EXPECT--
 <?xml version="1.0" encoding="iso-8859-1"?>
-<init xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" fileuri="file:///%sxdebug-dbgp-test.php" language="PHP" xdebug:language_version="" protocol_version="1.0" appid="" idekey=""><engine version=""><![CDATA[Xdebug]]></engine><author><![CDATA[Derick Rethans]]></author><url><![CDATA[https://xdebug.org]]></url><copyright><![CDATA[Copyright (c) 2002-2099 by Derick Rethans]]></copyright></init>
+<init xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" fileuri="file://bug00979.inc" language="PHP" xdebug:language_version="" protocol_version="1.0" appid="" idekey=""><engine version=""><![CDATA[Xdebug]]></engine><author><![CDATA[Derick Rethans]]></author><url><![CDATA[https://xdebug.org]]></url><copyright><![CDATA[Copyright (c) 2002-2099 by Derick Rethans]]></copyright></init>
 
 -> step_into -i 1
 <?xml version="1.0" encoding="iso-8859-1"?>
-<response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="step_into" transaction_id="1" status="break" reason="ok"><xdebug:message filename="file:///%sxdebug-dbgp-test.php" lineno="2"></xdebug:message></response>
+<response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="step_into" transaction_id="1" status="break" reason="ok"><xdebug:message filename="file://bug00979.inc" lineno="2"></xdebug:message></response>
 
 -> feature_set -i 2 -n max_data -v 32
 <?xml version="1.0" encoding="iso-8859-1"?>
@@ -40,7 +44,7 @@ dbgpRun( $data, $commands );
 
 -> run -i 4
 <?xml version="1.0" encoding="iso-8859-1"?>
-<response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="run" transaction_id="4" status="break" reason="ok"><xdebug:message filename="file:///%sxdebug-dbgp-test.php" lineno="3"></xdebug:message></response>
+<response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="run" transaction_id="4" status="break" reason="ok"><xdebug:message filename="file://bug00979.inc" lineno="3"></xdebug:message></response>
 
 -> property_get -i 5 -n $a
 <?xml version="1.0" encoding="iso-8859-1"?>
@@ -65,3 +69,7 @@ dbgpRun( $data, $commands );
 -> property_value -i 10 -n $a
 <?xml version="1.0" encoding="iso-8859-1"?>
 <response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="property_value" transaction_id="10" type="string" size="1280" encoding="base64"><![CDATA[YWJjZGVmZ2hpamFiY2RlZmdoaWphYmNkZWZnaGlqYWI=]]></response>
+
+-> detach -i 11
+<?xml version="1.0" encoding="iso-8859-1"?>
+<response xmlns="urn:debugger_protocol_v1" xmlns:xdebug="https://xdebug.org/dbgp/xdebug" command="detach" transaction_id="11" status="stopping" reason="ok"></response>

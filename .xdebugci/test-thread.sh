@@ -3,6 +3,8 @@
 TID="$1"
 shift
 
+PHP_DIR=${PHP_DIR:-/usr/local/php}
+
 rm -rf /tmp/ptester/thread/${TID}
 mkdir -p /tmp/ptester/thread/${TID}
 CWD=`pwd`
@@ -13,7 +15,7 @@ cp run-xdebug-tests.php /tmp/ptester/thread/${TID}
 cd /tmp/ptester/thread/${TID}
 
 for i in $@; do
-	PATH=/usr/local/php/$i/bin:$PATH
+	PATH=${PHP_DIR}/$i/bin:$PATH
 	
 	mkdir -p /tmp/ptester/thread/${TID}/$i/tmp-xdebug
 	cp -r ${CWD}/* /tmp/ptester/thread/${TID}/$i/tmp-xdebug
@@ -22,7 +24,7 @@ for i in $@; do
 	printf "%2d %6d: Rebuilding for %s\n" $TID $BASHPID $i
 	./rebuild.sh >/tmp/ptester/logs/$i.build.log 2>&1
 
-	if [ "$?" == "1" ]; then
+	if [ "$?" != "0" ]; then
 		printf "%2d %6d: Build failed for %s\n" $TID $BASHPID $i
 		echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?><testsuites buildFailed=\"1\" buildLogFile=\"/tmp/ptester/logs/$i.build.log\"/>" >> /tmp/ptester/junit/${i}.xml
 	else
