@@ -42,16 +42,30 @@
 
 ZEND_EXTERN_MODULE_GLOBALS(xdebug)
 
+static inline int object_or_ancestor_is_internal(zval dzval)
+{
+	zend_class_entry *tmp_ce = Z_OBJCE(dzval);
+
+	do {
+		if (tmp_ce->type == ZEND_INTERNAL_CLASS) {
+			return 1;
+		}
+		tmp_ce = tmp_ce->parent;
+	} while (tmp_ce);
+
+	return 0;
+}
+
 HashTable *xdebug_objdebug_pp(zval **zval_pp, int *is_tmp TSRMLS_DC)
 {
 	zval dzval = **zval_pp;
 	HashTable *tmp;
 
-	if (!XG(in_debug_info) && Z_OBJ_HANDLER(dzval, get_debug_info)) {
-		zend_bool old_trace = XG(do_trace);
+	if (!XG(in_debug_info) && object_or_ancestor_is_internal(dzval) && Z_OBJ_HANDLER(dzval, get_debug_info)) {
+		void        *old_trace = XG(trace_context);
 		zend_object *orig_exception;
 
-		XG(do_trace) = 0;
+		XG(trace_context) = NULL;
 		XG(in_debug_info) = 1;
 		orig_exception = EG(exception);
 		EG(exception) = NULL;
@@ -59,7 +73,7 @@ HashTable *xdebug_objdebug_pp(zval **zval_pp, int *is_tmp TSRMLS_DC)
 		tmp = Z_OBJ_HANDLER(dzval, get_debug_info)(&dzval, is_tmp TSRMLS_CC);
 
 		XG(in_debug_info) = 0;
-		XG(do_trace) = old_trace;
+		XG(trace_context) = old_trace;
 		EG(exception) = orig_exception;
 		return tmp;
 	} else {
@@ -250,19 +264,31 @@ static char* prepare_search_key(char *name, unsigned int *name_length, const cha
 
 static zval *get_arrayobject_storage(zval *parent, HashTable **properties, int *is_temp TSRMLS_DC)
 {
+#if PHP_VERSION_ID >= 70400
+	*properties = zend_get_properties_for(parent, ZEND_PROP_PURPOSE_DEBUG);
+#else
 	*properties = Z_OBJDEBUG_P(parent, *is_temp);
+#endif
 	return zend_hash_str_find(*properties, "\0ArrayObject\0storage", sizeof("*ArrayObject*storage") - 1);
 }
 
 static zval *get_splobjectstorage_storage(zval *parent, HashTable **properties, int *is_temp TSRMLS_DC)
 {
+#if PHP_VERSION_ID >= 70400
+	*properties = zend_get_properties_for(parent, ZEND_PROP_PURPOSE_DEBUG);
+#else
 	*properties = Z_OBJDEBUG_P(parent, *is_temp);
+#endif
 	return zend_hash_str_find(*properties, "\0SplObjectStorage\0storage", sizeof("*SplObjectStorage*storage") - 1);
 }
 
 static zval *get_arrayiterator_storage(zval *parent, HashTable **properties, int *is_temp TSRMLS_DC)
 {
+#if PHP_VERSION_ID >= 70400
+	*properties = zend_get_properties_for(parent, ZEND_PROP_PURPOSE_DEBUG);
+#else
 	*properties = Z_OBJDEBUG_P(parent, *is_temp);
+#endif
 	return zend_hash_str_find(*properties, "\0ArrayIterator\0storage", sizeof("*ArrayIterator*storage") - 1);
 }
 
@@ -270,7 +296,7 @@ static inline void maybe_destroy_ht(HashTable *ht, int is_temp)
 {
 	if (ht && is_temp) {
 		zend_hash_destroy(ht);
-		efree(ht);
+		FREE_HASHTABLE(ht);
 	}
 }
 
@@ -301,9 +327,14 @@ static void fetch_zval_from_symbol_table(
 		case XF_ST_STATIC_ROOT:
 		case XF_ST_STATIC_PROPERTY:
 			/* First we try a public,private,protected property */
+#if PHP_VERSION_ID >= 70400
+			if (cce && (cce->type == ZEND_INTERNAL_CLASS || (cce->ce_flags & ZEND_ACC_IMMUTABLE))) {
+				zend_class_init_statics(cce);
+			}
+#endif
 			element = prepare_search_key(name, &element_length, "", 0);
-			if (cce && ((zpp = zend_hash_str_find_ptr(&cce->properties_info, element, element_length)) != NULL) && cce->static_members_table) {
-				ZVAL_COPY(&tmp_retval, &cce->static_members_table[zpp->offset]);
+			if (cce && ((zpp = zend_hash_str_find_ptr(&cce->properties_info, element, element_length)) != NULL) && CE_STATIC_MEMBERS(cce)) {
+				ZVAL_COPY(&tmp_retval, &CE_STATIC_MEMBERS(cce)[zpp->offset]);
 				goto cleanup;
 			}
 			element_length = name_length;
@@ -318,7 +349,7 @@ static void fetch_zval_from_symbol_table(
 					element_length = name_length - (secondStar + 1 - name);
 					element = prepare_search_key(secondStar + 1, &element_length, "", 0);
 					if (cce && ((zpp = zend_hash_str_find_ptr(&cce->properties_info, element, element_length)) != NULL)) {
-						ZVAL_COPY(&tmp_retval, &cce->static_members_table[zpp->offset]);
+						ZVAL_COPY(&tmp_retval, &CE_STATIC_MEMBERS(cce)[zpp->offset]);
 						goto cleanup;
 					}
 				}
@@ -465,10 +496,18 @@ static void fetch_zval_from_symbol_table(
 				element = NULL;
 				if (tmp != NULL) {
 					ZVAL_COPY(&tmp_retval, tmp);
+#if PHP_VERSION_ID >= 70400
+					zend_release_properties(myht);
+#else
 					maybe_destroy_ht(myht, is_temp);
+#endif
 					goto cleanup;
 				}
+#if PHP_VERSION_ID >= 70400
+				zend_release_properties(myht);
+#else
 				maybe_destroy_ht(myht, is_temp);
+#endif
 			}
 
 			/* Then we try to see whether the first char is * and use the part between * and * as class name for the private property */
@@ -829,7 +868,7 @@ xdebug_var_export_options* xdebug_var_export_options_from_ini(TSRMLS_D)
 	options->show_hidden = 0;
 	options->show_location = XG(overload_var_dump) > 1;
 	options->extended_properties = 0;
-	options->force_extended = 0;
+	options->encode_as_extended_property = 0;
 
 	if (options->max_children == -1 || options->max_children > XDEBUG_MAX_INT) {
 		options->max_children = XDEBUG_MAX_INT;
@@ -1608,11 +1647,11 @@ xdebug_str* xdebug_get_zval_synopsis_text_ansi(zval *val, int mode, int debug_zv
 
 typedef struct
 {
-	char  type;
-	char *name;
-	int   name_len;
-	ulong index_key;
-	zval *zv;
+	char          type;
+	char         *name;
+	int           name_len;
+	unsigned long index_key;
+	zval         *zv;
 } xdebug_object_item;
 
 static int object_item_add_to_merged_hash(zval *zv_nptr, zend_ulong index_key, zend_string *hash_key, HashTable *merged, int object_type)
@@ -1648,14 +1687,14 @@ static int object_item_add_zend_prop_to_merged_hash(zend_property_info *zpp, Has
 
 	item = xdmalloc(sizeof(xdebug_object_item));
 	item->type = object_type;
-#if ZTS
+#if ZTS && PHP_VERSION_ID < 70400
 	if (ce->type == 1) {
-		item->zv   = &CG(static_members_table)[(zend_intptr_t) ce->static_members_table][zpp->offset];
+		item->zv   = &CG(static_members_table)[(zend_intptr_t) CE_STATIC_MEMBERS(ce)][zpp->offset];
 	} else {
-		item->zv   = &ce->static_members_table[zpp->offset];
+		item->zv   = &CE_STATIC_MEMBERS(ce)[zpp->offset];
 	}
 #else
-	item->zv   = &ce->static_members_table[zpp->offset];
+	item->zv   = &CE_STATIC_MEMBERS(ce)[zpp->offset];
 #endif
 	item->name = (char*) STR_NAME_VAL(zpp->name);
 	item->name_len = STR_NAME_LEN(zpp->name);
@@ -1682,14 +1721,50 @@ static int encoding_requested(char *value, size_t value_len)
 	return 0;
 }
 
+static void check_if_extended_properies_are_needed(xdebug_var_export_options *options, xdebug_str *name, xdebug_str *fullname, zval *value)
+{
+	if (!options->extended_properties || options->encode_as_extended_property) {
+		return;
+	}
+
+	/* Checking name */
+	if (name && encoding_requested(name->d, name->l)) {
+		options->encode_as_extended_property = 1;
+		return;
+	}
+	
+	/* Checking full name */
+	if (fullname && encoding_requested(fullname->d, fullname->l)) {
+		options->encode_as_extended_property = 1;
+		return;
+	}
+	
+	/* Checking for the value portion */
+	if (!value) {
+		return;
+	}
+	if (Z_TYPE_P(value) == IS_STRING) {
+		if (encoding_requested(Z_STRVAL_P(value), Z_STRLEN_P(value))) {
+			options->encode_as_extended_property = 1;
+			return;
+		}
+	}
+	if (Z_TYPE_P(value) == IS_OBJECT) {
+		if (encoding_requested(STR_NAME_VAL(Z_OBJCE_P(value)->name), STR_NAME_LEN(Z_OBJCE_P(value)->name))) {
+			options->encode_as_extended_property = 1;
+			return;
+		}
+	}
+}
+
 static void add_xml_attribute_or_element(xdebug_var_export_options *options, xdebug_xml_node *node, const char *field, int field_len, xdebug_str *value)
 {
-	if (options->force_extended || (encoding_requested(value->d, value->l) && options->extended_properties)) {
+	if (options->encode_as_extended_property || (encoding_requested(value->d, value->l) && options->extended_properties)) {
 		xdebug_xml_node *element;
 		unsigned char   *tmp_base64;
 		size_t           new_len;
 
-		options->force_extended = 1;
+		options->encode_as_extended_property = 1;
 
 		element = xdebug_xml_node_init(field);
 		xdebug_xml_add_attribute(element, "encoding", "base64");
@@ -1705,7 +1780,7 @@ static void add_xml_attribute_or_element(xdebug_var_export_options *options, xde
 
 static void add_unencoded_text_value_attribute_or_element(xdebug_var_export_options *options, xdebug_xml_node *node, char *value)
 {
-	if (options->force_extended) {
+	if (options->encode_as_extended_property) {
 		xdebug_xml_node *element;
 		unsigned char   *tmp_base64;
 		size_t           new_len;
@@ -1724,7 +1799,7 @@ static void add_unencoded_text_value_attribute_or_element(xdebug_var_export_opti
 
 static void add_encoded_text_value_attribute_or_element(xdebug_var_export_options *options, xdebug_xml_node *node, char *value, size_t value_len)
 {
-	if (options->force_extended) {
+	if (options->encode_as_extended_property) {
 		xdebug_xml_node *element;
 		unsigned char   *tmp_base64;
 		size_t           new_len;
@@ -1755,7 +1830,7 @@ static int xdebug_array_element_export_xml_node(zval *zv_nptr, zend_ulong index_
 		options->runtime[level].current_element_nr < options->runtime[level].end_element_nr)
 	{
 		node = xdebug_xml_node_init("property");
-		options->force_extended = 0;
+		options->encode_as_extended_property = 0;
 
 		if (!HASH_KEY_IS_NUMERIC(hash_key)) { /* string key */
 			zend_string *i_string = zend_string_init(HASH_APPLY_KEY_VAL(hash_key), HASH_APPLY_KEY_LEN(hash_key) - 1, 0);
@@ -1788,6 +1863,7 @@ static int xdebug_array_element_export_xml_node(zval *zv_nptr, zend_ulong index_
 			xdfree(tmp_idx);
 		}
 
+		check_if_extended_properies_are_needed(options, name, full_name.l ? &full_name : NULL, *zv);
 		add_xml_attribute_or_element(options, node, "name", 4, name);
 		if (full_name.l) {
 			add_xml_attribute_or_element(options, node, "fullname", 8, &full_name);
@@ -1812,10 +1888,11 @@ static int xdebug_object_element_export_xml_node(xdebug_object_item *item_nptr, 
 		options->runtime[level].current_element_nr < options->runtime[level].end_element_nr)
 	{
 		const char *modifier;
+		xdebug_str *tmp_name = NULL;
 		xdebug_str *tmp_fullname = NULL;
 
 		node = xdebug_xml_node_init("property");
-		options->force_extended = 0;
+		options->encode_as_extended_property = 0;
 
 		if ((*item)->name != NULL) {
 			char       *prop_class_name;
@@ -1824,18 +1901,14 @@ static int xdebug_object_element_export_xml_node(xdebug_object_item *item_nptr, 
 			property_name = xdebug_get_property_info((*item)->name, (*item)->name_len + 1, &modifier, &prop_class_name);
 
 			if (strcmp(modifier, "private") != 0 || strcmp(class_name, prop_class_name) == 0) {
-				add_xml_attribute_or_element(options, node, "name", 4, property_name);
+				tmp_name = xdebug_str_copy(property_name);
 			} else {
-				xdebug_str *tmp_name = xdebug_str_new();
+				tmp_name = xdebug_str_new();
 
 				xdebug_str_addc(tmp_name, '*');
 				xdebug_str_add(tmp_name, prop_class_name, 0);
 				xdebug_str_addc(tmp_name, '*');
 				xdebug_str_add_str(tmp_name, property_name);
-
-				add_xml_attribute_or_element(options, node, "name", 4, tmp_name);
-
-				xdebug_str_free(tmp_name);
 			}
 
 			if (parent_name) {
@@ -1871,8 +1944,6 @@ static int xdebug_object_element_export_xml_node(xdebug_object_item *item_nptr, 
 					xdebug_str_addc(tmp_fullname, '*');
 					xdebug_str_add_str(tmp_fullname, property_name);
 				}
-
-				add_xml_attribute_or_element(options, node, "fullname", 8, tmp_fullname);
 			}
 
 			xdebug_str_free(property_name);
@@ -1882,14 +1953,12 @@ static int xdebug_object_element_export_xml_node(xdebug_object_item *item_nptr, 
 
 			{
 				char       *tmp_formatted_prop;
-				xdebug_str *tmp_name;
 
 				tmp_formatted_prop = xdebug_sprintf(XDEBUG_INT_FMT, (*item)->index_key);
 				tmp_name = xdebug_str_create_from_char(tmp_formatted_prop);
 
 				add_xml_attribute_or_element(options, node, "name", 4, tmp_name);
 
-				xdebug_str_free(tmp_name);
 				xdfree(tmp_formatted_prop);
 			}
 
@@ -1899,16 +1968,21 @@ static int xdebug_object_element_export_xml_node(xdebug_object_item *item_nptr, 
 				tmp_formatted_prop = xdebug_sprintf("%s%s" XDEBUG_INT_FMT, parent_name, (*item)->type == XDEBUG_OBJECT_ITEM_TYPE_STATIC_PROPERTY ? "::" : "->", (*item)->index_key);
 				tmp_fullname = xdebug_str_create_from_char(tmp_formatted_prop);
 
-				add_xml_attribute_or_element(options, node, "fullname", 8, tmp_fullname);
-
 				xdfree(tmp_formatted_prop);
 			}
 		}
+
+		check_if_extended_properies_are_needed(options, tmp_name, tmp_fullname, (*item)->zv);
+		add_xml_attribute_or_element(options, node, "name", 4, tmp_name);
+		add_xml_attribute_or_element(options, node, "fullname", 8, tmp_fullname);
 
 		xdebug_xml_add_attribute_ex(node, "facet", xdebug_sprintf("%s%s", (*item)->type == XDEBUG_OBJECT_ITEM_TYPE_STATIC_PROPERTY ? "static " : "", modifier), 0, 1);
 		xdebug_xml_add_child(parent, node);
 		xdebug_var_export_xml_node(&((*item)->zv), tmp_fullname ? tmp_fullname : NULL, node, options, level + 1 TSRMLS_CC);
 
+		if (tmp_name) {
+			xdebug_str_free(tmp_name);
+		}
 		if (tmp_fullname) {
 			xdebug_str_free(tmp_fullname);
 		}
@@ -1940,7 +2014,7 @@ void xdebug_attach_uninitialized_var(xdebug_var_export_options *options, xdebug_
 	xdebug_str      *tmp_name;
 
 	contents = xdebug_xml_node_init("property");
-	options->force_extended = 0;
+	options->encode_as_extended_property = 0;
 
 	tmp_name = prepare_variable_name(name);
 	add_xml_attribute_or_element(options, contents, "name", 4, tmp_name);
@@ -1966,7 +2040,7 @@ void xdebug_attach_property_with_contents(zend_property_info *prop_info, xdebug_
 	property_name = xdebug_get_property_info(STR_NAME_VAL(prop_info->name), STR_NAME_LEN(prop_info->name) + 1, &modifier, &prop_class_name);
 
 	if (strcmp(modifier, "private") != 0 || strcmp(class_name, prop_class_name) == 0) {
-		contents = xdebug_get_zval_value_xml_node_ex(property_name, &class_entry->static_members_table[prop_info->offset], XDEBUG_VAR_TYPE_STATIC, options TSRMLS_CC);
+		contents = xdebug_get_zval_value_xml_node_ex(property_name, &CE_STATIC_MEMBERS(class_entry)[prop_info->offset], XDEBUG_VAR_TYPE_STATIC, options TSRMLS_CC);
 	} else{
 		xdebug_str *priv_name = xdebug_str_new();
 
@@ -1975,7 +2049,7 @@ void xdebug_attach_property_with_contents(zend_property_info *prop_info, xdebug_
 		xdebug_str_addc(priv_name, '*');
 		xdebug_str_add_str(priv_name, property_name);
 
-		contents = xdebug_get_zval_value_xml_node_ex(priv_name, &class_entry->static_members_table[prop_info->offset], XDEBUG_VAR_TYPE_STATIC, options TSRMLS_CC);
+		contents = xdebug_get_zval_value_xml_node_ex(priv_name, &CE_STATIC_MEMBERS(class_entry)[prop_info->offset], XDEBUG_VAR_TYPE_STATIC, options TSRMLS_CC);
 
 		xdebug_str_free(priv_name);
 	}
@@ -1999,7 +2073,7 @@ void xdebug_attach_static_vars(xdebug_xml_node *node, xdebug_var_export_options 
 	zend_property_info *zpi;
 
 	static_container = xdebug_xml_node_init("property");
-	options->force_extended = 0;
+	options->encode_as_extended_property = 0;
 
 	xdebug_xml_add_attribute(static_container, "name", "::");
 	xdebug_xml_add_attribute(static_container, "fullname", "::");
@@ -2117,6 +2191,12 @@ void xdebug_var_export_xml_node(zval **struc, xdebug_str *name, xdebug_xml_node 
 			/* Adding static properties */
 			xdebug_zend_hash_apply_protection_begin(&ce->properties_info);
 
+#if PHP_VERSION_ID >= 70400
+			if (ce->type == ZEND_INTERNAL_CLASS || (ce->ce_flags & ZEND_ACC_IMMUTABLE)) {
+				zend_class_init_statics(ce);
+			}
+#endif
+
 			ZEND_HASH_FOREACH_PTR(&ce->properties_info, zpi_val) {
 				object_item_add_zend_prop_to_merged_hash(zpi_val, merged_hash, (int) XDEBUG_OBJECT_ITEM_TYPE_STATIC_PROPERTY, ce);
 			} ZEND_HASH_FOREACH_END();
@@ -2200,7 +2280,7 @@ xdebug_xml_node* xdebug_get_zval_value_xml_node_ex(xdebug_str *name, zval *val, 
 	xdebug_str      *full_name = NULL;
 
 	node = xdebug_xml_node_init("property");
-	options->force_extended = 0;
+	options->encode_as_extended_property = 0;
 
 	if (name) {
 		switch (var_type) {
@@ -2227,6 +2307,7 @@ xdebug_xml_node* xdebug_get_zval_value_xml_node_ex(xdebug_str *name, zval *val, 
 				break;
 		}
 
+		check_if_extended_properies_are_needed(options, short_name, full_name, val);
 		add_xml_attribute_or_element(options, node, "name", 4, short_name);
 		add_xml_attribute_or_element(options, node, "fullname", 8, full_name);
 	}
@@ -2754,6 +2835,10 @@ char* xdebug_show_fname(xdebug_func f, int html, int flags TSRMLS_DC)
 
 		case XFUNC_REQUIRE_ONCE:
 			return xdstrdup("require_once");
+			break;
+
+		case XFUNC_MAIN:
+			return xdstrdup("{main}");
 			break;
 
 		case XFUNC_ZEND_PASS:

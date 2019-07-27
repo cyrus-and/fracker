@@ -1,23 +1,27 @@
 #!/bin/bash
 
 FORCE=${1:-"YES"}
+PHP_DIR=${2:-"/usr/local/php"}
+
+MYFILE=`realpath $0`
+MYDIR=`dirname ${MYFILE}`
 
 if [[ ${FORCE} == "YES" ]]; then
 	echo "Forcing builds for all versions"
 fi
 
-for i in /usr/local/php/*; do
+for i in ${PHP_DIR}/*; do
 	version=`echo $i | sed 's@.*/@@'`
 	echo -n "Rebuilding for PHP ${version}: "
 
-	FILE=/usr/local/php/${version}/lib/php/extensions/*/xdebug.so
+	FILE=${PHP_DIR}/${version}/lib/php/extensions/*/xdebug.so
 
 	if [ ! -e $FILE ] || [[ ${FORCE} == "YES" ]]; then
-		export PATH=/usr/local/php/${version}/bin:/usr/lib/ccache:/usr/local/bin:/usr/bin:/bin
+		export PATH=${PHP_DIR}/${version}/bin:/usr/lib/ccache:/usr/local/bin:/usr/bin:/bin
 
 		LOG="/tmp/xdebug-for-${version}.log"
 		echo -n "Building: "
-		../rebuild.sh >$LOG 2>&1
+		${MYDIR}/../rebuild.sh >$LOG 2>&1
 
 		if [[ $? == 0 ]]; then
 			echo "DONE"

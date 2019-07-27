@@ -20,7 +20,7 @@
 #define PHP_XDEBUG_H
 
 #define XDEBUG_NAME       "Xdebug"
-#define XDEBUG_VERSION    "2.8.0-dev"
+#define XDEBUG_VERSION    "2.8.0beta2-dev"
 #define XDEBUG_AUTHOR     "Derick Rethans"
 #define XDEBUG_COPYRIGHT  "Copyright (c) 2002-2019 by Derick Rethans"
 #define XDEBUG_COPYRIGHT_SHORT "Copyright (c) 2002-2019"
@@ -82,6 +82,7 @@ PHP_FUNCTION(xdebug_call_file);
 PHP_FUNCTION(xdebug_call_line);
 
 PHP_FUNCTION(xdebug_set_time_limit);
+PHP_FUNCTION(xdebug_error_reporting);
 PHP_FUNCTION(xdebug_pcntl_exec);
 
 PHP_FUNCTION(xdebug_var_dump);
@@ -148,7 +149,6 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 	zend_bool     collect_return;
 	zend_bool     collect_vars;
 	zend_bool     collect_assignments;
-	zend_bool     extended_info;
 	zend_bool     show_ex_trace;
 	zend_bool     show_error_trace;
 	zend_bool     show_local_vars;
@@ -173,12 +173,12 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 
 	zif_handler   orig_var_dump_func;
 	zif_handler   orig_set_time_limit_func;
+	zif_handler   orig_error_reporting_func;
 	zif_handler   orig_pcntl_exec_func;
 
 	xdebug_trace_handler_t *trace_handler;
 	void         *trace_context;
 
-	zend_bool     do_trace;
 	zend_bool     auto_trace;
 	zend_bool     trace_enable_trigger;
 	char         *trace_enable_trigger_value;
@@ -256,6 +256,7 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 	zend_bool     remote_connect_back;   /* connect back to the HTTP requestor */
 	char         *remote_log;       /* Filename to log protocol communication to */
 	FILE         *remote_log_file;  /* File handler for protocol log */
+	int           remote_log_level; /* Log level XDEBUG_LOG_{ERR,WARN,INFO,DEBUG} */
 	zend_long     remote_cookie_expire_time; /* Expire time for the remote-session cookie */
 	char         *remote_addr_header; /* User configured header to check for forwarded IP address */
 	zend_long     remote_connect_timeout; /* Timeout in MS for remote connections */
@@ -265,11 +266,13 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 
 	/* remote debugging globals */
 	zend_bool     remote_connection_enabled;
-	pid_t         remote_connection_pid;
+	zend_ulong    remote_connection_pid;
 	zend_bool     breakpoints_allowed;
 	xdebug_con    context;
 	unsigned int  breakpoint_count;
 	unsigned int  no_exec;
+	zend_long     error_reporting_override;
+	zend_bool     error_reporting_overridden;
 
 	/* profiler settings */
 	zend_bool     profiler_enable;
