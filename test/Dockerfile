@@ -1,4 +1,4 @@
-FROM node:8-stretch
+FROM node:10-stretch
 
 RUN apt-get update
 RUN apt-get install --yes --no-install-recommends \
