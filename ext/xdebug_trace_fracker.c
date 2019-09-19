@@ -265,7 +265,19 @@ void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, 
     write_json_object(CTXT(socket_fd), info);
 }
 
-void xdebug_trace_fracker_function_exit(void *ctxt, function_stack_entry *fse, int function_nr TSRMLS_DC) {}
+void xdebug_trace_fracker_function_exit(void *ctxt, function_stack_entry *fse, int function_nr TSRMLS_DC)
+{
+    struct json_object *info;
+
+    /* fill call info */
+    info = json_object_new_object();
+    json_object_object_add(info, "type", json_object_new_string("exit"));
+    json_object_object_add(info, "id", json_object_new_int(fse->function_nr));
+    json_object_object_add(info, "level", json_object_new_int(fse->level));
+
+    /* serialize and send */
+    write_json_object(CTXT(socket_fd), info);
+}
 
 void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry *fse, int function_nr, zval *return_value TSRMLS_DC)
 {

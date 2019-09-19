@@ -67,19 +67,8 @@ function run(server, options = {}) {
                 return;
             }
 
-            // collect the stack trace if requested
-            if (options.showParents) {
-                // skip deeper calls
-                for (let i = stackTrace.length - 1; i >= 0; i--) {
-                    if (stackTrace[i].level < call.level) {
-                        stackTrace.splice(i + 1);
-                        break;
-                    }
-                }
-
-                // add the current call to the stack trace
-                stackTrace.push(call);
-            }
+            // add the current call to the stack trace
+            stackTrace.push(call);
 
             // skip when tracking and there are no arguments to match
             if (options.trackUserInputs && argumentsRegexp.isEmpty()) {
@@ -175,6 +164,16 @@ function run(server, options = {}) {
                 // print the actual call
                 formatter.formatCall(call, 'M');
             }
+        });
+
+        events.on('exit', (exit) => {
+            // just show request info
+            if (options.disableCallLog) {
+                return;
+            }
+
+            // pop the current call from the stack trace
+            stackTrace.pop();
         });
 
         // XXX the return event is only generated when a value is actually returned

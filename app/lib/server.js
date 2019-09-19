@@ -54,6 +54,7 @@ class Server extends EventEmitter {
                     break;
 
                 case 'call':
+                case 'exit':
                 case 'return':
                 case 'warning':
                     requestEmitter.emit(type, event);
