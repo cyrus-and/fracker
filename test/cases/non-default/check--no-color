@@ -3,75 +3,119 @@
 001 │ 1 require_once("/php/eval.php")
 001 │ 2 eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n")
 001 │ 3 foo(x="test")
+001 │ 3 ~ X
 001 │ 3 = "test"
 001 │ 4 var_dump("test")
+001 │ 4 ~ X
 001 │ 4 = null
+001 │ 2 ~ X
+001 │ 1 ~ X
 001 │ 5 require_once("/php/objects.php")
 001 │ 6 Foo->__construct(x=123)
+001 │ 6 ~ X
 001 │ 7 Foo->method1(y="foo")
 001 │ 8 Foo->method2(x=123, y="foo")
 001 │ 9 Foo->method3(x=123)
 001 │ 10 var_dump(123)
+001 │ 10 ~ X
 001 │ 10 = null
+001 │ 9 ~ X
 001 │ 11 Foo->method3(x="foo")
 001 │ 12 var_dump("foo")
+001 │ 12 ~ X
 001 │ 12 = null
+001 │ 11 ~ X
+001 │ 8 ~ X
+001 │ 7 ~ X
 001 │ 13 Foo->method2(x="bar", y="baz")
 001 │ 14 Foo->method3(x="bar")
 001 │ 15 var_dump("bar")
+001 │ 15 ~ X
 001 │ 15 = null
+001 │ 14 ~ X
 001 │ 16 Foo->method3(x="baz")
 001 │ 17 var_dump("baz")
+001 │ 17 ~ X
 001 │ 17 = null
+001 │ 16 ~ X
+001 │ 13 ~ X
 001 │ 18 Foo->method3(x="qwerty")
 001 │ 19 var_dump("qwerty")
+001 │ 19 ~ X
 001 │ 19 = null
+001 │ 18 ~ X
+001 │ 5 ~ X
 001 │ 20 require_once("/php/recursion.php")
 001 │ 21 fibo(n=5)
 001 │ 22 fibo(n=4)
 001 │ 23 fibo(n=3)
 001 │ 24 fibo(n=2)
 001 │ 25 fibo(n=1)
+001 │ 25 ~ X
 001 │ 25 = 1
 001 │ 26 fibo(n=0)
+001 │ 26 ~ X
 001 │ 26 = 1
+001 │ 24 ~ X
 001 │ 24 = 2
 001 │ 27 fibo(n=1)
+001 │ 27 ~ X
 001 │ 27 = 1
+001 │ 23 ~ X
 001 │ 23 = 3
 001 │ 28 fibo(n=2)
 001 │ 29 fibo(n=1)
+001 │ 29 ~ X
 001 │ 29 = 1
 001 │ 30 fibo(n=0)
+001 │ 30 ~ X
 001 │ 30 = 1
+001 │ 28 ~ X
 001 │ 28 = 2
+001 │ 22 ~ X
 001 │ 22 = 5
 001 │ 31 fibo(n=3)
 001 │ 32 fibo(n=2)
 001 │ 33 fibo(n=1)
+001 │ 33 ~ X
 001 │ 33 = 1
 001 │ 34 fibo(n=0)
+001 │ 34 ~ X
 001 │ 34 = 1
+001 │ 32 ~ X
 001 │ 32 = 2
 001 │ 35 fibo(n=1)
+001 │ 35 ~ X
 001 │ 35 = 1
+001 │ 31 ~ X
 001 │ 31 = 3
+001 │ 21 ~ X
 001 │ 21 = 8
+001 │ 20 ~ X
 001 │ 36 require_once("/php/types.php")
 001 │ 37 var_dump(123)
+001 │ 37 ~ X
 001 │ 37 = null
 001 │ 38 var_dump(3.14)
+001 │ 38 ~ X
 001 │ 38 = null
 001 │ 39 var_dump("foo")
+001 │ 39 ~ X
 001 │ 39 = null
 001 │ 40 var_dump([])
+001 │ 40 ~ X
 001 │ 40 = null
 001 │ 41 var_dump([123, 3.14, "foo"])
+001 │ 41 ~ X
 001 │ 41 = null
 001 │ 42 var_dump({"foo": 1, "bar": 2, "baz": 3})
+001 │ 42 ~ X
 001 │ 42 = null
 001 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
+001 │ 43 ~ X
 001 │ 43 = null
+001 │ 36 ~ X
+001 │ 0 ~ X
 002 │ POST localhost:8080/?GET_key=GET_value
 002 │ query:
 002 │ GET_key="GET_value"
@@ -85,72 +129,116 @@
 002 │ 1 require_once("/php/eval.php")
 002 │ 2 eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n")
 002 │ 3 foo(x="test")
+002 │ 3 ~ X
 002 │ 3 = "test"
 002 │ 4 var_dump("test")
+002 │ 4 ~ X
 002 │ 4 = null
+002 │ 2 ~ X
+002 │ 1 ~ X
 002 │ 5 require_once("/php/objects.php")
 002 │ 6 Foo->__construct(x=123)
+002 │ 6 ~ X
 002 │ 7 Foo->method1(y="foo")
 002 │ 8 Foo->method2(x=123, y="foo")
 002 │ 9 Foo->method3(x=123)
 002 │ 10 var_dump(123)
+002 │ 10 ~ X
 002 │ 10 = null
+002 │ 9 ~ X
 002 │ 11 Foo->method3(x="foo")
 002 │ 12 var_dump("foo")
+002 │ 12 ~ X
 002 │ 12 = null
+002 │ 11 ~ X
+002 │ 8 ~ X
+002 │ 7 ~ X
 002 │ 13 Foo->method2(x="bar", y="baz")
 002 │ 14 Foo->method3(x="bar")
 002 │ 15 var_dump("bar")
+002 │ 15 ~ X
 002 │ 15 = null
+002 │ 14 ~ X
 002 │ 16 Foo->method3(x="baz")
 002 │ 17 var_dump("baz")
+002 │ 17 ~ X
 002 │ 17 = null
+002 │ 16 ~ X
+002 │ 13 ~ X
 002 │ 18 Foo->method3(x="qwerty")
 002 │ 19 var_dump("qwerty")
+002 │ 19 ~ X
 002 │ 19 = null
+002 │ 18 ~ X
+002 │ 5 ~ X
 002 │ 20 require_once("/php/recursion.php")
 002 │ 21 fibo(n=5)
 002 │ 22 fibo(n=4)
 002 │ 23 fibo(n=3)
 002 │ 24 fibo(n=2)
 002 │ 25 fibo(n=1)
+002 │ 25 ~ X
 002 │ 25 = 1
 002 │ 26 fibo(n=0)
+002 │ 26 ~ X
 002 │ 26 = 1
+002 │ 24 ~ X
 002 │ 24 = 2
 002 │ 27 fibo(n=1)
+002 │ 27 ~ X
 002 │ 27 = 1
+002 │ 23 ~ X
 002 │ 23 = 3
 002 │ 28 fibo(n=2)
 002 │ 29 fibo(n=1)
+002 │ 29 ~ X
 002 │ 29 = 1
 002 │ 30 fibo(n=0)
+002 │ 30 ~ X
 002 │ 30 = 1
+002 │ 28 ~ X
 002 │ 28 = 2
+002 │ 22 ~ X
 002 │ 22 = 5
 002 │ 31 fibo(n=3)
 002 │ 32 fibo(n=2)
 002 │ 33 fibo(n=1)
+002 │ 33 ~ X
 002 │ 33 = 1
 002 │ 34 fibo(n=0)
+002 │ 34 ~ X
 002 │ 34 = 1
+002 │ 32 ~ X
 002 │ 32 = 2
 002 │ 35 fibo(n=1)
+002 │ 35 ~ X
 002 │ 35 = 1
+002 │ 31 ~ X
 002 │ 31 = 3
+002 │ 21 ~ X
 002 │ 21 = 8
+002 │ 20 ~ X
 002 │ 36 require_once("/php/types.php")
 002 │ 37 var_dump(123)
+002 │ 37 ~ X
 002 │ 37 = null
 002 │ 38 var_dump(3.14)
+002 │ 38 ~ X
 002 │ 38 = null
 002 │ 39 var_dump("foo")
+002 │ 39 ~ X
 002 │ 39 = null
 002 │ 40 var_dump([])
+002 │ 40 ~ X
 002 │ 40 = null
 002 │ 41 var_dump([123, 3.14, "foo"])
+002 │ 41 ~ X
 002 │ 41 = null
 002 │ 42 var_dump({"foo": 1, "bar": 2, "baz": 3})
+002 │ 42 ~ X
 002 │ 42 = null
 002 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
+002 │ 43 ~ X
 002 │ 43 = null
+002 │ 36 ~ X
+002 │ 0 ~ X

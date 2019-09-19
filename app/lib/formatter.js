@@ -55,6 +55,14 @@ class Formatter {
         term.out(color.reset(`${indentation}${callId}${marker}${functionName}${argumentList}${fileInfo}`), this._formattedId);
     }
 
+    formatExit(exit, call) {
+        // format exit and print
+        const indentation = indent(exit.level, this._options.shallow);
+        const elapsed = this._formatElapsedTime(exit.timestamp - call.timestamp);
+        const callId = this._options.shallow ? `${color.shadow(exit.id)} ` : '';
+        term.out(color.reset(`${indentation}${callId}${color.function('~')} ${elapsed}`), this._formattedId);
+    }
+
     formatReturn(return_) {
         // format return and print
         const indentation = indent(return_.level, this._options.shallow);
@@ -118,6 +126,20 @@ class Formatter {
             const value = object[key];
             term.out(color.reset(`${color.argument(`${key}=`)}${JSON.stringify(value)}`), this._formattedId);
         }
+    }
+
+    _formatElapsedTime(elapsedSeconds) {
+        let ratio, symbol;
+        if (elapsedSeconds < 1e-6) {
+            [ratio, symbol] = [1e-9, 'ns'];
+        } else if (elapsedSeconds < 1e-3) {
+            [ratio, symbol] = [1e-6, 'us'];
+        } else if (elapsedSeconds < 1e-0) {
+            [ratio, symbol] = [1e-3, 'ms'];
+        } else {
+            [ratio, symbol] = [1e-0, 's'];
+        }
+        return `${(elapsedSeconds / ratio).toFixed(3)}${symbol}`;
     }
 }
 

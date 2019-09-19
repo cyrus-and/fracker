@@ -37,6 +37,7 @@ function prepareParser() {
         .option('-H, --exclude-headers', 'exclude headers from user-controlled arguments')
         .option('-o, --track-values-only', 'do not consider array names as user-controlled input initially')
         .option('-v, --show-return-values', 'show return values')
+        .option('-m, --show-elapsed-time', 'show the time spent in functions')
         .option('-k, --show-parents', 'show parent calls for each matched function (i.e., stack traces)')
         .option('-c, --show-children [n]', 'show children calls for the first matched functions up to depth <n>')
         .option('-s, --show-siblings', 'show siblings calls for the first matched functions')

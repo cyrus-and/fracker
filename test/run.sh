@@ -29,6 +29,9 @@ run-single-test() {
     # normalize the paths
     sed -i "s@$(pwd -P)@@g" "$result"
 
+    # normalize the elapsed time
+    sed -i 's/[[:digit:]]\+\.[[:digit:]]\+[num]\?s/X/g' "$result"
+
     # check the result
     diff --color=always -u "$check" "$result" 2>/dev/null
     local status=$?

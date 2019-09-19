@@ -172,6 +172,13 @@ function run(server, options = {}) {
                 return;
             }
 
+            // print the elapsed time
+            const isFunctionTracked = matchedCalls.has(exit.id);
+            if (options.showElapsedTime && isFunctionTracked) {
+                const call = stackTrace.slice(-1)[0];
+                formatter.formatExit(exit, call);
+            }
+
             // pop the current call from the stack trace
             stackTrace.pop();
         });

@@ -1,4 +1,5 @@
 shallow: true
+showElapsedTime: true
 showReturnValues: true
 hideCallLocations: true
 showServerVariable: qbci
