@@ -28,7 +28,7 @@ make distclean || true
 phpize --clean
 phpize
 ./configure
-make -j "$(nproc)" all
+make -j "\$(nproc)" all
 
 if [ "$host" ]; then
     host="$host"
