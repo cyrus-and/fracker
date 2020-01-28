@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 Andrea Cardaci <cyrus.and@gmail.com> */
+/* Copyright (c) 2020 Andrea Cardaci <cyrus.and@gmail.com> */
 
 #ifndef XDEBUG_TRACE_FRACKER_H
 #define XDEBUG_TRACE_FRACKER_H
