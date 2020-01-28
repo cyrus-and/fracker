@@ -1,4 +1,4 @@
-FROM node:10-stretch
+FROM node:12-buster
 
 RUN apt-get update
 RUN apt-get install --yes --no-install-recommends \
