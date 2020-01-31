@@ -11,11 +11,11 @@ if test "$PHP_XDEBUG" != "no"; then
   AC_MSG_CHECKING([Check for supported PHP versions])
   PHP_XDEBUG_FOUND_VERSION=`${PHP_CONFIG} --version`
   PHP_XDEBUG_FOUND_VERNUM=`echo "${PHP_XDEBUG_FOUND_VERSION}" | $AWK 'BEGIN { FS = "."; } { printf "%d", ([$]1 * 100 + [$]2) * 100 + [$]3;}'`
-  if test "$PHP_XDEBUG_FOUND_VERNUM" -lt "70000"; then
-    AC_MSG_ERROR([not supported. Need a PHP version >= 7.0.0 and < 8.0.0 (found $PHP_XDEBUG_FOUND_VERSION)])
+  if test "$PHP_XDEBUG_FOUND_VERNUM" -lt "70100"; then
+    AC_MSG_ERROR([not supported. Need a PHP version >= 7.1.0 and < 8.0.0 (found $PHP_XDEBUG_FOUND_VERSION)])
   else
     if test "$PHP_XDEBUG_FOUND_VERNUM" -ge "80000"; then
-      AC_MSG_ERROR([not supported. Need a PHP version >= 7.0.0 and < 8.0.0 (found $PHP_XDEBUG_FOUND_VERSION)])
+      AC_MSG_ERROR([not supported. Need a PHP version >= 7.1.0 and < 8.0.0 (found $PHP_XDEBUG_FOUND_VERSION)])
     else
       AC_MSG_RESULT([supported ($PHP_XDEBUG_FOUND_VERSION)])
     fi
@@ -77,7 +77,26 @@ if test "$PHP_XDEBUG" != "no"; then
 
   PHP_XDEBUG_CFLAGS="$STD_CFLAGS $MAINTAINER_CFLAGS"
 
-  PHP_NEW_EXTENSION(xdebug, xdebug.c xdebug_branch_info.c xdebug_code_coverage.c xdebug_com.c xdebug_compat.c xdebug_gc_stats.c xdebug_filter.c xdebug_handler_dbgp.c xdebug_handlers.c xdebug_llist.c xdebug_monitor.c xdebug_hash.c xdebug_private.c xdebug_profiler.c xdebug_set.c xdebug_stack.c xdebug_str.c xdebug_superglobals.c xdebug_tracing.c xdebug_trace_textual.c xdebug_trace_computerized.c xdebug_trace_html.c xdebug_var.c xdebug_xml.c usefulstuff.c, $ext_shared,,$PHP_XDEBUG_CFLAGS,,yes)
+  XDEBUG_BASE_SOURCES="src/base/base.c src/base/filter.c src/base/monitor.c src/base/stack.c src/base/superglobals.c"
+  XDEBUG_LIB_SOURCES="src/lib/usefulstuff.c src/lib/compat.c src/lib/crc32.c src/lib/hash.c src/lib/llist.c src/lib/private.c src/lib/set.c src/lib/str.c src/lib/var.c src/lib/var_export_html.c src/lib/var_export_line.c src/lib/var_export_serialized.c src/lib/var_export_text.c src/lib/var_export_xml.c src/lib/xml.c"
+
+  XDEBUG_COVERAGE_SOURCES="src/coverage/branch_info.c src/coverage/code_coverage.c"
+  XDEBUG_DEBUGGER_SOURCES="src/debugger/com.c src/debugger/debugger.c src/debugger/handler_dbgp.c src/debugger/handlers.c"
+  XDEBUG_GCSTATS_SOURCES="src/gcstats/gc_stats.c"
+  XDEBUG_PROFILER_SOURCES="src/profiler/profiler.c"
+  XDEBUG_TRACING_SOURCES="src/tracing/trace_computerized.c src/tracing/trace_html.c src/tracing/trace_textual.c src/tracing/tracing.c"
+
+  PHP_NEW_EXTENSION(xdebug, xdebug.c $XDEBUG_BASE_SOURCES $XDEBUG_LIB_SOURCES $XDEBUG_COVERAGE_SOURCES $XDEBUG_DEBUGGER_SOURCES $XDEBUG_GCSTATS_SOURCES $XDEBUG_PROFILER_SOURCES $XDEBUG_TRACING_SOURCES, $ext_shared,,$PHP_XDEBUG_CFLAGS,,yes)
+  PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/base])
+  PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/lib])
+  PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/coverage])
+  PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/debugger])
+  PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/gcstats])
+  PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/profiler])
+  PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/tracing])
   PHP_SUBST(XDEBUG_SHARED_LIBADD)
   PHP_ADD_MAKEFILE_FRAGMENT
+
+  PHP_ADD_INCLUDE($ext_srcdir/src)
+  PHP_ADD_INCLUDE($ext_builddir/src)
 fi

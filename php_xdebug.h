@@ -2,7 +2,7 @@
    +----------------------------------------------------------------------+
    | Xdebug                                                               |
    +----------------------------------------------------------------------+
-   | Copyright (c) 2002-2019 Derick Rethans                               |
+   | Copyright (c) 2002-2020 Derick Rethans                               |
    +----------------------------------------------------------------------+
    | This source file is subject to version 1.01 of the Xdebug license,   |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -20,21 +20,24 @@
 #define PHP_XDEBUG_H
 
 #define XDEBUG_NAME       "Xdebug"
-#define XDEBUG_VERSION    "2.8.0beta2-dev"
+#define XDEBUG_VERSION    "2.9.2"
 #define XDEBUG_AUTHOR     "Derick Rethans"
-#define XDEBUG_COPYRIGHT  "Copyright (c) 2002-2019 by Derick Rethans"
-#define XDEBUG_COPYRIGHT_SHORT "Copyright (c) 2002-2019"
+#define XDEBUG_COPYRIGHT  "Copyright (c) 2002-2020 by Derick Rethans"
+#define XDEBUG_COPYRIGHT_SHORT "Copyright (c) 2002-2020"
 #define XDEBUG_URL        "https://xdebug.org"
 #define XDEBUG_URL_FAQ    "https://xdebug.org/docs/faq#api"
 
 #include "php.h"
 
-#include "xdebug_compat.h"
-#include "xdebug_handlers.h"
-#include "xdebug_hash.h"
-#include "xdebug_llist.h"
-#include "xdebug_branch_info.h"
-#include "xdebug_code_coverage.h"
+#include "coverage/branch_info.h"
+#include "coverage/code_coverage.h"
+#include "debugger/debugger.h"
+#include "gcstats/gc_stats.h"
+#include "profiler/profiler.h"
+#include "tracing/tracing.h"
+#include "lib/compat.h"
+#include "lib/hash.h"
+#include "lib/llist.h"
 
 extern zend_module_entry xdebug_module_entry;
 #define phpext_xdebug_ptr &xdebug_module_entry
@@ -135,86 +138,25 @@ PHP_FUNCTION(xdebug_time_index);
 /* filter functions */
 PHP_FUNCTION(xdebug_set_filter);
 
-ZEND_BEGIN_MODULE_GLOBALS(xdebug)
-	int           status;
-	int           reason;
-
+struct xdebug_base_info {
 	unsigned long level;
 	xdebug_llist *stack;
-	zend_long     max_nesting_level;
-	zend_long     max_stack_frames;
-	zend_bool     default_enable;
-	zend_bool     collect_includes;
-	zend_long     collect_params;
-	zend_bool     collect_return;
-	zend_bool     collect_vars;
-	zend_bool     collect_assignments;
-	zend_bool     show_ex_trace;
-	zend_bool     show_error_trace;
-	zend_bool     show_local_vars;
-	zend_bool     show_mem_delta;
 	double        start_time;
-	HashTable    *active_symbol_table;
-	zend_execute_data *active_execute_data;
-	zval              *This;
-	function_stack_entry *active_fse;
 	unsigned int  prev_memory;
-	char         *file_link_format;
-	char         *filename_format;
-	zend_bool     force_display_errors;
-	zend_long     force_error_reporting;
-	zend_long     halt_level;
-
-	zend_long     overload_var_dump;
-
 	zif_handler   orig_var_dump_func;
 	zif_handler   orig_set_time_limit_func;
 	zif_handler   orig_error_reporting_func;
 	zif_handler   orig_pcntl_exec_func;
-
-	xdebug_trace_handler_t *trace_handler;
-	void         *trace_context;
-
-	zend_bool     auto_trace;
-	zend_bool     trace_enable_trigger;
-	char         *trace_enable_trigger_value;
-	char         *trace_output_dir;
-	char         *trace_output_name;
-	zend_long     trace_options;
-	zend_long     trace_format;
-	char         *last_exception_trace;
-	char         *last_eval_statement;
-	zend_bool     in_debug_info;
-
-	/* variable dumping limitation settings */
-	zend_long     display_max_children;
-	zend_long     display_max_data;
-	zend_long     display_max_depth;
-
-	zend_long     cli_color;
 	int           output_is_tty;
-
-	/* used for code coverage */
-	zend_bool     coverage_enable;
-	zend_bool     do_code_coverage;
-	xdebug_hash  *code_coverage;
-	zend_bool     code_coverage_unused;
-	zend_bool     code_coverage_dead_code_analysis;
-	zend_bool     code_coverage_branch_check;
+	zend_bool     in_debug_info;
+	char         *last_exception_trace;
+	zend_long     error_reporting_override;
+	zend_bool     error_reporting_overridden;
 	unsigned int  function_count;
-	int           dead_code_analysis_tracker_offset;
-	long          dead_code_last_start_id;
-	long          code_coverage_filter_offset;
-	char                 *previous_filename;
-	xdebug_coverage_file *previous_file;
-	char                 *previous_mark_filename;
-	xdebug_coverage_file *previous_mark_file;
-	xdebug_path_info     *paths_stack;
-	xdebug_hash          *visited_branches;
-	struct {
-		unsigned int  size;
-		int *last_branch_nr;
-	} branches;
+	char         *last_eval_statement;
+
+	/* headers */
+	xdebug_llist *headers;
 
 	/* used for collection errors */
 	zend_bool     do_collect_errors;
@@ -226,9 +168,6 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 	xdebug_llist *monitored_functions_found; /* List of functions found */
 
 	/* superglobals */
-	zend_bool     dump_globals;
-	zend_bool     dump_once;
-	zend_bool     dump_undefined;
 	zend_bool     dumped;
 	xdebug_llist  server;
 	xdebug_llist  get;
@@ -239,76 +178,8 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 	xdebug_llist  request;
 	xdebug_llist  session;
 
-	/* headers */
-	xdebug_llist *headers;
-
-	/* remote settings */
-	zend_bool     remote_enable;  /* 0 */
-	zend_long     remote_port;    /* 9000 */
-	char         *remote_host;    /* localhost */
-	long          remote_mode;    /* XDEBUG_NONE, XDEBUG_JIT, XDEBUG_REQ */
-	char         *remote_handler; /* php3, gdb, dbgp */
-	zend_bool     remote_autostart; /* Disables the requirement for XDEBUG_SESSION_START */
-	zend_bool     remote_connect_back;   /* connect back to the HTTP requestor */
-	char         *remote_log;       /* Filename to log protocol communication to */
-	FILE         *remote_log_file;  /* File handler for protocol log */
-	int           remote_log_level; /* Log level XDEBUG_LOG_{ERR,WARN,INFO,DEBUG} */
-	zend_long     remote_cookie_expire_time; /* Expire time for the remote-session cookie */
-	char         *remote_addr_header; /* User configured header to check for forwarded IP address */
-	zend_long     remote_connect_timeout; /* Timeout in MS for remote connections */
-
-	char         *ide_key; /* As Xdebug uses it, from environment, USER, USERNAME or empty */
-	char         *ide_key_setting; /* Set through php.ini and friends */
-
-	/* remote debugging globals */
-	zend_bool     remote_connection_enabled;
-	zend_ulong    remote_connection_pid;
-	zend_bool     breakpoints_allowed;
-	xdebug_con    context;
-	unsigned int  breakpoint_count;
-	unsigned int  no_exec;
-	zend_long     error_reporting_override;
-	zend_bool     error_reporting_overridden;
-
-	/* profiler settings */
-	zend_bool     profiler_enable;
-	char         *profiler_output_dir;
-	char         *profiler_output_name; /* "pid" or "crc32" */
-	zend_bool     profiler_enable_trigger;
-	char         *profiler_enable_trigger_value;
-	zend_bool     profiler_append;
-
-	/* profiler globals */
-	zend_bool     profiler_enabled;
-	FILE         *profile_file;
-	char         *profile_filename;
-	xdebug_hash  *profile_filename_refs;
-	int           profile_last_filename_ref;
-	xdebug_hash  *profile_functionname_refs;
-	int           profile_last_functionname_ref;
-
-	/* DBGp globals */
-	const char   *lastcmd;
-	char         *lasttransid;
-
-	/* output redirection */
-	int           stdout_mode;
-
-	/* aggregate profiling */
-	HashTable  aggr_calls;
-	zend_bool  profiler_aggregate;
-
 	/* scream */
-	zend_bool  do_scream;
 	zend_bool  in_at;
-
-	/* garbage stats */
-	zend_bool  gc_stats_enable;
-	zend_bool  gc_stats_enabled;
-	char      *gc_stats_output_dir;
-	char      *gc_stats_output_name;
-	FILE      *gc_stats_file;
-	char      *gc_stats_filename;
 
 	/* in-execution checking */
 	zend_bool  in_execution;
@@ -320,6 +191,69 @@ ZEND_BEGIN_MODULE_GLOBALS(xdebug)
 	zend_long     filter_type_code_coverage;
 	xdebug_llist *filters_tracing;
 	xdebug_llist *filters_code_coverage;
+
+	struct {
+		zend_long     max_nesting_level;
+		zend_long     max_stack_frames;
+		zend_bool     default_enable;
+		zend_bool     collect_includes;
+		zend_long     collect_params;
+		zend_bool     collect_return;
+		zend_bool     collect_vars;
+		zend_bool     collect_assignments;
+		zend_bool     show_ex_trace;
+		zend_bool     show_error_trace;
+		zend_bool     show_local_vars;
+		zend_bool     show_mem_delta;
+		char         *file_link_format;
+		char         *filename_format;
+		zend_bool     force_display_errors;
+		zend_long     force_error_reporting;
+		zend_long     halt_level;
+
+		zend_long     overload_var_dump;
+
+		/* variable dumping limitation settings */
+		zend_long     display_max_children;
+		zend_long     display_max_data;
+		zend_long     display_max_depth;
+		zend_long     cli_color;
+
+		/* superglobals */
+		zend_bool     dump_globals;
+		zend_bool     dump_once;
+		zend_bool     dump_undefined;
+
+		/* scream */
+		zend_bool  do_scream;
+	} settings;
+};
+
+struct xdebug_library_info
+{
+	zend_execute_data    *active_execute_data;
+	function_stack_entry *active_fse;
+	HashTable            *active_symbol_table;
+	zval                 *This;
+};
+
+ZEND_BEGIN_MODULE_GLOBALS(xdebug)
+	struct xdebug_base_info     base;
+	struct xdebug_library_info  library;
+	struct {
+		xdebug_coverage_globals_t coverage;
+		xdebug_debugger_globals_t debugger;
+		xdebug_gc_stats_globals_t gc_stats;
+		xdebug_profiler_globals_t profiler;
+		xdebug_tracing_globals_t  tracing;
+	} globals;
+	struct {
+		xdebug_coverage_settings_t coverage;
+		xdebug_debugger_settings_t debugger;
+		xdebug_gc_stats_settings_t gc_stats;
+		xdebug_profiler_settings_t profiler;
+		xdebug_tracing_settings_t  tracing;
+	} settings;
 ZEND_END_MODULE_GLOBALS(xdebug)
 
 #ifdef ZTS
@@ -327,6 +261,18 @@ ZEND_END_MODULE_GLOBALS(xdebug)
 #else
 #define XG(v) (xdebug_globals.v)
 #endif
+
+#define XG_BASE(v)     (XG(base.v))
+#define XG_LIB(v )     (XG(library.v))
+
+#define XINI_BASE(v)     (XG(base.settings.v))
+
+/* Needed for code coverage as Zend doesn't always add EXT_STMT when expected */
+#define XDEBUG_SET_OPCODE_OVERRIDE_COMMON(oc) \
+	zend_set_user_opcode_handler(oc, xdebug_common_override_handler);
+
+#define XDEBUG_SET_OPCODE_OVERRIDE_ASSIGN(f,oc) \
+	zend_set_user_opcode_handler(oc, xdebug_##f##_handler);
 
 #endif
 
