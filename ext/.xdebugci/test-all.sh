@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATTERN=${1:-'^7.3.*'}
+PATTERN=${1:-'^7.[34].*'}
 
 PHP=`which php`
 if [[ "${PHP}" == "" ]]; then
@@ -21,6 +21,9 @@ mkdir -p /tmp/ptester/logs
 rm -rf /tmp/ptester/logs/*
 mkdir -p /tmp/ptester/junit
 rm -rf /tmp/ptester/junit/*
+
+# Storing Run ID
+date +'%Y-%d-%d-%H-%M-%S' > /tmp/ptester/run-id.txt
 
 c=0
 for i in $PHPS; do

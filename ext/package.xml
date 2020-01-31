@@ -33,31 +33,25 @@ Xdebug also provides:
   <active>yes</active>
  </lead>
 
- <date>2019-07-25</date>
- <time>15:20:11</time>
+ <date>2020-01-31</date>
+ <time>09:47:21</time>
  <version>
-  <release>2.8.0beta1</release>
-  <api>2.8.0beta1</api>
+  <release>2.9.2</release>
+  <api>2.9.2</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD style</license>
  <notes>
-Thu, Jul 25, 2019 - xdebug 2.8.0beta1
+Fri, Jan 31, 2020 - xdebug 2.9.2
 
 = Fixed bugs:
 
-  - Fixed issue #1679: Code Coverage misses static property as function
-    argument
-  - Fixed issue #1682: Invalid NULL byte in debugger XML with anonymous classes
-  - Fixed issue #1683: Xdebug does not compile due to changes to ASSIGN_ADD and
-    friends operations in PHP 7.4alpha3
-  - Fixed issue #1687: Use appropriate process ID for logging and "right
-    process" tracking
-  - Fixed issue #1688: Improve performance by using getpid() only when step
-    debugger is active
+Fixed issue #1735: DBGp eval warning promoted to Exception can cause out-of-sync responses
+Fixed issue #1736: Segmentation fault when other extensions run PHP in RINIT
+Fixed issue #1739: Tracing footer not written
  </notes>
 
  <contents>
@@ -83,70 +77,109 @@ Thu, Jul 25, 2019 - xdebug 2.8.0beta1
     <file name="usefulstuff.c" role="src" />
     <file name="usefulstuff.h" role="src" />
    </dir> <!-- /debugclient -->
+
    <file name="config.m4" role="src" />
    <file name="config.w32" role="src" />
    <file name="CREDITS" role="doc" />
    <file name="LICENSE" role="doc" />
    <file name="xdebug.ini" role="doc" />
    <file name="Makefile.frag" role="src" />
-   <file name="php_xdebug.h" role="src" />
    <file name="README.rst" role="doc" />
-   <file name="usefulstuff.c" role="src" />
-   <file name="usefulstuff.h" role="src" />
+
    <file name="xdebug.c" role="src" />
-   <file name="xdebug_branch_info.c" role="src" />
-   <file name="xdebug_branch_info.h" role="src" />
-   <file name="xdebug_code_coverage.c" role="src" />
-   <file name="xdebug_code_coverage.h" role="src" />
-   <file name="xdebug_com.c" role="src" />
-   <file name="xdebug_com.h" role="src" />
-   <file name="xdebug_compat.c" role="src" />
-   <file name="xdebug_compat.h" role="src" />
-   <file name="xdebug_filter.c" role="src" />
-   <file name="xdebug_filter.h" role="src" />
-   <file name="xdebug_gc_stats.c" role="src" />
-   <file name="xdebug_gc_stats.h" role="src" />
-   <file name="xdebug_handlers.c" role="src" />
-   <file name="xdebug_handlers.h" role="src" />
-   <file name="xdebug_handler_dbgp.c" role="src" />
-   <file name="xdebug_handler_dbgp.h" role="src" />
-   <file name="xdebug_hash.c" role="src" />
-   <file name="xdebug_hash.h" role="src" />
-   <file name="xdebug_llist.c" role="src" />
-   <file name="xdebug_llist.h" role="src" />
-   <file name="xdebug_mm.h" role="src" />
-   <file name="xdebug_monitor.c" role="src" />
-   <file name="xdebug_monitor.h" role="src" />
-   <file name="xdebug_private.c" role="src" />
-   <file name="xdebug_private.h" role="src" />
-   <file name="xdebug_profiler.c" role="src" />
-   <file name="xdebug_profiler.h" role="src" />
-   <file name="xdebug_set.c" role="src" />
-   <file name="xdebug_set.h" role="src" />
-   <file name="xdebug_stack.c" role="src" />
-   <file name="xdebug_stack.h" role="src" />
-   <file name="xdebug_str.c" role="src" />
-   <file name="xdebug_str.h" role="src" />
-   <file name="xdebug_superglobals.c" role="src" />
-   <file name="xdebug_superglobals.h" role="src" />
-   <file name="xdebug_tracing.c" role="src" />
-   <file name="xdebug_tracing.h" role="src" />
-   <file name="xdebug_trace_textual.c" role="src" />
-   <file name="xdebug_trace_textual.h" role="src" />
-   <file name="xdebug_trace_computerized.c" role="src" />
-   <file name="xdebug_trace_computerized.h" role="src" />
-   <file name="xdebug_trace_html.c" role="src" />
-   <file name="xdebug_trace_html.h" role="src" />
-   <file name="xdebug_var.c" role="src" />
-   <file name="xdebug_var.h" role="src" />
-   <file name="xdebug_xml.c" role="src" />
-   <file name="xdebug_xml.h" role="src" />
+   <file name="php_xdebug.h" role="src" />
+   <dir name="src">
+    <dir name="base">
+     <file name="base.c" role="src" />
+     <file name="base.h" role="src" />
+     <file name="filter.c" role="src" />
+     <file name="filter.h" role="src" />
+     <file name="monitor.c" role="src" />
+     <file name="monitor.h" role="src" />
+     <file name="stack.c" role="src" />
+     <file name="stack.h" role="src" />
+     <file name="superglobals.c" role="src" />
+     <file name="superglobals.h" role="src" />
+    </dir>
+    <dir name="lib">
+     <file name="usefulstuff.c" role="src" />
+     <file name="usefulstuff.h" role="src" />
+     <file name="compat.c" role="src" />
+     <file name="compat.h" role="src" />
+     <file name="crc32.c" role="src" />
+     <file name="crc32.h" role="src" />
+     <file name="hash.c" role="src" />
+     <file name="hash.h" role="src" />
+     <file name="llist.c" role="src" />
+     <file name="llist.h" role="src" />
+     <file name="mm.h" role="src" />
+     <file name="private.c" role="src" />
+     <file name="private.h" role="src" />
+     <file name="set.c" role="src" />
+     <file name="set.h" role="src" />
+     <file name="str.c" role="src" />
+     <file name="str.h" role="src" />
+     <file name="var.c" role="src" />
+     <file name="var.h" role="src" />
+     <file name="var_export_html.c" role="src" />
+     <file name="var_export_html.h" role="src" />
+     <file name="var_export_line.c" role="src" />
+     <file name="var_export_line.h" role="src" />
+     <file name="var_export_serialized.c" role="src" />
+     <file name="var_export_serialized.h" role="src" />
+     <file name="var_export_text.c" role="src" />
+     <file name="var_export_text.h" role="src" />
+     <file name="var_export_xml.c" role="src" />
+     <file name="var_export_xml.h" role="src" />
+     <file name="xml.c" role="src" />
+     <file name="xml.h" role="src" />
+    </dir>
+    <dir name="coverage">
+     <file name="branch_info.c" role="src" />
+     <file name="branch_info.h" role="src" />
+     <file name="code_coverage.c" role="src" />
+     <file name="code_coverage.h" role="src" />
+     <file name="code_coverage_private.h" role="src" />
+    </dir>
+    <dir name="debugger">
+     <file name="com.c" role="src" />
+     <file name="com.h" role="src" />
+     <file name="debugger.c" role="src" />
+     <file name="debugger.h" role="src" />
+     <file name="debugger_private.h" role="src" />
+     <file name="handlers.c" role="src" />
+     <file name="handlers.h" role="src" />
+     <file name="handler_dbgp.c" role="src" />
+     <file name="handler_dbgp.h" role="src" />
+    </dir>
+    <dir name="gcstats">
+     <file name="gc_stats.c" role="src" />
+     <file name="gc_stats.h" role="src" />
+     <file name="gc_stats_private.h" role="src" />
+    </dir>
+    <dir name="profiler">
+     <file name="profiler.c" role="src" />
+     <file name="profiler.h" role="src" />
+     <file name="profiler_private.h" role="src" />
+    </dir>
+    <dir name="tracing">
+     <file name="tracing.c" role="src" />
+     <file name="tracing.h" role="src" />
+     <file name="tracing_private.h" role="src" />
+     <file name="trace_textual.c" role="src" />
+     <file name="trace_textual.h" role="src" />
+     <file name="trace_computerized.c" role="src" />
+     <file name="trace_computerized.h" role="src" />
+     <file name="trace_html.c" role="src" />
+     <file name="trace_html.h" role="src" />
+    </dir>
+   </dir>
   </dir> <!-- / -->
  </contents>
  <dependencies>
   <required>
    <php>
-    <min>7.0.0</min>
+    <min>7.1.0</min>
    </php>
    <pearinstaller>
     <min>1.9.1</min>
@@ -156,6 +189,169 @@ Thu, Jul 25, 2019 - xdebug 2.8.0beta1
  <providesextension>xdebug</providesextension>
  <zendextsrcrelease />
  <changelog>
+
+  <release>
+   <date>2020-01-16</date>
+   <time>14:18:51</time>
+   <version>
+    <release>2.9.1</release>
+    <api>2.9.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD style</license>
+   <notes>
+Thu, Jan 16, 2020 - xdebug 2.9.1
+
+= Fixed bugs:
+
+  - Fixed issue #1721: Header may not contain NUL bytes in Unknown on line 0
+  - Fixed issue #1727: Debugger stops more often than expected due to resolving breakpoints
+  - Fixed issue #1728: INIT_STATIC_METHOD_CALL is not overloaded
+  - Fixed issue #1731: var_dump with DateTime does not output properties (Ryan Mauger)
+  - Fixed issue #1733: SEND_VAR_NO_REF_EX opcode, used for require(), is not overloaded
+  - Fixed issue #1734: Segfault with DBGp "source" with a out-of-range start line number
+   </notes>
+  </release>
+
+  <release>
+   <date>2019-12-09</date>
+   <time>10:44:53</time>
+   <version>
+    <release>2.9.0</release>
+    <api>2.9.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD style</license>
+   <notes>
+Mon, Dec  9, 2019 - xdebug 2.9.0
+
++ Improvements:
+
+  - Fixed issue #1723: Class/function pre-analysis for code coverage speed improvements
+
+- Removed features:
+
+  - Fixed issue #1301: Removed aggregated profiler feature
+  - Fixed issue #1720: Remove superfluous xdebug.remote_handler setting
+
+= Fixed bugs:
+
+  - Fixed issue #1722: Build warning issues on FreeBSD
+  - Fixed issue #1724: Missing property types and uninitialised values in variable dumping routines
+   </notes>
+  </release>
+
+  <release>
+   <date>2019-12-02</date>
+   <time>10:46:09</time>
+   <version>
+    <release>2.8.1</release>
+    <api>2.8.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD style</license>
+   <notes>
+Mon, Dec  2, 2019 - xdebug 2.8.1
+
+= Fixed bugs:
+
+  - Fixed issue #1717: Code coverage turned slow after update from 2.7.2 to 2.8.0
+   </notes>
+  </release>
+
+  <release>
+   <date>2019-10-31</date>
+   <time>10:46:09</time>
+   <version>
+    <release>2.8.0</release>
+    <api>2.8.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD style</license>
+   <notes>
+Thu, Oct 31, 2019 - xdebug 2.8.0
+
+= Fixed bugs:
+
+  - Fixed issue #1665: Segfault with garbage collection and complex function arguments
+  - Fixed issue #1699: Crash during debugging Phalcon project
+  - Fixed issue #1705: Crash while debugging with ionCube being used
+  - Fixed issue #1708: Crash on evaluating object with properties
+  - Fixed issue #1709: Wrong data type breaks tests on Big Endian build
+  - Fixed issue #1713: INIT_FCALL is not overloaded in code coverage
+   </notes>
+  </release>
+
+  <release>
+   <date>2019-08-26</date>
+   <time>13:39:39</time>
+   <version>
+    <release>2.8.0beta2</release>
+    <api>2.8.0beta2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD style</license>
+   <notes>
+Mon, Aug 26, 2019 - xdebug 2.8.0beta2
+
+= Fixed bugs:
+
+  - Fixed issue #1540: Code coverage should not run when turned off in php.ini
+  - Fixed issue #1573: Using an exception_handler creates an extra broken profiler file
+  - Fixed issue #1589: function names used in auto_prepend_file missing from profile file
+  - Fixed issue #1613: Wrong name displayed for Recoverable fatal error
+  - Fixed issue #1652: Problems with detach in debugger init stage
+  - Fixed issue #1676: Xdebug doesn't write trace footer for shutdown functions
+  - Fixed issue #1689: Traces show return values and exit information for functions without entry information
+  - Fixed issue #1691: Code Coverage misses fluent interface function call
+  - Fixed issue #1698: Switch PHP 7.4 Windows builds back to VS17
+  - Fixed issue #1700: Xdebug abuses possibilty immutable class flags
+   </notes>
+  </release>
+
+  <release>
+   <date>2019-07-25</date>
+   <time>15:20:11</time>
+   <version>
+    <release>2.8.0beta1</release>
+    <api>2.8.0beta1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD style</license>
+   <notes>
+Thu, Jul 25, 2019 - xdebug 2.8.0beta1
+
+= Fixed bugs:
+
+  - Fixed issue #1679: Code Coverage misses static property as function
+    argument
+  - Fixed issue #1682: Invalid NULL byte in debugger XML with anonymous classes
+  - Fixed issue #1683: Xdebug does not compile due to changes to ASSIGN_ADD and
+    friends operations in PHP 7.4alpha3
+  - Fixed issue #1687: Use appropriate process ID for logging and "right
+    process" tracking
+  - Fixed issue #1688: Improve performance by using getpid() only when step
+    debugger is active
+   </notes>
+  </release>
 
   <release>
    <date>2019-06-28</date>
