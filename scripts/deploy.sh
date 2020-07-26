@@ -19,8 +19,8 @@ set -e
 
 # install dependencies
 apt-get update
-apt-get install --yes autoconf gcc make git libjson-c-dev net-tools vim
-apt-get install --yes php7.0-dev || true
+apt-get install --yes autoconf gcc make git libjson-c-dev net-tools vim pkg-config
+apt-get install --yes php-dev || true
 
 # compile and install
 cd /tmp/fracker
