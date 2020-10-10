@@ -1,5 +1,5 @@
 paths:
-  - s\.PHP$
+  - s\.PHP:\d+$
 excludePaths:
   - OBJECTS
 ignoreCase: true
