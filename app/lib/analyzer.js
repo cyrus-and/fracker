@@ -76,7 +76,7 @@ function run(server, options = {}) {
             }
 
             // skip if the script file path doesn't match
-            if (!Matcher.match(call.file, pathsRegexp, excludePathsRegexp)) {
+            if (!Matcher.match(`${call.file}:${call.line}`, pathsRegexp, excludePathsRegexp)) {
                 return;
             }
 
