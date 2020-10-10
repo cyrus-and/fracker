@@ -23,7 +23,7 @@ function prepareParser() {
         .option('--port <port>', 'bind the server to port <port>')
         .option('-f, --functions <regexp>', 'show functions whose name matches <regexp>', append, [])
         .option('-F, --exclude-functions <regexp>', 'hide functions whose name matches <regexp>', append, [])
-        .option('-a, --arguments <regexp>', 'show  functions with arguments matching <regexp>', append, [])
+        .option('-a, --arguments <regexp>', 'show functions with arguments matching <regexp>', append, [])
         .option('-A, --exclude-arguments <regexp>', 'hide functions with arguments matching <regexp>', append, [])
         .option('-p, --paths <regexp>', 'show functions called in files matching <regexp>', append, [])
         .option('-P, --exclude-paths <regexp>', 'hide functions called in files matching <regexp>', append, [])
@@ -68,7 +68,7 @@ for example:
     - foo
     - bar
   arguments:
-    - "x y"
+    - x y
 
 Multiple files with increasing priority can be specified, but command line
 options will have the highest priority.
