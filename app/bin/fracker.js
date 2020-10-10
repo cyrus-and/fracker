@@ -25,8 +25,8 @@ function prepareParser() {
         .option('-F, --exclude-functions <regexp>', 'hide functions whose name matches <regexp>', append, [])
         .option('-a, --arguments <regexp>', 'show functions with arguments matching <regexp>', append, [])
         .option('-A, --exclude-arguments <regexp>', 'hide functions with arguments matching <regexp>', append, [])
-        .option('-p, --paths <regexp>', 'show functions called in files matching <regexp>', append, [])
-        .option('-P, --exclude-paths <regexp>', 'hide functions called in files matching <regexp>', append, [])
+        .option('-p, --paths <regexp>', 'show functions called in files (path:line) matching <regexp>', append, [])
+        .option('-P, --exclude-paths <regexp>', 'hide functions called in files (path:line) matching <regexp>', append, [])
         .option('--mute-functions <regexp>', 'do not print values for arguments of functions whose name matches <regexp>', append, [])
         .option('--mute-arguments <regexp>', 'do not print values for arguments whose name matches <regexp>', append, [])
         .option('-t, --track-user-inputs', 'automatically track user-controlled arguments')
@@ -67,6 +67,10 @@ for example:
   functions:
     - foo
     - bar
+  paths:
+    - src/foo
+  excludePaths:
+    - bar.php:42
   arguments:
     - x y
 
