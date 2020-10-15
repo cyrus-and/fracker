@@ -1,6 +1,5 @@
 /* Copyright (c) 2020 Andrea Cardaci <cyrus.and@gmail.com> */
 
-
 #include "php.h"
 #include "ext/standard/php_string.h"
 
@@ -9,13 +8,6 @@
 #include "trace_fracker.h"
 
 #include "lib/var_export_line.h"
-#include "lib/var_export_serialized.h"
-
-
-
-
-/* #include "trace_fracker.h" */
-/* #include "xdebug_var.h" */
 
 #include "ext/json/php_json.h"
 #include "zend_smart_str.h"
@@ -83,7 +75,7 @@ static void write_json_object(int fd, struct json_object *object)
 {
     struct iovec to_write[2];
 
-    /* TODO properly check the write syscalls */
+    /* TODO properly check the writev syscall */
 
     /* write the object followed by a newline then cleanup */
     to_write[0].iov_base = (void *)json_object_to_json_string(object);
