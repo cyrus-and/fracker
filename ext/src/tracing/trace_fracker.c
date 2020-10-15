@@ -26,7 +26,7 @@
 #include <netinet/tcp.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <unistd.h>
+#include <sys/uio.h>
 
 #include <json.h>
 
@@ -81,24 +81,17 @@ static int connect_to_server()
 
 static void write_json_object(int fd, struct json_object *object)
 {
-    const char *string;
-    int cork;
+    struct iovec to_write[2];
 
     /* TODO properly check the write syscalls */
 
-    /* start buffering to avoid sending a single packet for the newline */
-    cork = 1;
-    setsockopt(fd, SOL_TCP, TCP_CORK, &cork, sizeof(cork));
-
     /* write the object followed by a newline then cleanup */
-    string = json_object_to_json_string(object);
-    write(fd, string, strlen(string));
-    write(fd, "\n", 1);
+    to_write[0].iov_base = (void *)json_object_to_json_string(object);
+    to_write[0].iov_len = strlen(to_write[0].iov_base);
+    to_write[1].iov_base = "\n";
+    to_write[1].iov_len = 1;
+    writev(fd, to_write, 2);
     json_object_put(object);
-
-    /* release the cork and make sure to send out data */
-    cork = 0;
-    setsockopt(fd, SOL_TCP, TCP_CORK, &cork, sizeof(cork));
 }
 
 static int zval_to_json(zval *value, struct json_object **object)
