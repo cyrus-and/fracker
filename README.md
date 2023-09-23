@@ -1,7 +1,6 @@
-# Fracker [![Build Status][]][travis]
+# Fracker
 
-[Build Status]: https://travis-ci.com/cyrus-and/fracker.svg?branch=master
-[travis]: https://travis-ci.com/cyrus-and/fracker
+[![CI status](https://github.com/cyrus-and/fracker/actions/workflows/ci.yml/badge.svg)](https://github.com/cyrus-and/fracker/actions?query=workflow:CI)
 
 Fracker is a suite of tools that allows to easily trace and analyze PHP function calls, its goal is to assist the researcher during manual security assessments of PHP applications.
 
