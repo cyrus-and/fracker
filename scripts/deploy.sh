@@ -22,14 +22,13 @@ apt-get update
 apt-get install --yes autoconf gcc make git libjson-c-dev net-tools vim pkg-config
 apt-get install --yes php-dev || true
 
-# compile and install
+# apply the patch and compile
 cd /tmp/fracker
-make distclean || true
-phpize --clean
-phpize
-./configure
-make -j "\$(nproc)" all
+make fetch-xdebug
+make apply-patch
+make build
 
+# resolve the host
 if [ "$host" ]; then
     host="$host"
 else
@@ -43,7 +42,7 @@ fi
 
 # set up the extension
 cat >/tmp/fracker/fracker.ini <<INI
-zend_extension=/tmp/fracker/.libs/xdebug.so
+zend_extension=/tmp/fracker/xdebug/modules/xdebug.so
 xdebug.trace_fracker_host=\$host
 xdebug.trace_fracker_port=$port
 INI
