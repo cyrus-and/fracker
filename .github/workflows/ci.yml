@@ -1,0 +1,23 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          sudo apt-get --yes install libjson-c-dev
+      - name: Build components
+        run: |
+          make -C ./test/ rebuild
+      - name: Run tests
+        run: |
+          make -C ./test/ test
