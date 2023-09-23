@@ -1,14 +1,14 @@
 [90m001 │ [37m[1mGET[22m[90m [33mlocalhost:8080/[90m[39m
-[90m001 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m"test"[90m)[37m [90m/php/eval.php(3) : eval()'d code +6[37m[90m[39m
+[90m001 │ [37m[90m»  »  »  [37m[32mvar_dump[37m[90m([37m[36mvalue=[37m"test"[90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/eval.php(3) : eval()'d code +6[37m[90m[39m
 [90m001 │ [37m[90m»  »  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m123[90m)[37m [90m/php/objects.php +13[37m[90m[39m
 [90m001 │ [37m[90m»  »  »  »  [37m[34mFoo->method3[37m[90m([37m[36mx=[37m"foo"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
 [90m001 │ [37m[90m»  »  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"bar"[90m)[37m [90m/php/objects.php +13[37m[90m[39m
 [90m001 │ [37m[90m»  »  »  [37m[34mFoo->method3[37m[90m([37m[36mx=[37m"baz"[90m)[37m [90m/php/objects.php +14[37m[90m[39m
 [90m001 │ [37m[90m»  »  [37m[32mFoo->method3[37m[90m([37m[36mx=[37m"qwerty"[90m)[37m [90m/php/objects.php +25[37m[90m[39m
-[90m001 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m123[90m)[37m [90m/php/types.php +3[37m[90m[39m
-[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m3.14[90m)[37m [90m/php/types.php +4[37m[90m[39m
-[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m"foo"[90m)[37m [90m/php/types.php +5[37m[90m[39m
-[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[][90m)[37m [90m/php/types.php +6[37m[90m[39m
-[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[123,3.14,"foo"][90m)[37m [90m/php/types.php +7[37m[90m[39m
-[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m{"foo":1,"bar":2,"baz":3}[90m)[37m [90m/php/types.php +8[37m[90m[39m
-[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m{"1":"foo","2":"bar","3":"baz"}[90m)[37m [90m/php/types.php +9[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[32mvar_dump[37m[90m([37m[36mvalue=[37m123[90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/types.php +3[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[36mvalue=[37m3.14[90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/types.php +4[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[36mvalue=[37m"foo"[90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/types.php +5[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[36mvalue=[37m[][90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/types.php +6[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[36mvalue=[37m[123,3.14,"foo"][90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/types.php +7[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[36mvalue=[37m{"foo":1,"bar":2,"baz":3}[90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/types.php +8[37m[90m[39m
+[90m001 │ [37m[90m»  »  [37m[34mvar_dump[37m[90m([37m[36mvalue=[37m{"1":"foo","2":"bar","3":"baz"}[90m, [37m[36mvalues=[37mnull[90m)[37m [90m/php/types.php +9[37m[90m[39m

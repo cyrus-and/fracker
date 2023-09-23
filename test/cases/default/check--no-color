@@ -3,22 +3,22 @@
 001 │ »  require_once("/php/eval.php") /php/index.php +3
 001 │ »  »  eval("\nfunction foo($x) {\n    return $x;\n}\n\nvar_dump(foo(\"test\"));\n") /php/eval.php +3
 001 │ »  »  »  foo(x="test") /php/eval.php(3) : eval()'d code +6
-001 │ »  »  »  var_dump("test") /php/eval.php(3) : eval()'d code +6
+001 │ »  »  »  var_dump(value="test", values=null) /php/eval.php(3) : eval()'d code +6
 001 │ »  require_once("/php/objects.php") /php/index.php +4
 001 │ »  »  Foo->__construct(x=123) /php/objects.php +22
 001 │ »  »  Foo->method1(y="foo") /php/objects.php +23
 001 │ »  »  »  Foo->method2(x=123, y="foo") /php/objects.php +9
 001 │ »  »  »  »  Foo->method3(x=123) /php/objects.php +13
-001 │ »  »  »  »  »  var_dump(123) /php/objects.php +18
+001 │ »  »  »  »  »  var_dump(value=123, values=null) /php/objects.php +18
 001 │ »  »  »  »  Foo->method3(x="foo") /php/objects.php +14
-001 │ »  »  »  »  »  var_dump("foo") /php/objects.php +18
+001 │ »  »  »  »  »  var_dump(value="foo", values=null) /php/objects.php +18
 001 │ »  »  Foo->method2(x="bar", y="baz") /php/objects.php +24
 001 │ »  »  »  Foo->method3(x="bar") /php/objects.php +13
-001 │ »  »  »  »  var_dump("bar") /php/objects.php +18
+001 │ »  »  »  »  var_dump(value="bar", values=null) /php/objects.php +18
 001 │ »  »  »  Foo->method3(x="baz") /php/objects.php +14
-001 │ »  »  »  »  var_dump("baz") /php/objects.php +18
+001 │ »  »  »  »  var_dump(value="baz", values=null) /php/objects.php +18
 001 │ »  »  Foo->method3(x="qwerty") /php/objects.php +25
-001 │ »  »  »  var_dump("qwerty") /php/objects.php +18
+001 │ »  »  »  var_dump(value="qwerty", values=null) /php/objects.php +18
 001 │ »  require_once("/php/recursion.php") /php/index.php +5
 001 │ »  »  fibo(n=5) /php/recursion.php +11
 001 │ »  »  »  fibo(n=4) /php/recursion.php +7
@@ -36,10 +36,10 @@
 001 │ »  »  »  »  »  fibo(n=0) /php/recursion.php +7
 001 │ »  »  »  »  fibo(n=1) /php/recursion.php +7
 001 │ »  require_once("/php/types.php") /php/index.php +6
-001 │ »  »  var_dump(123) /php/types.php +3
-001 │ »  »  var_dump(3.14) /php/types.php +4
-001 │ »  »  var_dump("foo") /php/types.php +5
-001 │ »  »  var_dump([]) /php/types.php +6
-001 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
-001 │ »  »  var_dump({"foo": 1, "bar": 2, "baz": 3}) /php/types.php +8
-001 │ »  »  var_dump({"1": "foo", "2": "bar", "3": "baz"}) /php/types.php +9
+001 │ »  »  var_dump(value=123, values=null) /php/types.php +3
+001 │ »  »  var_dump(value=3.14, values=null) /php/types.php +4
+001 │ »  »  var_dump(value="foo", values=null) /php/types.php +5
+001 │ »  »  var_dump(value=[], values=null) /php/types.php +6
+001 │ »  »  var_dump(value=[123, 3.14, "foo"], values=null) /php/types.php +7
+001 │ »  »  var_dump(value={"foo": 1, "bar": 2, "baz": 3}, values=null) /php/types.php +8
+001 │ »  »  var_dump(value={"1": "foo", "2": "bar", "3": "baz"}, values=null) /php/types.php +9

@@ -3,6 +3,6 @@
 001 │ »  »  Foo->method1(y="foo") /php/objects.php +23
 001 │ »  »  »  Foo->method2(x=123, y="foo") /php/objects.php +9
 001 │ »  »  »  »  Foo->method3(x="foo") /php/objects.php +14
-001 │ »  »  »  »  »  var_dump("foo") /php/objects.php +18
-001 │ »  »  var_dump("foo") /php/types.php +5
-001 │ »  »  var_dump([123, 3.14, "foo"]) /php/types.php +7
+001 │ »  »  »  »  »  var_dump(value="foo", values=null) /php/objects.php +18
+001 │ »  »  var_dump(value="foo", values=null) /php/types.php +5
+001 │ »  »  var_dump(value=[123, 3.14, "foo"], values=null) /php/types.php +7

@@ -5,7 +5,7 @@
 001 │ 3 foo(x="test")
 001 │ 3 ~ X
 001 │ 3 = "test"
-001 │ 4 var_dump("test")
+001 │ 4 var_dump(value="test", values=null)
 001 │ 4 ~ X
 001 │ 4 = null
 001 │ 2 ~ X
@@ -16,12 +16,12 @@
 001 │ 7 Foo->method1(y="foo")
 001 │ 8 Foo->method2(x=123, y="foo")
 001 │ 9 Foo->method3(x=123)
-001 │ 10 var_dump(123)
+001 │ 10 var_dump(value=123, values=null)
 001 │ 10 ~ X
 001 │ 10 = null
 001 │ 9 ~ X
 001 │ 11 Foo->method3(x="foo")
-001 │ 12 var_dump("foo")
+001 │ 12 var_dump(value="foo", values=null)
 001 │ 12 ~ X
 001 │ 12 = null
 001 │ 11 ~ X
@@ -29,18 +29,18 @@
 001 │ 7 ~ X
 001 │ 13 Foo->method2(x="bar", y="baz")
 001 │ 14 Foo->method3(x="bar")
-001 │ 15 var_dump("bar")
+001 │ 15 var_dump(value="bar", values=null)
 001 │ 15 ~ X
 001 │ 15 = null
 001 │ 14 ~ X
 001 │ 16 Foo->method3(x="baz")
-001 │ 17 var_dump("baz")
+001 │ 17 var_dump(value="baz", values=null)
 001 │ 17 ~ X
 001 │ 17 = null
 001 │ 16 ~ X
 001 │ 13 ~ X
 001 │ 18 Foo->method3(x="qwerty")
-001 │ 19 var_dump("qwerty")
+001 │ 19 var_dump(value="qwerty", values=null)
 001 │ 19 ~ X
 001 │ 19 = null
 001 │ 18 ~ X
@@ -93,25 +93,25 @@
 001 │ 21 = 8
 001 │ 20 ~ X
 001 │ 36 require_once("/php/types.php")
-001 │ 37 var_dump(123)
+001 │ 37 var_dump(value=123, values=null)
 001 │ 37 ~ X
 001 │ 37 = null
-001 │ 38 var_dump(3.14)
+001 │ 38 var_dump(value=3.14, values=null)
 001 │ 38 ~ X
 001 │ 38 = null
-001 │ 39 var_dump("foo")
+001 │ 39 var_dump(value="foo", values=null)
 001 │ 39 ~ X
 001 │ 39 = null
-001 │ 40 var_dump([])
+001 │ 40 var_dump(value=[], values=null)
 001 │ 40 ~ X
 001 │ 40 = null
-001 │ 41 var_dump([123, 3.14, "foo"])
+001 │ 41 var_dump(value=[123, 3.14, "foo"], values=null)
 001 │ 41 ~ X
 001 │ 41 = null
-001 │ 42 var_dump({"foo": 1, "bar": 2, "baz": 3})
+001 │ 42 var_dump(value={"foo": 1, "bar": 2, "baz": 3}, values=null)
 001 │ 42 ~ X
 001 │ 42 = null
-001 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
+001 │ 43 var_dump(value={"1": "foo", "2": "bar", "3": "baz"}, values=null)
 001 │ 43 ~ X
 001 │ 43 = null
 001 │ 36 ~ X
@@ -131,7 +131,7 @@
 002 │ 3 foo(x="test")
 002 │ 3 ~ X
 002 │ 3 = "test"
-002 │ 4 var_dump("test")
+002 │ 4 var_dump(value="test", values=null)
 002 │ 4 ~ X
 002 │ 4 = null
 002 │ 2 ~ X
@@ -142,12 +142,12 @@
 002 │ 7 Foo->method1(y="foo")
 002 │ 8 Foo->method2(x=123, y="foo")
 002 │ 9 Foo->method3(x=123)
-002 │ 10 var_dump(123)
+002 │ 10 var_dump(value=123, values=null)
 002 │ 10 ~ X
 002 │ 10 = null
 002 │ 9 ~ X
 002 │ 11 Foo->method3(x="foo")
-002 │ 12 var_dump("foo")
+002 │ 12 var_dump(value="foo", values=null)
 002 │ 12 ~ X
 002 │ 12 = null
 002 │ 11 ~ X
@@ -155,18 +155,18 @@
 002 │ 7 ~ X
 002 │ 13 Foo->method2(x="bar", y="baz")
 002 │ 14 Foo->method3(x="bar")
-002 │ 15 var_dump("bar")
+002 │ 15 var_dump(value="bar", values=null)
 002 │ 15 ~ X
 002 │ 15 = null
 002 │ 14 ~ X
 002 │ 16 Foo->method3(x="baz")
-002 │ 17 var_dump("baz")
+002 │ 17 var_dump(value="baz", values=null)
 002 │ 17 ~ X
 002 │ 17 = null
 002 │ 16 ~ X
 002 │ 13 ~ X
 002 │ 18 Foo->method3(x="qwerty")
-002 │ 19 var_dump("qwerty")
+002 │ 19 var_dump(value="qwerty", values=null)
 002 │ 19 ~ X
 002 │ 19 = null
 002 │ 18 ~ X
@@ -219,25 +219,25 @@
 002 │ 21 = 8
 002 │ 20 ~ X
 002 │ 36 require_once("/php/types.php")
-002 │ 37 var_dump(123)
+002 │ 37 var_dump(value=123, values=null)
 002 │ 37 ~ X
 002 │ 37 = null
-002 │ 38 var_dump(3.14)
+002 │ 38 var_dump(value=3.14, values=null)
 002 │ 38 ~ X
 002 │ 38 = null
-002 │ 39 var_dump("foo")
+002 │ 39 var_dump(value="foo", values=null)
 002 │ 39 ~ X
 002 │ 39 = null
-002 │ 40 var_dump([])
+002 │ 40 var_dump(value=[], values=null)
 002 │ 40 ~ X
 002 │ 40 = null
-002 │ 41 var_dump([123, 3.14, "foo"])
+002 │ 41 var_dump(value=[123, 3.14, "foo"], values=null)
 002 │ 41 ~ X
 002 │ 41 = null
-002 │ 42 var_dump({"foo": 1, "bar": 2, "baz": 3})
+002 │ 42 var_dump(value={"foo": 1, "bar": 2, "baz": 3}, values=null)
 002 │ 42 ~ X
 002 │ 42 = null
-002 │ 43 var_dump({"1": "foo", "2": "bar", "3": "baz"})
+002 │ 43 var_dump(value={"1": "foo", "2": "bar", "3": "baz"}, values=null)
 002 │ 43 ~ X
 002 │ 43 = null
 002 │ 36 ~ X

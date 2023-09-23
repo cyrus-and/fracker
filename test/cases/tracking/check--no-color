@@ -1,30 +1,30 @@
 001 │ GET localhost:8080/tracking.php?GET_key=GET_value
-001 │ »  var_dump("GET_key") /php/tracking.php +24
+001 │ »  var_dump(value="GET_key", values=null) /php/tracking.php +24
 001 │ »  = null
 001 │ »  do_actual_stuff(x="GET_value") /php/tracking.php +26
 001 │ »  »  transform1(x="GET_value") /php/tracking.php +20
-001 │ »  »  »  strtolower("GET_value") /php/tracking.php +4
+001 │ »  »  »  strtolower(string="GET_value") /php/tracking.php +4
 001 │ »  »  »  = "get_value"
 001 │ »  »  = "get_value"
 002 │ POST localhost:8080/tracking.php
-002 │ »  var_dump("POST_key") /php/tracking.php +30
+002 │ »  var_dump(value="POST_key", values=null) /php/tracking.php +30
 002 │ »  = null
 002 │ »  do_actual_stuff(x="POST_value") /php/tracking.php +32
 002 │ »  »  transform1(x="POST_value") /php/tracking.php +20
-002 │ »  »  »  strtolower("POST_value") /php/tracking.php +4
+002 │ »  »  »  strtolower(string="POST_value") /php/tracking.php +4
 002 │ »  »  »  = "post_value"
 002 │ »  »  = "post_value"
 003 │ GET localhost:8080/tracking.php
-003 │ »  var_dump("COOKIE_key") /php/tracking.php +36
+003 │ »  var_dump(value="COOKIE_key", values=null) /php/tracking.php +36
 003 │ »  = null
 003 │ »  do_actual_stuff(x="COOKIE_value") /php/tracking.php +38
 003 │ »  »  transform1(x="COOKIE_value") /php/tracking.php +20
-003 │ »  »  »  strtolower("COOKIE_value") /php/tracking.php +4
+003 │ »  »  »  strtolower(string="COOKIE_value") /php/tracking.php +4
 003 │ »  »  »  = "cookie_value"
 003 │ »  »  = "cookie_value"
 004 │ GET localhost:8080/tracking.php
 004 │ »  do_actual_stuff(x="HEADER_value") /php/tracking.php +44
 004 │ »  »  transform1(x="HEADER_value") /php/tracking.php +20
-004 │ »  »  »  strtolower("HEADER_value") /php/tracking.php +4
+004 │ »  »  »  strtolower(string="HEADER_value") /php/tracking.php +4
 004 │ »  »  »  = "header_value"
 004 │ »  »  = "header_value"
