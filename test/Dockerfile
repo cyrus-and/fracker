@@ -1,8 +1,8 @@
-FROM node:12-buster
+FROM node:18-bookworm
 
 RUN apt-get update
 RUN apt-get install --yes --no-install-recommends \
-    php-dev autoconf gcc make git libjson-c-dev iproute2
+    autoconf gcc git iproute2 libjson-c-dev make php-dev
 
 COPY . /fracker
 

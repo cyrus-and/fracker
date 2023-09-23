@@ -3,9 +3,7 @@ test:
 
 rebuild:
 	npm install -C ../app
-	-make -C ../ext distclean
-	cd ../ext && phpize --clean && phpize
-	cd ../ext && ./configure && make -j $(shell nproc) all
+	make -C ../ext
 
 clean:
 	@find cases/ -name 'result--*' -delete
