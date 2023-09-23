@@ -8,7 +8,7 @@ all: fetch-xdebug apply-patch build
 fetch-xdebug: cleanall
 	git clone --depth 1 --branch "$(XDEBUG_VERSION)" 'https://github.com/xdebug/xdebug'
 
-status:
+patch-status:
 	git -C ./xdebug/ status
 
 apply-patch:
