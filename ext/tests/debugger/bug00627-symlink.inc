@@ -1,1 +1,0 @@
-bug00627-symlink-target.inc
