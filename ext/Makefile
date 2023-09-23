@@ -2,6 +2,9 @@ MAKEFLAGS += --always-make
 
 XDEBUG_VERSION := 3.2.2
 
+all: fetch-xdebug apply-patch build
+	@echo Use zend_extension=$$PWD/xdebug/modules/xdebug.so
+
 fetch-xdebug: cleanall
 	git clone --depth 1 --branch "$(XDEBUG_VERSION)" 'https://github.com/xdebug/xdebug'
 
