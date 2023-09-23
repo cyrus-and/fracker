@@ -1,5 +1,4 @@
 diff --git a/config.m4 b/config.m4
-index dd7eb8cb..a8388559 100644
 --- a/config.m4
 +++ b/config.m4
 @@ -13,6 +13,11 @@ m4_include([m4/pkg.m4])
@@ -25,7 +24,6 @@ index dd7eb8cb..a8388559 100644
    PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/base])
 diff --git a/src/tracing/trace_fracker.c b/src/tracing/trace_fracker.c
 new file mode 100644
-index 00000000..93515254
 --- /dev/null
 +++ b/src/tracing/trace_fracker.c
 @@ -0,0 +1,319 @@
@@ -350,7 +348,6 @@ index 00000000..93515254
 +};
 diff --git a/src/tracing/trace_fracker.h b/src/tracing/trace_fracker.h
 new file mode 100644
-index 00000000..d9698fb5
 --- /dev/null
 +++ b/src/tracing/trace_fracker.h
 @@ -0,0 +1,14 @@
@@ -369,7 +366,6 @@ index 00000000..d9698fb5
 +extern xdebug_trace_handler_t xdebug_trace_handler_fracker;
 +#endif
 diff --git a/src/tracing/tracing.c b/src/tracing/tracing.c
-index cf738797..c7a42220 100644
 --- a/src/tracing/tracing.c
 +++ b/src/tracing/tracing.c
 @@ -21,6 +21,7 @@
@@ -389,7 +385,6 @@ index cf738797..c7a42220 100644
  			php_error(E_NOTICE, "A wrong value for xdebug.trace_format was selected (%d), defaulting to the textual format", (int) XINI_TRACE(trace_format));
  			tmp = &xdebug_trace_handler_textual; break;
 diff --git a/src/tracing/tracing.h b/src/tracing/tracing.h
-index b7f7fa8e..dc955dcb 100644
 --- a/src/tracing/tracing.h
 +++ b/src/tracing/tracing.h
 @@ -49,6 +49,10 @@ typedef struct _xdebug_tracing_settings_t {
@@ -404,7 +399,6 @@ index b7f7fa8e..dc955dcb 100644
  
  void xdebug_init_tracing_globals(xdebug_tracing_globals_t *xg);
 diff --git a/xdebug.c b/xdebug.c
-index be35989b..b73d0ecd 100644
 --- a/xdebug.c
 +++ b/xdebug.c
 @@ -267,13 +267,17 @@ ZEND_INI_DISP(display_start_upon_error)
