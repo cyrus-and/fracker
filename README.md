@@ -107,58 +107,39 @@ It configures the PHP module to connect to specified host on the specified port 
 Install the PHP development files and other dependencies. For example, on a Debian-like distribution:
 
 ```console
-$ apt-get install php7.0-dev libjson-c-dev pkg-config
+$ apt-get install php-dev libjson-c-dev pkg-config
 ```
 
-The following operations need to be performed in the `ext` directory.
+Then move into the `ext` directory and just run `make` to fetch Xdebug, apply the patch, and build Fracker.
 
-Build the PHP extension with:
-
-```console
-$ phpize
-$ ./configure
-$ make
-```
-
-(To rebuild after nontrivial code changes just rerun `make`.)
+(To rebuild after nontrivial code changes just run `make` inside the `xdebug` directory.)
 
 To check that everything is working fine, start the [listener application](#listener-application) then run PHP like this:
 
 ```console
-$ php -d "zend_extension=$PWD/.libs/xdebug.so" -r 'var_dump("Hello Fracker!");'
+$ php -d "zend_extension=$PWD/xdebug/modules/xdebug.so" -r 'var_dump("Hello Fracker!");'
 ```
 
 Finally, install the PHP extension in the usual way, briefly:
 
-1. `make install`;
+1. copy `xdebug/modules/xdebug.so` the PHP extension directory;
+
 2. place `zend_extension=xdebug.so` in a INI file parsed by PHP along with any other custom [settings](#settings) if needed.
 
-Clean the source directory with:
-
-```console
-$ make distclean
-$ phpize --clean
-```
+At this point the source repository is no more needed, you can run `make cleanall` to clean everything up.
 
 #### Settings
 
 The default INI settings should work just fine in most cases. The following serves as a template for some common ways to override the default values:
 
 ```ini
-; trace only those requests with XDEBUG_TRACE=FRACKER in GET, POST or cookie
-xdebug.auto_trace = 0
-xdebug.trace_enable_trigger = 1
-xdebug.trace_enable_trigger_value = FRACKER
-
-; do not collect function arguments
-xdebug.collect_params = 0
-
-; do not collect return values
-xdebug.collect_return = 0
-
-; custom listener application address (instead of 127.0.0.1:6666)
+; change the address of the listener application
 xdebug.trace_fracker_host = 10.10.10.10
 xdebug.trace_fracker_port = 1234
+
+; trace only those requests with XDEBUG_TRACE=FRACKER in GET, POST or cookies
+xdebug.start_with_request = trigger
+xdebug.trigger_value = FRACKER
 ```
 
 ## Listener application
@@ -175,7 +156,7 @@ Optionally install the executable globally by creating a symlink to this folder:
 $ npm install -g app
 ```
 
-Then just run `fracker`, or run it locally with `app/bin/fracker.js`.
+Then just run `fracker`, otherwise run it locally with `app/bin/fracker.js`.
 
 ### Configuration
 
