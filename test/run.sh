@@ -13,7 +13,7 @@ run-single-test() {
 
     # start fracker and wait for it to be fully up
     "$root/app/bin/fracker.js" "$config" "$color" >"$result" 2>/dev/null & fracker_pid=$!
-    while [ -z "$(ss -ltH 'sport = 6666')" ]; do
+    while ! lsof -iTCP:6666 -sTCP:LISTEN &>/dev/null; do
         sleep 0.1
     done
 
