@@ -392,7 +392,7 @@ diff --git a/src/tracing/tracing.h b/src/tracing/tracing.h
  	zend_bool     collect_assignments;
  	zend_bool     collect_return;
 +
-+    /* Fracker settings */
++	/* Fracker settings */
 +	char         *trace_fracker_host;
 +	char         *trace_fracker_port;
  } xdebug_tracing_settings_t;
@@ -405,7 +405,7 @@ diff --git a/xdebug.c b/xdebug.c
  #endif
  
  PHP_INI_BEGIN()
-+    /* Fracker settings */
++	/* Fracker settings */
 +	STD_PHP_INI_ENTRY("xdebug.trace_fracker_host", "127.0.0.1", PHP_INI_ALL, OnUpdateString, settings.tracing.trace_fracker_host, zend_xdebug_globals, xdebug_globals)
 +	STD_PHP_INI_ENTRY("xdebug.trace_fracker_port", "6666",      PHP_INI_ALL, OnUpdateString, settings.tracing.trace_fracker_port, zend_xdebug_globals, xdebug_globals)
 +
