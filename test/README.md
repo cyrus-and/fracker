@@ -5,29 +5,23 @@
 ```console
 $ make rebuild-docker
 $ make test-docker
+$ make clean-docker
 ```
 
 ## Run locally
 
-Make sure to install the PHP development files.
-
 ```console
 $ make rebuild
 $ make test
+$ make clean
 ```
 
-## Run single tests
+### Run single tests
 
 This is mostly useful for debugging and test-writing purposes to avoid running the whole test suite every time:
 
-1. start the server:
-
-    ```console
-    $ ./run.sh -d
-    ```
-
-2. run the test:
-
-    ```console
-    $ ./run.sh cases/$the_test_case/config.yml
-    ```
+```console
+$ make rebuild
+$ ./run.sh $test_case
+$ make clean
+```
