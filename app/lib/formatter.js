@@ -128,18 +128,19 @@ class Formatter {
         }
     }
 
-    _formatElapsedTime(elapsedSeconds) {
+    _formatElapsedTime(nanoseconds) {
+        const seconds = nanoseconds / 1e9;
         let ratio, symbol;
-        if (elapsedSeconds < 1e-6) {
+        if (seconds < 1e-6) {
             [ratio, symbol] = [1e-9, 'ns'];
-        } else if (elapsedSeconds < 1e-3) {
+        } else if (seconds < 1e-3) {
             [ratio, symbol] = [1e-6, 'us'];
-        } else if (elapsedSeconds < 1e-0) {
+        } else if (seconds < 1e-0) {
             [ratio, symbol] = [1e-3, 'ms'];
         } else {
             [ratio, symbol] = [1e-0, 's'];
         }
-        return `${(elapsedSeconds / ratio).toFixed(3)}${symbol}`;
+        return `${(seconds / ratio).toFixed(3)}${symbol}`;
     }
 }
 
