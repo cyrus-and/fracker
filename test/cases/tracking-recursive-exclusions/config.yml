@@ -3,4 +3,4 @@ showReturnValues: true
 recursive: true
 excludeNonString: true
 excludeHeaders: true
-showValuesOnly: true
+trackValuesOnly: true

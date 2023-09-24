@@ -11,7 +11,7 @@ class Walker {
         if (typeof(object) === 'object') {
             for (const key in object) {
                 // add key if proper object and requested
-                if (!Array.isArray(object) && !this._options.showValuesOnly) {
+                if (!Array.isArray(object) && !this._options.trackValuesOnly) {
                     yield* this.walk(key);
                 }
 
