@@ -115,8 +115,6 @@ apt-get install php8.2-dev libjson-c-dev pkg-config
 
 Then move into the `./ext/` directory and just run `make` to fetch Xdebug, apply the patch, and build Fracker.
 
-(To rebuild after nontrivial code changes just run `make` inside the `./ext/xdebug/` directory.)
-
 To check that everything is working fine, start the [listener application](#listener-application) then run PHP like this:
 
 ```console

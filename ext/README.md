@@ -1,15 +1,35 @@
-# Development
+# PHP extension development
 
-Instead of keeping a fork of Xdebug, we keep a single patch file so that all the changes are self-contained.
+All the changes introduced by Fracker to Xdebug are self-contained in a single [patch file](./fracker.patch), to update it:
 
-To make a change to the extension:
+1. first make sure to start from a fresh state with:
 
-1. first make sure to start from a fresh state with `make fetch-xdebug`;
+   ```
+   make fetch-xdebug
+   ```
 
-2. then load the existing patch with `make apply-patch`;
+2. then load the existing patch with:
 
-3. experiment and make the changes in the `./xdebug/` directory;
+    ```
+    make apply-patch
+    ```
 
-4. finally save the patch with `make format-patch`.
+3. make the changes in the `./xdebug/` directory, each time building with:
 
-To update the Xdebug version change the `XDEBUG_VERSION` variable in the `Makefile` then continue with the above steps. You might need to resolve conflicts and other issues manually.
+    ```
+    make build
+    ```
+
+4. try the extansion with:
+
+    ```
+    php -d zend_extension=$PWD/xdebug/modules/xdebug.so -r 'var_dump(123);'
+    ```
+
+5. finally save the patch with:
+
+    ```
+    make format-patch
+    ```
+
+To update the Xdebug version, change the `XDEBUG_VERSION` variable in the `Makefile` then repeat the above steps. You might need to resolve conflicts and other issues manually.
