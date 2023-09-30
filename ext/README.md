@@ -1,6 +1,6 @@
 # Development
 
-Instead of keeping a fork of [Xdebug][], we keep a single patch file so that all the changes are self-contained.
+Instead of keeping a fork of Xdebug, we keep a single patch file so that all the changes are self-contained.
 
 To make a change to the extension:
 
@@ -12,6 +12,4 @@ To make a change to the extension:
 
 4. finally save the patch with `make format-patch`.
 
-To update the [Xdebug][] version change the `XDEBUG_VERSION` variable in the `Makefile` then continue with the above steps. You might need to resolve conflicts and other issues manually.
-
-[Xdebug]: https://xdebug.org/
+To update the Xdebug version change the `XDEBUG_VERSION` variable in the `Makefile` then continue with the above steps. You might need to resolve conflicts and other issues manually.
