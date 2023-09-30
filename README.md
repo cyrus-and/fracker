@@ -12,9 +12,9 @@ It consists of:
 
 ![Screenshot](https://i.imgur.com/kcmq8PA.png)
 
-## Installation
+## Setup
 
-Install the PHP extension, either by using the [deploy script](#deploy-script) or [manually](#manual-setup). Then install the listener application [locally](#installation).
+Install the PHP extension, either by using the [deploy script](#deploy-script) or [manually](#manual-setup), then install the listener application [locally](#installation).
 
 ## Demo
 
@@ -23,13 +23,15 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
 2. Spin a disposable Docker container:
 
     ```console
-    $ docker run --rm -d -p 80:80 -v "$PWD/demo/:/var/www/html/" --name hello-fracker php:8.2-apache
+    docker run --rm -d -p 80:80 -v "$PWD/demo/:/var/www/html/" --name hello-fracker php:8.2-apache
     ```
 
 3. Test that the demo PHP application works:
 
     ```console
-    $ curl 'http://localhost/?x=Hello+Fracker!'
+    curl 'http://localhost/?x=Hello+Fracker!'
+    ```
+    ```
     array(2) {
       [0]=>
       string(5) "Hello"
@@ -43,13 +45,15 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
 4. Deploy Fracker to the container using the [deploy script](#deploy-script):
 
     ```console
-    $ ./scripts/deploy.sh hello-fracker
+    ./scripts/deploy.sh hello-fracker
     ```
 
 5. Start Fracker in another terminal, then repeat the above `curl` command:
 
     ```console
-    $ fracker
+    fracker
+    ```
+    ```
     +++ │ Listening on 0.0.0.0:6666
     +++ │
     001 │ GET localhost/?x=Hello+Fracker!
@@ -71,8 +75,8 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
 7. Remove the container and the associated image:
 
     ```console
-    $ docker stop hello-fracker
-    $ docker rmi hello-fracker
+    docker stop hello-fracker
+    docker rmi hello-fracker
     ```
 
 ## Architecture
@@ -82,7 +86,7 @@ Every PHP request or command line invocation triggers a TCP connection with the 
 This decoupling allows the users to implement their own tools. Raw JSON objects can be inspected by dumping the stream content to standard output, for example:
 
 ```console
-$ socat tcp-listen:6666,fork,reuseaddr 'exec:jq .,fdout=0'
+socat tcp-listen:6666,fork,reuseaddr 'exec:jq .,fdout=0'
 ```
 
 ## PHP extension
@@ -96,7 +100,7 @@ The most convenient way to use Fracker is probably to deploy it to the Docker co
 This script should work out-of-the-box with Debian-like distributions:
 
 ```console
-$ ./scripts/deploy.sh <container> [<port> [<host>]]
+./scripts/deploy.sh <container> [<port> [<host>]]
 ```
 
 It configures the PHP module to connect to specified host on the specified port (defaults to the host running Docker and port 6666).
@@ -106,7 +110,7 @@ It configures the PHP module to connect to specified host on the specified port 
 Install the PHP development files and other dependencies. For example, on a Debian-like distribution:
 
 ```console
-$ apt-get install php8.2-dev libjson-c-dev pkg-config
+apt-get install php8.2-dev libjson-c-dev pkg-config
 ```
 
 Then move into the `./ext/` directory and just run `make` to fetch Xdebug, apply the patch, and build Fracker.
@@ -116,7 +120,7 @@ Then move into the `./ext/` directory and just run `make` to fetch Xdebug, apply
 To check that everything is working fine, start the [listener application](#listener-application) then run PHP like this:
 
 ```console
-$ php -d "zend_extension=$PWD/xdebug/modules/xdebug.so" -r 'var_dump("Hello Fracker!");'
+php -d "zend_extension=$PWD/xdebug/modules/xdebug.so" -r 'var_dump("Hello Fracker!");'
 ```
 
 Finally, install the PHP extension in the usual way, briefly:
@@ -127,7 +131,7 @@ Finally, install the PHP extension in the usual way, briefly:
 
 At this point the source repository is no more needed, you can run `make cleanall` to clean everything up.
 
-#### Settings
+### Settings
 
 The default INI settings should work just fine in most cases. The following serves as a template for some common ways to override the default values:
 
@@ -150,7 +154,7 @@ The provided listener application is a [Node.js](https://nodejs.org/en) package,
 Install the dependencies with:
 
 ```console
-$ npm install -C ./app/
+npm install -C ./app/
 ```
 
 Then just run Fracker locally with `./app/bin/fracker.js`.
@@ -158,7 +162,7 @@ Then just run Fracker locally with `./app/bin/fracker.js`.
 Optionally, install the executable globally by creating a symlink to this folder with:
 
 ```console
-$ npm install -g ./app/
+npm install -g ./app/
 ```
 
 Now you can just run `fracker`.
@@ -166,20 +170,18 @@ Now you can just run `fracker`.
 Uninstall with:
 
 ```console
-$ rm -fr ./app/node_modules/
-$ npm uninstall -g fracker
+rm -fr ./app/node_modules/
+npm uninstall -g fracker
 ```
 
 ### Usage and configuration
 
 Run `fracker --help` to obtain the full usage.
 
-Command line options in long format can be written in YAML files (camel case and without the leading `--`) and passed as command line arguments. Multiple files with increasing priority can be specified, but command line options will have the highest priority.
-
-For convenience some [configuration files](app/configs/) listing some classes of *interesting* PHP functions are provided along with this repo. Use them like:
+For convenience some [configuration files](app/configs/) listing some classes of *interesting* PHP functions are provided along with this repository. Use them like:
 
 ```console
-$ fracker ./app/configs/file-* # ...
+fracker ./app/configs/file-* # ...
 ```
 
 ## License
