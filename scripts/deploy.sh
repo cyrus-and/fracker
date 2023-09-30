@@ -20,13 +20,11 @@ set -e
 # install dependencies
 apt-get update
 apt-get install --yes autoconf gcc make git libjson-c-dev net-tools vim pkg-config
-apt-get install --yes php-dev || true
+apt-get install --yes php8.2-dev || true
 
 # apply the patch and compile
 cd /tmp/fracker
-make fetch-xdebug
-make apply-patch
-make build
+make
 
 # resolve the host
 if [ "$host" ]; then
