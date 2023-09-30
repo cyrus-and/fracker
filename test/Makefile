@@ -1,6 +1,6 @@
 MAKEFLAGS += --always-make
 
-rebuild:
+build:
 	npm install -C ../app/
 	make -C ../ext/
 
@@ -10,11 +10,11 @@ test:
 clean:
 	@find ./cases/ -name 'result--*' -delete
 
-rebuild-docker:
+docker-build:
 	@docker build -f ./Dockerfile -t fracker-testsuite ..
 
-test-docker:
+docker-test:
 	@docker run --rm -it fracker-testsuite
 
-clean-docker:
+docker-clean:
 	@docker rmi fracker-testsuite

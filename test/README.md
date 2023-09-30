@@ -3,25 +3,25 @@
 ## Run inside a Docker container
 
 ```console
-$ make rebuild-docker
-$ make test-docker
-$ make clean-docker
+make docker-build
+make docker-test
+make docker-clean
 ```
 
 ## Run locally
 
 ```console
-$ make rebuild
-$ make test
-$ make clean
+make build
+make test
+make clean
 ```
 
 ### Run single tests
 
-This is mostly useful for debugging and test-writing purposes to avoid running the whole test suite every time:
+This is mostly useful for debugging and test-writing purposes to avoid running the whole test suite every time. For example to run just the `argument-matching` test case:
 
 ```console
-$ make rebuild
-$ ./run.sh $test_case
-$ make clean
+make build
+./run.sh argument-matching
+make clean
 ```
