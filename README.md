@@ -10,7 +10,7 @@ It consists of:
 
 - a [listener application](#listener-application) that runs locally and is in charge of receiving the tracing information from the PHP extension and performing some analysis in order to show some meaningful data to the user.
 
-![Screenshot](https://i.imgur.com/kcmq8PA.png)
+![Screenshot](https://gist.githubusercontent.com/cyrus-and/20e1fe4ae91fcd3c823262e7e8344a75/raw/2ccc21c6d82caf49c8e0315a7edd4397b2c51669/screenshot.png)
 
 ## Setup
 
