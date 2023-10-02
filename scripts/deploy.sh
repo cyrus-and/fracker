@@ -57,7 +57,7 @@ pkill -x -HUP httpd &
 SETUP
 
 # clean up the container
-docker exec "$container" rm -fr /tmp/fracker
+docker exec -u root "$container" rm -fr /tmp/fracker
 
 # notify the user
 echo -e "\n\n\tDone! Start Fracker on port $host:$port\n\n"
