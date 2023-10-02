@@ -37,7 +37,7 @@ port="$2"
 # install dependencies and utilities
 apt-get update
 apt-get --yes install --no-install-recommends autoconf gcc git libjson-c-dev make pkg-config vim
-apt-get --yes install --no-install-recommends php8.2-dev || true
+apt-get --yes install --no-install-recommends php-dev || true
 
 # apply the patch and compile
 cd /tmp/fracker
