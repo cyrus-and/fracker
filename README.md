@@ -20,10 +20,10 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
 
 1. Install the [listener application](#installation).
 
-2. Spin a disposable Docker container:
+2. Spin a Docker container serving the PHP demo application:
 
     ```console
-    docker run --rm -d -p 80:80 -v "$PWD/demo/:/var/www/html/" --name hello-fracker php:8.2-apache
+    docker run -d -p 80:80 -v "$PWD/demo/:/var/www/html/" --name hello-fracker php:8.2-apache
     ```
 
 3. Test that the demo PHP application works:
@@ -70,13 +70,12 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
     +++ │ Shutting down...
     ```
 
-6. Press Ctrl-C to exit, then run Fracker again with `--help` and experiment with other options too...
+6. Press Ctrl-C to exit Fracker, then run it again with `--help`, and experiment with other options too...
 
-7. Remove the container and the associated image:
+7. Finally stop and remove the container with:
 
     ```console
-    docker stop hello-fracker
-    docker rmi hello-fracker
+    docker rm -f hello-fracker
     ```
 
 ## Architecture
