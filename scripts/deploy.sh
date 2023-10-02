@@ -1,57 +1,63 @@
-#!/bin/sh
+#!/bin/bash
 
-if [ "$#" -eq 0 -o "$#" -gt 3 ]; then
-    echo 'Usage: <container> [<port> [<host>]]' >&2
+set -e
+
+# parse arguments
+if [[ "$#" -eq 0 || "$#" -gt 3 ]]; then
+    echo 'Usage: <container> [<port> [<host>]]' 1>&2
     exit 1
+else
+    container="$1"
+    port="${2:-6666}"
+    host="$3"
+
+    # resolve the host
+    if [[ "$host" ]]; then
+        host="$host"
+    else
+        # gather host address
+        if [[ "$OSTYPE" = darwin* ]]; then
+            host='host.docker.internal'
+        else
+            docker inspect "$container" --format '{{range .NetworkSettings.Networks}}{{.Gateway}}{{break}}{{end}}'
+        fi
+    fi
 fi
 
-container="$1"
-port="${2:-6666}"
-host="${3}"
-
 # copy the extension source in the container
-docker exec -u root -i "$container" rm -fr /tmp/fracker
 docker cp "$(dirname "$0")/../ext" "$container:/tmp/fracker"
 
 # run the setup script
-docker exec -u root -i "$container" sh <<SETUP
+docker exec -u root -i "$container" sh -s -- "$host" "$port" <<\SETUP
 set -e
 
-# install dependencies
+host="$1"
+port="$2"
+
+# install dependencies and utilities
 apt-get update
-apt-get install --yes autoconf gcc make git libjson-c-dev net-tools vim pkg-config
-apt-get install --yes php8.2-dev || true
+apt-get --yes install --no-install-recommends autoconf gcc git libjson-c-dev make pkg-config vim
+apt-get --yes install --no-install-recommends php8.2-dev || true
 
 # apply the patch and compile
 cd /tmp/fracker
 make
 
-# resolve the host
-if [ "$host" ]; then
-    host="$host"
-else
-    # gather host address
-    if [ "$(uname)" = Linux ]; then
-       host="\$(route -n | awk '/UG/ { print \$2 }')"
-    else
-       host='host.docker.internal'
-    fi
-fi
-
 # set up the extension
 cat >/tmp/fracker/fracker.ini <<INI
 zend_extension=/tmp/fracker/xdebug/modules/xdebug.so
-xdebug.trace_fracker_host=\$host
+xdebug.trace_fracker_host=$host
 xdebug.trace_fracker_port=$port
 INI
 find / -path */php*/conf.d -exec cp /tmp/fracker/fracker.ini {} \; 2>/dev/null || true
 
 # make the web server reload the configuration
-sleep 1
 pkill -x -HUP apache2 &
 pkill -x -HUP httpd &
+SETUP
+
+# clean up the container
+docker exec "$container" rm -fr /tmp/fracker
 
 # notify the user
-TERM=$TERM clear || true
-echo "\n\tDone! Start Fracker on port \$host:$port\n"
-SETUP
+echo -e "\n\n\tDone! Start Fracker on port $host:$port\n\n"
