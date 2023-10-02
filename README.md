@@ -79,7 +79,7 @@ socat tcp-listen:6666,fork,reuseaddr - | jq
 
 ## PHP extension
 
-The PHP extension is forked from [Xdebug](https://github.com/xdebug/xdebug), hence the installation process is fairly the same, so is the troubleshooting.
+The PHP extension is a modification of [Xdebug](https://github.com/xdebug/xdebug), hence the installation process is fairly the same, so is the troubleshooting.
 
 The most convenient way to use Fracker is probably to deploy it to the Docker container where the web server resides using the provided [deploy script](#deploy-script), use the [manual setup](#manual-setup) for a more versatile solution.
 
@@ -172,6 +172,6 @@ fracker ./app/configs/file-* # ...
 
 ## License
 
-This product includes Xdebug, freely available from <https://xdebug.org/>. Unless explicitly stated otherwise, for the PHP extension itself, the copyright is retained by the original authors.
+This product relies on [Xdebug](https://xdebug.org/), unless explicitly stated otherwise, for the PHP extension itself, the copyright is retained by the original authors.
 
 The listener application instead is released under a [different](app/LICENSE) license.
