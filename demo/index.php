@@ -1,13 +1,21 @@
 <?php
 
-function foo($cmd) {
-    system('echo ' . preg_replace('/[^a-z]/i', '', $cmd));
+function calculate($expression) {
+    try {
+        return eval("return $expression;");
+    } catch (ParseError $error) {
+        return 'ERROR';
+    }
 }
 
-$a = explode(' ', $_GET['x']);
+function is_safe($expression) {
+    return preg_match('/^[0-9+.\-*\/() ]+/', $expression);
+}
 
-var_dump($a);
-
-foreach ($a as $cmd) {
-    foo($cmd);
+@ $expression = $_GET['expression'];
+if (!empty($expression) && is_safe($expression)) {
+    $result = calculate($expression);
+    echo "The result is: $result\n";
+} else {
+    http_response_code(400);
 }

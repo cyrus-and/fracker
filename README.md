@@ -10,7 +10,7 @@ It consists of:
 
 - a [listener application](#listener-application) that runs locally and is in charge of receiving the tracing information from the PHP extension and performing some analysis in order to show some meaningful data to the user.
 
-![Screenshot](https://gist.githubusercontent.com/cyrus-and/20e1fe4ae91fcd3c823262e7e8344a75/raw/2ccc21c6d82caf49c8e0315a7edd4397b2c51669/screenshot.png)
+![Screenshot](https://gist.githubusercontent.com/cyrus-and/20e1fe4ae91fcd3c823262e7e8344a75/raw/3955b75bd5f177ec096409750714e6d5e98cdd3e/screenshot.png)
 
 ## Setup
 
@@ -29,17 +29,10 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
 3. Test that the demo PHP application works:
 
     ```console
-    curl 'http://localhost/?x=Hello+Fracker!'
+    curl http://localhost/?expression=7*7
     ```
     ```
-    array(2) {
-      [0]=>
-      string(5) "Hello"
-      [1]=>
-      string(8) "Fracker!"
-    }
-    Hello
-    Fracker
+    The result is: 49
     ```
 
 4. Deploy Fracker to the container using the [deploy script](#deploy-script):
@@ -56,21 +49,17 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
     ```
     +++ │ Listening on 0.0.0.0:6666
     +++ │
-    001 │ GET localhost/?x=Hello+Fracker!
+    001 │ GET localhost/?expression=7*7
     001 │ {main}() /var/www/html/index.php +0
-    001 │ »  explode(separator=" ", string="Hello Fracker!") /var/www/html/index.php +7
-    001 │ »  var_dump(value=["Hello", "Fracker!"], values=null) /var/www/html/index.php +9
-    001 │ »  foo(cmd="Hello") /var/www/html/index.php +12
-    001 │ »  »  preg_replace(pattern="/[^a-z]/i", replacement="", subject="Hello") /var/www/html/index.php +4
-    001 │ »  »  system(command="echo Hello") /var/www/html/index.php +4
-    001 │ »  foo(cmd="Fracker!") /var/www/html/index.php +12
-    001 │ »  »  preg_replace(pattern="/[^a-z]/i", replacement="", subject="Fracker!") /var/www/html/index.php +4
-    001 │ »  »  system(command="echo Fracker") /var/www/html/index.php +4
+    001 │ »  is_safe(expression="7*7") /var/www/html/index.php +16
+    001 │ »  »  preg_match(pattern="/^[0-9+.\\-*\\/() ]+/", subject="7*7") /var/www/html/index.php +12
+    001 │ »  calculate(expression="7*7") /var/www/html/index.php +17
+    001 │ »  »  eval("return 7*7;") /var/www/html/index.php +5
     +++ │
     +++ │ Shutting down...
     ```
 
-6. Press Ctrl-C to exit Fracker, then run it again with `--help`, and experiment with other options too...
+6. Press Ctrl-C to exit Fracker, then run it again with `--help`, and experiment with other options too, for example, pass the `-v` option to show the return values too!
 
 7. Finally stop and remove the container with:
 
