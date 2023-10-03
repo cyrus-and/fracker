@@ -16,6 +16,8 @@ It consists of:
 
 Install the PHP extension, either by using the [deploy script](#deploy-script) or [manually](#manual-setup), then install the listener application [locally](#installation).
 
+Otherwise for a quick test, jump straight to the [demo](#demo).
+
 ## Demo
 
 1. Install the [listener application](#installation).
@@ -26,7 +28,7 @@ Install the PHP extension, either by using the [deploy script](#deploy-script) o
     docker run -d -p 80:80 -v "$PWD/demo/:/var/www/html/" --name hello-fracker php:8.2-apache
     ```
 
-3. Test that the demo PHP application works:
+3. Check that the demo PHP application works as expected:
 
     ```console
     curl http://localhost/?expression=7*7
