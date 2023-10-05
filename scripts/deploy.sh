@@ -43,17 +43,16 @@ apt-get --yes install --no-install-recommends php-dev || true
 cd /tmp/fracker
 make
 
-# set up the extension
-cat >/tmp/fracker/fracker.ini <<INI
-zend_extension=/tmp/fracker/xdebug/modules/xdebug.so
-xdebug.trace_fracker_host=$host
-xdebug.trace_fracker_port=$port
+# install and set up the extension
+cp ./xdebug/modules/xdebug.so "$(php-config --extension-dir)"
+cat >"$(php-config --ini-dir)/fracker.ini" <<INI
+zend_extension = xdebug
+xdebug.trace_fracker_host = $host
+xdebug.trace_fracker_port = $port
 INI
-find / -path */php*/conf.d -exec cp /tmp/fracker/fracker.ini {} \; 2>/dev/null || true
 
-# make the web server reload the configuration
-pkill -x -HUP apache2 &
-pkill -x -HUP httpd &
+# reload the web server configuration
+/etc/init.d/apache2 reload
 SETUP
 
 # clean up the container

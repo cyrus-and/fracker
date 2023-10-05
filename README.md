@@ -87,7 +87,7 @@ The most convenient way to use Fracker is probably to deploy it to the Docker co
 
 ### Deploy script
 
-This script should work out-of-the-box with Debian-like distributions:
+This script should work out-of-the-box with Debian-like distributions running Apache:
 
 ```console
 ./scripts/deploy.sh <container> [<port> [<host>]]
@@ -113,9 +113,11 @@ php -d "zend_extension=$PWD/xdebug/modules/xdebug.so" -r 'var_dump("Hello Fracke
 
 Finally, install the PHP extension the usual way, briefly:
 
-1. copy `./ext/xdebug/modules/xdebug.so` to the PHP extension directory;
+1. copy `./ext/xdebug/modules/xdebug.so` to the PHP extension directory (`php-config --extension-dir`);
 
-2. place `zend_extension=xdebug.so` in a INI file parsed by PHP, along with any other custom [settings](#settings) if needed.
+2. place `zend_extension=xdebug`, along with any other optional custom [settings](#settings), in a INI file inside the PHP INI directory (`php-config --ini-dir`);
+
+3. possibly reload the webserver.
 
 At this point the source repository is no more needed, you can run `make cleanall` to clean everything up.
 
