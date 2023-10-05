@@ -73,7 +73,7 @@ Otherwise for a quick test, jump straight to the [demo](#demo).
 
 Every PHP request or command line invocation triggers a TCP connection with the listener. The protocol is merely a stream of newline-terminated JSON objects from the PHP extension to the listener, such objects contain information about the current request, the calls performed, and the return values.
 
-This decoupling allows the users to implement their own tools. Raw JSON objects can be inspected by dumping the stream content to standard output, for example:
+This decoupling allows the users to implement their own tools. Raw JSON objects can be inspected by dumping the stream content to standard output, for example (assuming the default [settings](#settings)):
 
 ```console
 socat tcp-listen:6666,fork,reuseaddr - | jq
@@ -93,7 +93,7 @@ This script should work out-of-the-box with Debian-like distributions:
 ./scripts/deploy.sh <container> [<port> [<host>]]
 ```
 
-It configures the PHP module to connect to specified host on the specified port (defaults to the host running Docker and port 6666).
+It configures the PHP module to connect to specified host on the specified port (defaults to the host running Docker and the [default](#settings) port).
 
 ### Manual setup
 
@@ -111,7 +111,7 @@ To check that everything is working fine, start the [listener application](#list
 php -d "zend_extension=$PWD/xdebug/modules/xdebug.so" -r 'var_dump("Hello Fracker!");'
 ```
 
-Finally, install the PHP extension in the usual way, briefly:
+Finally, install the PHP extension the usual way, briefly:
 
 1. copy `./ext/xdebug/modules/xdebug.so` to the PHP extension directory;
 
@@ -121,17 +121,27 @@ At this point the source repository is no more needed, you can run `make cleanal
 
 ### Settings
 
-The default INI settings should work just fine in most cases. The following serves as a template for some common ways to override the default values:
+The default INI settings should work just fine in most cases, the following aspects can be configured.
+
+#### Address of the listener application
+
+By default, the PHP extension will try to connect to `127.0.0.1` on the port `6666`. This can be changed with:
 
 ```ini
-; change the address of the listener application
 xdebug.trace_fracker_host = 10.10.10.10
 xdebug.trace_fracker_port = 1234
+```
 
-; trace only those requests with XDEBUG_TRACE=FRACKER in GET, POST or cookies
+#### Trace only certain requests
+
+By default, every request will be traced. It is possible to switch to an on-demand behaviour with:
+
+```ini
 xdebug.start_with_request = trigger
 xdebug.trigger_value = FRACKER
 ```
+
+In this way, only those requests having `XDEBUG_TRACE=FRACKER` in their GET, POST, or cookies parameters will be traced by Fracker.
 
 ## Listener application
 

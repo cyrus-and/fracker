@@ -23,7 +23,7 @@ All the changes introduced by Fracker to Xdebug are self-contained in a single [
 4. try the extansion with:
 
     ```
-    php -d zend_extension=$PWD/xdebug/modules/xdebug.so -r 'var_dump(123);'
+    php -d zend_extension=$PWD/xdebug/modules/xdebug.so -r 'var_dump("Hello Fracker!");'
     ```
 
 5. finally save the patch with:
