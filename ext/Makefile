@@ -8,9 +8,6 @@ all: fetch-xdebug apply-patch build
 fetch-xdebug: cleanall
 	@git clone --depth 1 --branch "$(XDEBUG_VERSION)" "$(XDEBUG_GIT_URL)"
 
-show-status:
-	@git -C ./xdebug/ status
-
 apply-patch:
 	@patch --directory ./xdebug/ --strip 1 --merge --no-backup-if-mismatch <./fracker.patch
 
