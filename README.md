@@ -119,7 +119,7 @@ Finally, install the PHP extension the usual way, briefly:
 
 3. possibly reload the webserver.
 
-At this point the source repository is no more needed, you can run `make cleanall` to clean everything up.
+At this point the source repository is no more needed, run `make cleanall` to clean everything up.
 
 ### Settings
 
@@ -157,7 +157,7 @@ Install the dependencies with:
 npm install -C ./app/
 ```
 
-Then just run Fracker locally with `./app/bin/fracker.js`.
+Then run Fracker locally with `./app/bin/fracker.js`.
 
 Optionally, install the executable globally by creating a symlink to this folder with:
 
@@ -165,7 +165,7 @@ Optionally, install the executable globally by creating a symlink to this folder
 npm install -g ./app/
 ```
 
-Now you can just run `fracker`.
+After that, the `fracker` command will be globally available.
 
 Uninstall with:
 
