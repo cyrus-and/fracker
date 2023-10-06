@@ -12,7 +12,7 @@ show-status:
 	@git -C ./xdebug/ status
 
 apply-patch:
-	@git -C ./xdebug/ apply ../fracker.patch
+	@patch --directory ./xdebug/ --strip 1 --merge --no-backup-if-mismatch <./fracker.patch
 
 format-patch:
 	@git -C ./xdebug/ add .
