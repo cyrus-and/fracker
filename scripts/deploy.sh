@@ -25,6 +25,7 @@ else
 fi
 
 # copy the extension source in the container
+docker exec -u root "$container" rm -fr /tmp/fracker
 docker cp "$(dirname "$0")/../ext" "$container:/tmp/fracker"
 
 # run the setup script
