@@ -111,15 +111,15 @@ To check that everything is working fine, start the [listener application](#list
 php -d "zend_extension=$PWD/xdebug/modules/xdebug.so" -r 'var_dump("Hello Fracker!");'
 ```
 
-Finally, install the PHP extension the usual way, briefly:
+Finally, install the PHP extension the usual way. Briefly:
 
-1. copy `./ext/xdebug/modules/xdebug.so` to the PHP extension directory (`php-config --extension-dir`);
+1. copy `./ext/xdebug/modules/xdebug.so` to the PHP extension directory (e.g., `php-config --extension-dir`);
 
-2. place `zend_extension=xdebug`, along with any other optional custom [settings](#settings), in a INI file inside the PHP INI directory (`php-config --ini-dir`);
+2. place `zend_extension=xdebug`, along with any other optional custom [settings](#settings), in some INI file that gets parsed by PHP in the target environment (SAPI) used by the application;
 
-3. possibly reload the webserver.
+3. if needed, reload the web server.
 
-At this point the source repository is no more needed, run `make cleanall` to clean everything up.
+At this point the source repository is no more needed.
 
 ### Settings
 

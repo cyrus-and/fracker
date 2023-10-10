@@ -2,6 +2,8 @@
 
 set -e
 
+FRACKER_DIR='/opt/fracker'
+
 # parse arguments
 if [[ "$#" -eq 0 || "$#" -gt 3 ]]; then
     echo 'Usage: <container> [<port> [<host>]]' 1>&2
@@ -24,40 +26,55 @@ else
     fi
 fi
 
-# copy the extension source in the container
-docker exec -u root "$container" rm -fr /tmp/fracker
-docker cp "$(dirname "$0")/../ext" "$container:/tmp/fracker"
-
-# run the setup script
-docker exec -u root -i "$container" sh -s -- "$host" "$port" <<\SETUP
-set -e
-
-host="$1"
-port="$2"
-
 # install dependencies and utilities
-apt-get update
-apt-get --yes install --no-install-recommends autoconf gcc git libjson-c-dev make pkg-config vim
-apt-get --yes install --no-install-recommends php-dev || true
+docker exec --user root "$container" apt-get update
+docker exec --user root "$container" apt-get --yes install --no-install-recommends \
+       autoconf \
+       ca-certificates \
+       gcc \
+       git \
+       libjson-c-dev \
+       make \
+       patch \
+       pkg-config \
+       vim
+docker exec --user root "$container" apt-get --yes install --no-install-recommends php-dev || true
+
+# copy the extension source in the container
+docker exec --user root "$container" rm -fr "$FRACKER_DIR"
+docker exec --user root "$container" mkdir -p "$FRACKER_DIR"
+docker cp "$(dirname "$0")/../ext/Makefile" "$container:$FRACKER_DIR"
+docker cp "$(dirname "$0")/../ext/fracker.patch" "$container:$FRACKER_DIR"
 
 # apply the patch and compile
-cd /tmp/fracker
-make
+docker exec --user root "$container" make -C "$FRACKER_DIR"
+docker exec --user root "$container" cp "$FRACKER_DIR/xdebug/modules/xdebug.so" "$FRACKER_DIR/fracker.so"
 
-# install and set up the extension
-cp ./xdebug/modules/xdebug.so "$(php-config --extension-dir)"
-cat >"$(php-config --ini-dir)/fracker.ini" <<INI
-zend_extension = xdebug
+# create the configuration file
+docker exec --user root --interactive "$container" tee "$FRACKER_DIR/fracker.ini" >/dev/null <<EOF
+zend_extension = "$FRACKER_DIR/fracker.so"
 xdebug.trace_fracker_host = $host
 xdebug.trace_fracker_port = $port
-INI
+EOF
 
-# reload the web server configuration
-/etc/init.d/apache2 reload
-SETUP
+# clean up the build directory
+docker exec --user root "$container" make -C "$FRACKER_DIR" cleanall
+docker exec --user root "$container" rm "$FRACKER_DIR/Makefile" "$FRACKER_DIR/fracker.patch"
 
-# clean up the container
-docker exec -u root "$container" rm -fr /tmp/fracker
+echo
+echo '----------------------------------------------------------------------'
+echo
 
-# notify the user
-echo -e "\n\n\tDone! Start Fracker on port $host:$port\n\n"
+trap "echo 'Cannot install the INI file, do it manually: $FRACKER_DIR/fracker.ini'" ERR
+
+# install the INI file
+docker exec --user root "$container" \
+       find / -path '/proc/*' -prune -o -path '*/php*/conf.d' -exec cp "$FRACKER_DIR/fracker.ini" {} \;
+
+trap "echo 'Cannot restart the Apache web server, do it manually.'" ERR
+
+# restart the Apache web server
+docker exec --user root "$container" /etc/init.d/apache2 reload &>/dev/null
+
+echo "All done! Start Fracker on port $host:$port"
+echo
