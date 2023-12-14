@@ -1,6 +1,6 @@
 MAKEFLAGS += --always-make
 
-XDEBUG_VERSION := 3.2.2
+XDEBUG_VERSION := 3.3.1
 XDEBUG_GIT_URL := https://github.com/xdebug/xdebug
 
 all: fetch-xdebug apply-patch build

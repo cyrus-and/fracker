@@ -10,15 +10,15 @@ diff --git a/config.m4 b/config.m4
 +  PHP_EVAL_INCLINE($JSON_C_CFLAGS)
 +  PHP_EVAL_LIBLINE($JSON_C_LIBS, XDEBUG_SHARED_LIBADD)
 +
-   AC_MSG_CHECKING([Check for supported PHP versions])
+   AC_MSG_CHECKING([for supported PHP version])
    PHP_XDEBUG_FOUND_VERSION=`${PHP_CONFIG} --version`
-   PHP_XDEBUG_FOUND_VERNUM=`echo "${PHP_XDEBUG_FOUND_VERSION}" | $AWK 'BEGIN { FS = "."; } { printf "%d", ([$]1 * 100 + [$]2) * 100 + [$]3;}'`
+   PHP_XDEBUG_FOUND_VERNUM=`${PHP_CONFIG} --vernum`
 @@ -114,7 +119,7 @@ if test "$PHP_XDEBUG" != "no"; then
    XDEBUG_DEVELOP_SOURCES="src/develop/develop.c src/develop/monitor.c src/develop/php_functions.c src/develop/stack.c src/develop/superglobals.c"
    XDEBUG_GCSTATS_SOURCES="src/gcstats/gc_stats.c"
    XDEBUG_PROFILER_SOURCES="src/profiler/profiler.c"
--  XDEBUG_TRACING_SOURCES="src/tracing/trace_computerized.c src/tracing/trace_html.c src/tracing/trace_textual.c src/tracing/tracing.c"
-+  XDEBUG_TRACING_SOURCES="src/tracing/trace_computerized.c src/tracing/trace_html.c src/tracing/trace_textual.c src/tracing/trace_fracker.c src/tracing/tracing.c"
+-  XDEBUG_TRACING_SOURCES="src/tracing/trace_computerized.c src/tracing/trace_flamegraph.c src/tracing/trace_html.c src/tracing/trace_textual.c src/tracing/tracing.c"
++  XDEBUG_TRACING_SOURCES="src/tracing/trace_computerized.c src/tracing/trace_flamegraph.c src/tracing/trace_html.c src/tracing/trace_textual.c src/tracing/trace_fracker.c src/tracing/tracing.c"
  
    PHP_NEW_EXTENSION(xdebug, xdebug.c $XDEBUG_BASE_SOURCES $XDEBUG_LIB_SOURCES $XDEBUG_COVERAGE_SOURCES $XDEBUG_DEBUGGER_SOURCES $XDEBUG_DEVELOP_SOURCES $XDEBUG_GCSTATS_SOURCES $XDEBUG_PROFILER_SOURCES $XDEBUG_TRACING_SOURCES, $ext_shared,,$PHP_XDEBUG_CFLAGS,,yes)
    PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/base])
@@ -246,7 +246,7 @@ new file mode 100644
 +    return (char *)"{TCP}";
 +}
 +
-+void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse, int function_nr)
++void xdebug_trace_fracker_function_entry(void *ctxt, function_stack_entry *fse)
 +{
 +    struct json_object *info, *arguments, *argument;
 +    char *function;
@@ -265,13 +265,13 @@ new file mode 100644
 +
 +    /* process arguments */
 +    arguments = json_object_new_array();
-+    if (fse->include_filename) {
++    if (fse->function.include_filename) {
 +        /* XXX require and include are handled differently (unfortunately this
 +           is not the actual variable value but a computed one) */
 +
 +        /* fill and add argument info */
 +        argument = json_object_new_object();
-+        json_object_object_add(argument, "value", json_object_new_string(ZSTR_VAL(fse->include_filename)));
++        json_object_object_add(argument, "value", json_object_new_string(ZSTR_VAL(fse->function.include_filename)));
 +        json_object_array_add(arguments, argument);
 +    } else {
 +        int i;
@@ -295,7 +295,7 @@ new file mode 100644
 +    write_json_object(CTXT(socket_fd), info);
 +}
 +
-+void xdebug_trace_fracker_function_exit(void *ctxt, function_stack_entry *fse, int function_nr)
++void xdebug_trace_fracker_function_exit(void *ctxt, function_stack_entry *fse)
 +{
 +    struct json_object *info;
 +
@@ -310,7 +310,7 @@ new file mode 100644
 +    write_json_object(CTXT(socket_fd), info);
 +}
 +
-+void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry *fse, int function_nr, zval *return_value)
++void xdebug_trace_fracker_function_return_value(void *ctxt, function_stack_entry *fse, zval *return_value)
 +{
 +    struct json_object *info, *return_;
 +
@@ -329,7 +329,7 @@ new file mode 100644
 +    write_json_object(CTXT(socket_fd), info);
 +}
 +
-+void xdebug_trace_fracker_generator_return_value(void *ctxt, function_stack_entry *fse, int function_nr, zend_generator *generator) {}
++void xdebug_trace_fracker_generator_return_value(void *ctxt, function_stack_entry *fse, zend_generator *generator) {}
 +
 +void xdebug_trace_fracker_assignment(void *ctxt, function_stack_entry *fse, char *full_varname, zval *value, char *right_full_varname, const char *op, char *file, int lineno) {}
 +
@@ -368,28 +368,28 @@ new file mode 100644
 diff --git a/src/tracing/tracing.c b/src/tracing/tracing.c
 --- a/src/tracing/tracing.c
 +++ b/src/tracing/tracing.c
-@@ -21,6 +21,7 @@
- #include "trace_textual.h"
+@@ -22,6 +22,7 @@
+ #include "trace_flamegraph.h"
  #include "trace_computerized.h"
  #include "trace_html.h"
 +#include "trace_fracker.h"
  
  #include "lib/compat.h"
  #include "lib/log.h"
-@@ -37,6 +38,7 @@ static xdebug_trace_handler_t *xdebug_select_trace_handler(int options)
- 		case 0: tmp = &xdebug_trace_handler_textual; break;
- 		case 1: tmp = &xdebug_trace_handler_computerized; break;
+@@ -40,6 +41,7 @@ static xdebug_trace_handler_t *xdebug_select_trace_handler(int options)
  		case 2: tmp = &xdebug_trace_handler_html; break;
-+		case 3: tmp = &xdebug_trace_handler_fracker; break;
+ 		case 3: tmp = &xdebug_trace_handler_flamegraph_cost; break;
+ 		case 4: tmp = &xdebug_trace_handler_flamegraph_mem; break;
++		case 5: tmp = &xdebug_trace_handler_fracker; break;
  		default:
  			php_error(E_NOTICE, "A wrong value for xdebug.trace_format was selected (%d), defaulting to the textual format", (int) XINI_TRACE(trace_format));
  			tmp = &xdebug_trace_handler_textual; break;
 diff --git a/src/tracing/tracing.h b/src/tracing/tracing.h
 --- a/src/tracing/tracing.h
 +++ b/src/tracing/tracing.h
-@@ -49,6 +49,10 @@ typedef struct _xdebug_tracing_settings_t {
- 
+@@ -50,6 +50,10 @@ typedef struct _xdebug_tracing_settings_t {
  	zend_bool     collect_assignments;
+ 	zend_bool     collect_params;
  	zend_bool     collect_return;
 +
 +	/* Fracker settings */
@@ -401,7 +401,7 @@ diff --git a/src/tracing/tracing.h b/src/tracing/tracing.h
 diff --git a/xdebug.c b/xdebug.c
 --- a/xdebug.c
 +++ b/xdebug.c
-@@ -267,13 +267,17 @@ ZEND_INI_DISP(display_start_upon_error)
+@@ -300,13 +300,17 @@ ZEND_INI_DISP(display_start_upon_error)
  #endif
  
  PHP_INI_BEGIN()
@@ -421,15 +421,16 @@ diff --git a/xdebug.c b/xdebug.c
 +	STD_PHP_INI_ENTRY("xdebug.trigger_value",      "FRACKER",               PHP_INI_SYSTEM|PHP_INI_PERDIR, OnUpdateString, settings.library.trigger_value,    zend_xdebug_globals, xdebug_globals)
  	STD_PHP_INI_ENTRY("xdebug.file_link_format",   "",                      PHP_INI_ALL,                   OnUpdateString, settings.library.file_link_format, zend_xdebug_globals, xdebug_globals)
  	STD_PHP_INI_ENTRY("xdebug.filename_format",    "",                      PHP_INI_ALL,                   OnUpdateString, settings.library.filename_format,  zend_xdebug_globals, xdebug_globals)
- 
-@@ -334,10 +338,10 @@ PHP_INI_BEGIN()
+ #if __linux__
+@@ -370,11 +374,11 @@ PHP_INI_BEGIN()
  
  	/* Tracing settings */
  	STD_PHP_INI_ENTRY("xdebug.trace_output_name", "trace.%c",           PHP_INI_ALL,    OnUpdateString, settings.tracing.trace_output_name, zend_xdebug_globals, xdebug_globals)
 -	STD_PHP_INI_ENTRY("xdebug.trace_format",      "0",                  PHP_INI_ALL,    OnUpdateLong,   settings.tracing.trace_format,      zend_xdebug_globals, xdebug_globals)
-+	STD_PHP_INI_ENTRY("xdebug.trace_format",      "3",                  PHP_INI_ALL,    OnUpdateLong,   settings.tracing.trace_format,      zend_xdebug_globals, xdebug_globals)
++	STD_PHP_INI_ENTRY("xdebug.trace_format",      "5",                  PHP_INI_ALL,    OnUpdateLong,   settings.tracing.trace_format,      zend_xdebug_globals, xdebug_globals)
  	STD_PHP_INI_ENTRY("xdebug.trace_options",     "0",                  PHP_INI_ALL,    OnUpdateLong,   settings.tracing.trace_options,     zend_xdebug_globals, xdebug_globals)
  	STD_PHP_INI_BOOLEAN("xdebug.collect_assignments", "0",              PHP_INI_ALL,    OnUpdateBool,   settings.tracing.collect_assignments, zend_xdebug_globals, xdebug_globals)
+ 	STD_PHP_INI_BOOLEAN("xdebug.collect_params", "1",                   PHP_INI_ALL,    OnUpdateBool,   settings.tracing.collect_params,    zend_xdebug_globals, xdebug_globals)
 -	STD_PHP_INI_BOOLEAN("xdebug.collect_return",  "0",                  PHP_INI_ALL,    OnUpdateBool,   settings.tracing.collect_return,    zend_xdebug_globals, xdebug_globals)
 +	STD_PHP_INI_BOOLEAN("xdebug.collect_return",  "1",                  PHP_INI_ALL,    OnUpdateBool,   settings.tracing.collect_return,    zend_xdebug_globals, xdebug_globals)
  
