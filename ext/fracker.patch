@@ -13,7 +13,7 @@ diff --git a/config.m4 b/config.m4
    AC_MSG_CHECKING([for supported PHP version])
    PHP_XDEBUG_FOUND_VERSION=`${PHP_CONFIG} --version`
    PHP_XDEBUG_FOUND_VERNUM=`${PHP_CONFIG} --vernum`
-@@ -114,7 +119,7 @@ if test "$PHP_XDEBUG" != "no"; then
+@@ -115,7 +120,7 @@ if test "$PHP_XDEBUG" != "no"; then
    XDEBUG_DEVELOP_SOURCES="src/develop/develop.c src/develop/monitor.c src/develop/php_functions.c src/develop/stack.c src/develop/superglobals.c"
    XDEBUG_GCSTATS_SOURCES="src/gcstats/gc_stats.c"
    XDEBUG_PROFILER_SOURCES="src/profiler/profiler.c"
@@ -401,7 +401,7 @@ diff --git a/src/tracing/tracing.h b/src/tracing/tracing.h
 diff --git a/xdebug.c b/xdebug.c
 --- a/xdebug.c
 +++ b/xdebug.c
-@@ -300,13 +300,17 @@ ZEND_INI_DISP(display_start_upon_error)
+@@ -303,13 +303,17 @@ ZEND_INI_DISP(display_start_upon_error)
  #endif
  
  PHP_INI_BEGIN()
@@ -421,8 +421,8 @@ diff --git a/xdebug.c b/xdebug.c
 +	STD_PHP_INI_ENTRY("xdebug.trigger_value",      "FRACKER",               PHP_INI_SYSTEM|PHP_INI_PERDIR, OnUpdateString, settings.library.trigger_value,    zend_xdebug_globals, xdebug_globals)
  	STD_PHP_INI_ENTRY("xdebug.file_link_format",   "",                      PHP_INI_ALL,                   OnUpdateString, settings.library.file_link_format, zend_xdebug_globals, xdebug_globals)
  	STD_PHP_INI_ENTRY("xdebug.filename_format",    "",                      PHP_INI_ALL,                   OnUpdateString, settings.library.filename_format,  zend_xdebug_globals, xdebug_globals)
- #if __linux__
-@@ -370,11 +374,11 @@ PHP_INI_BEGIN()
+ #if HAVE_XDEBUG_CONTROL_SOCKET_SUPPORT
+@@ -373,11 +377,11 @@ PHP_INI_BEGIN()
  
  	/* Tracing settings */
  	STD_PHP_INI_ENTRY("xdebug.trace_output_name", "trace.%c",           PHP_INI_ALL,    OnUpdateString, settings.tracing.trace_output_name, zend_xdebug_globals, xdebug_globals)
