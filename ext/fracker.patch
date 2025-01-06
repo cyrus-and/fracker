@@ -27,7 +27,7 @@ new file mode 100644
 --- /dev/null
 +++ b/src/tracing/trace_fracker.c
 @@ -0,0 +1,319 @@
-+/* Copyright (c) 2024 Andrea Cardaci <cyrus.and@gmail.com> */
++/* Copyright (c) 2025 Andrea Cardaci <cyrus.and@gmail.com> */
 +
 +#include "php.h"
 +#include "ext/standard/php_string.h"
@@ -351,7 +351,7 @@ new file mode 100644
 --- /dev/null
 +++ b/src/tracing/trace_fracker.h
 @@ -0,0 +1,14 @@
-+/* Copyright (c) 2024 Andrea Cardaci <cyrus.and@gmail.com> */
++/* Copyright (c) 2025 Andrea Cardaci <cyrus.and@gmail.com> */
 +
 +#ifndef XDEBUG_TRACE_FRACKER_H
 +#define XDEBUG_TRACE_FRACKER_H
