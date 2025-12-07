@@ -13,14 +13,14 @@ diff --git a/config.m4 b/config.m4
    AC_MSG_CHECKING([for supported PHP version])
    PHP_XDEBUG_FOUND_VERSION=`${PHP_CONFIG} --version`
    PHP_XDEBUG_FOUND_VERNUM=`${PHP_CONFIG} --vernum`
-@@ -115,7 +120,7 @@ if test "$PHP_XDEBUG" != "no"; then
+@@ -116,7 +121,7 @@ if test "$PHP_XDEBUG" != "no"; then
    XDEBUG_DEVELOP_SOURCES="src/develop/develop.c src/develop/monitor.c src/develop/php_functions.c src/develop/stack.c src/develop/superglobals.c"
    XDEBUG_GCSTATS_SOURCES="src/gcstats/gc_stats.c"
    XDEBUG_PROFILER_SOURCES="src/profiler/profiler.c"
 -  XDEBUG_TRACING_SOURCES="src/tracing/trace_computerized.c src/tracing/trace_flamegraph.c src/tracing/trace_html.c src/tracing/trace_textual.c src/tracing/tracing.c"
 +  XDEBUG_TRACING_SOURCES="src/tracing/trace_computerized.c src/tracing/trace_flamegraph.c src/tracing/trace_html.c src/tracing/trace_textual.c src/tracing/trace_fracker.c src/tracing/tracing.c"
  
-   PHP_NEW_EXTENSION(xdebug, xdebug.c $XDEBUG_BASE_SOURCES $XDEBUG_LIB_SOURCES $XDEBUG_COVERAGE_SOURCES $XDEBUG_DEBUGGER_SOURCES $XDEBUG_DEVELOP_SOURCES $XDEBUG_GCSTATS_SOURCES $XDEBUG_PROFILER_SOURCES $XDEBUG_TRACING_SOURCES, $ext_shared,,$PHP_XDEBUG_CFLAGS,,yes)
+   PHP_NEW_EXTENSION(xdebug, xdebug.c $XDEBUG_BASE_SOURCES $XDEBUG_LIB_SOURCES $XDEBUG_LIB_MAPS_SOURCES $XDEBUG_COVERAGE_SOURCES $XDEBUG_DEBUGGER_SOURCES $XDEBUG_DEVELOP_SOURCES $XDEBUG_GCSTATS_SOURCES $XDEBUG_PROFILER_SOURCES $XDEBUG_TRACING_SOURCES, $ext_shared,,$PHP_XDEBUG_CFLAGS,,yes)
    PHP_ADD_BUILD_DIR(PHP_EXT_BUILDDIR(xdebug)[/src/base])
 diff --git a/src/tracing/trace_fracker.c b/src/tracing/trace_fracker.c
 new file mode 100644
@@ -387,7 +387,7 @@ diff --git a/src/tracing/tracing.c b/src/tracing/tracing.c
 diff --git a/src/tracing/tracing.h b/src/tracing/tracing.h
 --- a/src/tracing/tracing.h
 +++ b/src/tracing/tracing.h
-@@ -50,6 +50,10 @@ typedef struct _xdebug_tracing_settings_t {
+@@ -54,6 +54,10 @@ typedef struct _xdebug_tracing_settings_t {
  	zend_bool     collect_assignments;
  	zend_bool     collect_params;
  	zend_bool     collect_return;
@@ -422,7 +422,7 @@ diff --git a/xdebug.c b/xdebug.c
  	STD_PHP_INI_ENTRY("xdebug.file_link_format",   "",                      PHP_INI_ALL,                   OnUpdateString, settings.library.file_link_format, zend_xdebug_globals, xdebug_globals)
  	STD_PHP_INI_ENTRY("xdebug.filename_format",    "",                      PHP_INI_ALL,                   OnUpdateString, settings.library.filename_format,  zend_xdebug_globals, xdebug_globals)
  #if HAVE_XDEBUG_CONTROL_SOCKET_SUPPORT
-@@ -373,11 +377,11 @@ PHP_INI_BEGIN()
+@@ -374,11 +378,11 @@ PHP_INI_BEGIN()
  
  	/* Tracing settings */
  	STD_PHP_INI_ENTRY("xdebug.trace_output_name", "trace.%c",           PHP_INI_ALL,    OnUpdateString, settings.tracing.trace_output_name, zend_xdebug_globals, xdebug_globals)
