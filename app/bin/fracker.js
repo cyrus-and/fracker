@@ -5,7 +5,7 @@ const analyzer = require('../lib/analyzer.js');
 const package = require('../package.json');
 const term = require('../lib/term.js');
 
-const yaml = require('js-yaml');
+const yaml = require('yaml');
 
 const fs = require('fs');
 
@@ -91,11 +91,11 @@ function parseArguments(argv) {
     // load YAML files and store them in reversed order
     const configs = program.args.map((path) => {
         try {
-            const config = yaml.safeLoad(fs.readFileSync(path, 'utf-8'));
+            const config = yaml.parse(fs.readFileSync(path, 'utf-8'));
             term.log(`Loaded config from '${path}'`);
             return config;
         } catch (err) {
-            if (err instanceof yaml.YAMLException) {
+            if (err instanceof yaml.YAMLParseError) {
                 term.err(`Invalid YAML file '${path}'`);
             } else {
                 term.err(`Cannot access '${path}'`);
